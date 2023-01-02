@@ -25,10 +25,42 @@ spring:
               args:
                 name: korisnik-servis-circuit-breaker
                 fallbackUri: forward:/korisnik-servis-circuit-breaker
-        - id: load-balancer-servis
-          uri: http://load-balancer-servis
+        - id: post-service
+          uri: http://post-service
           predicates:
-            - Path=/load-balancer-servis/**
+            - Path=/post-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: korisnik-servis-circuit-breaker
+                fallbackUri: forward:/korisnik-servis-circuit-breaker
+        - id: user-service
+          uri: http://user-service
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: korisnik-servis-circuit-breaker
+                fallbackUri: forward:/korisnik-servis-circuit-breaker
+        - id: connection-service
+          uri: http://connection-service
+          predicates:
+              - Path=/connection-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: korisnik-servis-circuit-breaker
+                fallbackUri: forward:/korisnik-servis-circuit-breaker
+        - id: auth-service
+          uri: http://auth-service
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: korisnik-servis-circuit-breaker
+                fallbackUri: forward:/korisnik-servis-circuit-breaker
         - id: studijski-program-servis
           uri: http://studijski-program-servis
           predicates:
