@@ -1,0 +1,39 @@
+server:
+  port: 9000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+      
+spring:
+  application:
+    name: gateway-api
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: korisnik-servis
+          uri: http://korisnik-servis
+          predicates:
+            - Path=/korisnik-servis/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: korisnik-servis-circuit-breaker
+                fallbackUri: forward:/korisnik-servis-circuit-breaker
+        - id: load-balancer-servis
+          uri: http://load-balancer-servis
+          predicates:
+            - Path=/load-balancer-servis/**
+        - id: studijski-program-servis
+          uri: http://studijski-program-servis
+          predicates:
+            - Path=/studijski-program-servis/**
+        - id: konkurs-servis
+          uri: http://konkurs-servis
+          predicates:
+            - Path=/konkurs-servis/**
