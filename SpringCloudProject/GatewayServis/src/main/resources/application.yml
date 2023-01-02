@@ -5,6 +5,11 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+  cloud:
+    gateway:
+
+
       
 spring:
   application:
@@ -15,6 +20,7 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+
       routes:
         - id: korisnik-servis
           uri: http://korisnik-servis
