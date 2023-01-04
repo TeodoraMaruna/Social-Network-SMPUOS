@@ -63,6 +63,18 @@ public class ConnectionController {
         return new ResponseEntity(connectionService.findFollowRequestsForUser(username), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/findBlocked/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<UserConnectionDTO>> findBlockedUsersForUser(@PathVariable String username) {
+
+        return new ResponseEntity(connectionService.findBlockedUsersForUser(username), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findBlockedBy/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<UserConnectionDTO>> findBlockedByUsersForUser(@PathVariable String username) {
+
+        return new ResponseEntity(connectionService.findBlockedByUsersForUser(username), HttpStatus.OK);
+    }
+
     @PostMapping(value= "/registerUserConnection", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> registerUserConnection(@RequestBody UserConnectionDTO userConnectionDTO) {
 
