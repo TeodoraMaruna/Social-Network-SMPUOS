@@ -11,5 +11,4 @@ public class ConnectionServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ConnectionServiceApplication.class, args);
     }
-
 }
