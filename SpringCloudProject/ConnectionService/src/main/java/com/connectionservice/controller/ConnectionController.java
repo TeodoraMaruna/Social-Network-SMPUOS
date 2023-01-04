@@ -49,6 +49,8 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    // reject
+
     @GetMapping(value = "/followers/{username}", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<UserConnectionDTO>> findFollowersForUser(@PathVariable String username) {
 

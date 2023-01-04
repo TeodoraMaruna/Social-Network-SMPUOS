@@ -106,7 +106,20 @@ public class ConnectionService implements IConnectionService {
             return false;
         }
 
-        return true;
+        return checkIfDifferentUsers(dto);
+    }
+
+    public boolean checkIfDifferentUsers(CreateConnectionDTO dto){
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        if (sender != null && receiver != null){
+            if (sender.getUsername().equals(receiver.getUsername())){
+                return false;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     public List<UserConnectionDTO> findFollowersForUser(String username){
@@ -138,7 +151,7 @@ public class ConnectionService implements IConnectionService {
     }
 
     public boolean blockUser(CreateConnectionDTO dto){
-        // dodavanje block veze od sender-a, ka receiver-u + dodavanje blockedBy od receiver-a ka sender-u
+        // dodavanje block veze od sender-a, ka receiver-u + dodavanje blockedBy veze od receiver-a ka sender-u
         UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
         UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
         boolean exception = checkIfUsersExists(dto);
