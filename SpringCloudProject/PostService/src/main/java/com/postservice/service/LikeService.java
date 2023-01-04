@@ -6,7 +6,9 @@ import com.postservice.model.Post;
 import com.postservice.repository.PostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LikeService implements  ILikeService{
 
     @Autowired
@@ -16,6 +18,8 @@ public class LikeService implements  ILikeService{
     public void addLike(LikeDto likeDto, String postId) {
         ModelMapper modelMapper = new ModelMapper();
         Post post = this.postRepository.findById(postId);
-        post.addLike(modelMapper.map(likeDto, Like.class));
+        Like like = modelMapper.map(likeDto, Like.class);
+        post.addLike(like);
+        this.postRepository.save(post);
     }
 }

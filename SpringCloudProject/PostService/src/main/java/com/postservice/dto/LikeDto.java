@@ -4,8 +4,7 @@ public class LikeDto {
 
     private String username;
 
-    public LikeDto(String username) {
-        this.username = username;
+    public LikeDto() {
     }
 
     public String getUsername() {

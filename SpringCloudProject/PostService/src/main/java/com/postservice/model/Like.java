@@ -8,6 +8,9 @@ public class Like {
         this.username = username;
     }
 
+    public Like() {
+    }
+
     public String getUsername() {
         return username;
     }
