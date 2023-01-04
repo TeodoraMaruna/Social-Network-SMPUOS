@@ -5,7 +5,6 @@ import com.connectionservice.dto.UserConnectionDTO;
 import com.connectionservice.model.UserConnection;
 import com.connectionservice.repository.ConnectionRepository;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +35,10 @@ public class ConnectionService implements IConnectionService {
     public UserConnectionDTO findByUsername(String username) {
         UserConnection conn = connectionRepository.findByUsername(username);
         return new UserConnectionDTO(conn.getUsername(), conn.isPublic());
+    }
+
+    public void registerUserConnection(UserConnectionDTO dto){
+        this.connectionRepository.save(new UserConnection(dto.getUsername(), dto.isPublic()));
     }
 
     public boolean createConnectionType(CreateConnectionDTO dto){
@@ -132,5 +135,30 @@ public class ConnectionService implements IConnectionService {
             dtos.add(new UserConnectionDTO(userConnection.getUsername(), userConnection.isPublic()));
         }
         return dtos;
+    }
+
+    public boolean blockUser(CreateConnectionDTO dto){
+        // dodavanje block veze od sender-a, ka receiver-u + dodavanje blockedBy od receiver-a ka sender-u
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        sender.blockUser(receiver);
+        receiver.blockedByUser(sender);
+        this.connectionRepository.save(sender);
+        this.connectionRepository.save(receiver);   // zbog ovog save, prvo radimo dodavanje blocked veza, pa tek onda raskidanje starih veza
+
+        // ako su pratioci, detach veze sa obe strane
+        this.connectionRepository.removeFollower(dto.getSenderUsername(), dto.getReceiverUsername());
+        this.connectionRepository.removeFollower(dto.getReceiverUsername(), dto.getSenderUsername());
+
+        // ako postoji follow request sa jedne strane, detach te veze
+        this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+        this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
+
+        return true;
     }
 }

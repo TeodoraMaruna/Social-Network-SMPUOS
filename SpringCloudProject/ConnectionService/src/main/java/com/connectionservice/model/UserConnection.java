@@ -1,5 +1,6 @@
 package com.connectionservice.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserConnection {
 
 	@Id
@@ -33,6 +35,12 @@ public class UserConnection {
 	@Relationship(type = "Follower", direction = Relationship.Direction.INCOMING)
 	private List<UserConnection> followers;
 
+	@Relationship(type = "Blocked")
+	private List<UserConnection> blocked;
+
+	@Relationship(type = "BlockedBy")
+	private List<UserConnection> blockedBy;
+
 	public void createFollowRequests(UserConnection userConnection) {
 		if (followRequests == null) {
 			followRequests = new ArrayList<>();
@@ -46,4 +54,19 @@ public class UserConnection {
 		}
 		followers.add(userConnection);
 	}
+
+	public void blockUser(UserConnection userConnection) {
+		if (blocked == null) {
+			blocked = new ArrayList<>();
+		}
+		blocked.add(userConnection);
+	}
+
+	public void blockedByUser(UserConnection userConnection) {
+		if (blockedBy == null) {
+			blockedBy = new ArrayList<>();
+		}
+		blockedBy.add(userConnection);
+	}
+
 }

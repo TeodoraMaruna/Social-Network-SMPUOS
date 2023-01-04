@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("")
 public class ConnectionController {
@@ -62,5 +61,21 @@ public class ConnectionController {
         return new ResponseEntity(connectionService.findFollowRequestsForUser(username), HttpStatus.OK);
     }
 
-        // register user connection (pri registraciji korisnika kreira se i node u neo4j bazi)
+    @PostMapping(value= "/registerUserConnection", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> registerUserConnection(@RequestBody UserConnectionDTO userConnectionDTO) {
+
+        this.connectionService.registerUserConnection(userConnectionDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping(value= "/blockUser", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> blockUser(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        boolean result = this.connectionService.blockUser(connectionDTO);
+        if (result) {
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
 }
