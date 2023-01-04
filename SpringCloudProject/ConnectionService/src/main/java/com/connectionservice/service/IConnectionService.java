@@ -32,4 +32,7 @@ public interface IConnectionService {
     List<UserConnectionDTO> findBlockedByUsersForUser(String username);
 
     boolean blockUser(CreateConnectionDTO dto);
+
+    List<UserConnectionDTO> findRecommendedUsers(String username);
+
 }

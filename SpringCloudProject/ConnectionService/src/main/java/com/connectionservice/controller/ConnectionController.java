@@ -100,4 +100,10 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    @GetMapping(value = "/findRecommended/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<UserConnectionDTO>> findRecommendedUsers(@PathVariable String username) {
+
+        return new ResponseEntity(connectionService.findRecommendedUsers(username), HttpStatus.OK);
+    }
+
 }

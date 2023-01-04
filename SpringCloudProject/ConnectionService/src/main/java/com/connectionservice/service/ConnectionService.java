@@ -39,6 +39,7 @@ public class ConnectionService implements IConnectionService {
 
     @Override
     public void registerUserConnection(UserConnectionDTO dto){
+        // TODO: check if username unique
         this.connectionRepository.save(new UserConnection(dto.getUsername(), dto.isPublic()));
     }
 
@@ -237,5 +238,25 @@ public class ConnectionService implements IConnectionService {
         this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
 
         return true;
+    }
+
+    @Override
+    public List<UserConnectionDTO> findRecommendedUsers(String username) {
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        List<UserConnectionDTO> connections = new ArrayList<>();
+        if (user != null) {
+
+            for (UserConnection connection : user.getFollowers()) {
+                for (UserConnection c : connection.getFollowers()) {
+                    if (!connections.contains(c)
+                            && !user.getFollowers().contains(c)
+                            && !user.getUsername().equals(c.getUsername())
+                            && !user.getBlocked().contains(c) && !user.getBlockedBy().contains(c)) {
+                        connections.add(new UserConnectionDTO(c.getUsername(), c.isPublic()));
+                    }
+                }
+            }
+        }
+        return connections;
     }
 }
