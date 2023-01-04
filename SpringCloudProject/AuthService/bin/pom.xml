@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
-    <artifactId>ConnectionService</artifactId>
+    <artifactId>AuthService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ConnectionService</name>
-    <description>ConnectionService</description>
+    <name>AuthService</name>
+    <description>AuthService</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -49,17 +49,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-neo4j</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>provided</scope>
-        </dependency>
 
     </dependencies>
 
