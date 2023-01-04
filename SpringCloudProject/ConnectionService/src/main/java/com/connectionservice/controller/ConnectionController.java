@@ -49,7 +49,15 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    // reject
+    @PostMapping(value= "/rejectFollowRequest", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> rejectFollowRequest(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        boolean result = this.connectionService.rejectFollowRequest(connectionDTO);
+        if (result) {
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
 
     @GetMapping(value = "/followers/{username}", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<UserConnectionDTO>> findFollowersForUser(@PathVariable String username) {

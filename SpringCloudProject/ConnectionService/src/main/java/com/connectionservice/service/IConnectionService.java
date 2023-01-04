@@ -17,7 +17,7 @@ public interface IConnectionService {
 
     boolean approveFollowRequest(CreateConnectionDTO dto);
 
-    // reject
+    boolean rejectFollowRequest(CreateConnectionDTO dto);
 
     boolean checkIfUsersExists(CreateConnectionDTO dto);
 

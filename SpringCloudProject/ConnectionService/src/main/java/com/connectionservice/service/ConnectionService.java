@@ -92,7 +92,33 @@ public class ConnectionService implements IConnectionService {
         sender.createFollower(receiver);
         this.connectionRepository.save(receiver);
         this.connectionRepository.save(sender);
+        this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
 
+        return true;
+    }
+
+    @Override
+    public boolean rejectFollowRequest(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        // da li se sender nalazi u listi followerRequests od receiver-a
+        // ako da, izbaciti tu vezu (followRequest)
+        List<UserConnection> followRequests = receiver.getFollowRequests();
+        boolean found = false;
+        for(UserConnection user: followRequests){
+            if (user.getUsername().equals(sender.getUsername())){
+                found = true;
+            }
+        }
+
+        if (!found){
+            return false;
+        }
         this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
 
         return true;
