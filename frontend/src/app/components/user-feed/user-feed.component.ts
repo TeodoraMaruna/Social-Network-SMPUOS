@@ -169,7 +169,7 @@ export class UserFeedComponent implements OnInit {
 
   editInfo() {
     const dialogRef = this.dialog.open(UpdateInfoComponent, {
-      width: '45vw',
+      width: '43vw',
       data: {},
     });
 
