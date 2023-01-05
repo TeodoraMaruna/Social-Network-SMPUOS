@@ -5,6 +5,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {NewPostComponent} from "../dialogs/new-post/new-post.component";
 import {UpdateInfoComponent} from "../dialogs/update-info/update-info.component";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import { PostService } from 'src/app/service/post.service';
+import { PostLikesComponent } from '../dialogs/post-likes/post-likes.component';
+import { Like } from 'src/app/model/like';
+import { Comment } from 'src/app/model/comment';
 
 @Component({
   selector: 'app-user-feed',
@@ -13,38 +17,29 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 })
 export class UserFeedComponent implements OnInit {
 
-
-
-  constructor(public dialog: MatDialog ) {
-
+  constructor(public dialog: MatDialog, private postService: PostService) {
   }
 
   user: User = new User; // current user
   posts: Post[] = [];
-  searchedPosts: Post[] = [];
   loaded: boolean = false;
+
   feedActive: boolean = true;
   profileActive: boolean = false;
-  informationsActive: boolean = false;
-  recommendationActive: boolean = false;
+  followerRequestsActive: boolean = false;
+  followersActive: boolean = false;
 
   visibleUserAcccountSettings: boolean = false;
-  searchCriteria: string = "";
   stringBirthday : any;
   visible: boolean = false;
   users: User[]  = []
-  jobOffers: Post[] = []
+
   ngOnInit(): void {
     this.feedActive = true;
     this.profileActive = false;
-    this.informationsActive = false;
-    this.recommendationActive = false;
-    this.loadUserData();
-
+    this.followersActive = false;
+    this.followerRequestsActive = false;
     this.getRecommendation()
-
-
-    //this.loadJobRecommendations()
   }
 
 
@@ -56,20 +51,6 @@ export class UserFeedComponent implements OnInit {
     //     console.log(data)
     //     this.getUsersFromRecommendation(data['users'])
     //   })
-
-  }
-
-  getUsersFromRecommendation(){
-    // this.users = []
-    //
-    // for(let u of data){
-    //   this.userService.getById(u.userID).subscribe((data: User) => {
-    //     this.users.push(data['user'])
-    //   })
-    // }
-    //
-    // console.log("preporuke:")
-    // console.log(this.users)
 
   }
 
@@ -85,117 +66,79 @@ export class UserFeedComponent implements OnInit {
     // })
   }
 
-  loadUserData(){
-  }
-
   loadFeed(){
-
+    this.feedActive = true;    
+    this.profileActive = false;
+    this.followersActive = false;    
+    this.followerRequestsActive = false;
   }
 
   loadMyPosts(){
-    // this.feedActive = false;
-    // this.profileActive = true;
-    // this.informationsActive = false;
-    // this.recommendationActive = false;
+    this.feedActive = false;
+    this.profileActive = true;
+    this.followersActive = false;    
+    this.followerRequestsActive = false;
     // let userId = localStorage.getItem("user");
-    //
-    // if (userId != undefined){
-    //   this.postService.getByUserId(userId).subscribe(
-    //     (data: any[]) => {
-    //       let posts = data['posts']
-    //       console.log(posts)
-    //
-    //       for (let p of posts){
-    //         let dateTime = p.dateCreated.split('T')
-    //         let time = dateTime[1].split('.')
-    //         p.dateCreated = dateTime[0] + '  ' + time[0]
-    //
-    //         this.userService.getById(p.userId).subscribe(
-    //           (user: any) => {
-    //             p.user = user
-    //           })
-    //
-    //         for (let c of p.comments){
-    //           this.userService.getById(c.userId).subscribe(
-    //             (user: any) => {
-    //               c.user = user
-    //             })
-    //         }
-    //
-    //         //if (p.isJobOffer)
-    //       }
-    //
-    //       this.posts = []
-    //       this.posts = posts
-    //       this.searchedPosts = this.posts
-    //       console.dir(this.posts)
-    //     })
-    // }
+    let userId = 1 // TODO: change
+
+    if (userId != undefined){
+      this.postService.getPostsByUserId(userId).subscribe(
+        (data: any[]) => {
+          this.posts = []
+          this.posts = data
+        })
+    }
   }
 
+  loadFollowers(){
+    this.feedActive = false;
+    this.profileActive = false;
+    this.followersActive = true;    
+    this.followerRequestsActive = false;
+  }
+
+  loadFollowRequests(){
+    this.feedActive = false;
+    this.profileActive = false;
+    this.followersActive = false;    
+    this.followerRequestsActive = true;
+  }
 
   makeVisibleUserAcccountSettings() {
     this.visibleUserAcccountSettings = !this.visibleUserAcccountSettings
   }
 
-  comment(postId: string, event: any){
-    // var sanitize = require("mongo-sanitize"); // mongo-sanitize module
-    // // The sanitize function will strip out any keys that start with '$' in the input,
-    // // so you can pass it to MongoDB without worrying about malicious users overwriting
-    // // query selectors.
-    //
-    // let dto = new CommentDto();
-    // dto.postId = postId;
-    // dto.text = sanitize(event.target.comment.value);
-    //
-    // if (dto.text != "" && dto.text.trim() != "" && dto.text != undefined){
-    //   this.postService.commentPost(dto).subscribe(
-    //     (data: SuccessMessage) => {
-    //       if (this.feedActive){
-    //         this.loadFeed();
-    //       } else if(this.profileActive){
-    //         this.loadMyPosts();
-    //       }
-    //       else if(this.recommendationActive){
-    //         this.loadJobRecommendations();
-    //       }
-    //     }
-    //   )
+  comment(post: Post, event: any){
+    let postComment = new Comment();
+    postComment.content = event.target.comment.value
+    postComment.username = "jana"
+    this.postService.commentPost(post.id, postComment).subscribe()
+
+    window.location.reload()
+    // if(this.feedActive){
+    //   this.loadFeed();
     // } else {
-    //   alert('Comment can not be empty!')
+    //   this.loadMyPosts();
     // }
   }
 
-  like(postId: string){
-    // let dto = new PostDto();
-    // dto.postId = postId;
-    // this.postService.likePost(dto).subscribe(
-    //   (data: SuccessMessage) => {
-    //     if (this.feedActive){
-    //       this.loadFeed();
-    //     } else if(this.profileActive){
-    //       this.loadMyPosts();
-    //     }
-    //     else if(this.recommendationActive){
-    //       this.loadJobRecommendations();
-    //     }
-    //   }
-    // )
+  like(post: Post){
+    let like = new Like();
+    like.username = "tea";  // TODO: change - uzeti ulogovanog korisnika
+    this.postService.likePost(post.id, like).subscribe()
+    
+    window.location.reload()
   }
 
 
-
-
-  seeLikes(postId: string){
-    // const dialogRef = this.dialog.open(PostLikesComponent, {
-    //   width: '400px',
-    //   height: '230px',
-    //   data: {},
-    // });
-    // dialogRef.componentInstance.post.id = postId;
+  seeLikes(post: Post){
+    const dialogRef = this.dialog.open(PostLikesComponent, {
+      width: '400px',
+      height: '230px',
+      data: {},
+    });
+    dialogRef.componentInstance.post = post;
   }
-
-
 
   newPost(){
     const dialogRef = this.dialog.open(NewPostComponent, {
@@ -208,36 +151,9 @@ export class UserFeedComponent implements OnInit {
     });
   }
 
-
   logout(){
     // this.authService.logout();
     // this.router.navigate(['']);
-  }
-
-  search(){
-    // this.posts = this.searchedPosts.filter(p =>
-    //   (p.text).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
-    //   (p.dateCreated).toLowerCase().includes(this.searchCriteria.toLowerCase())
-    // )
-  }
-
-  searchFeed(){
-    // this.feedActive = true;
-    // this.profileActive = false;
-    // this.recommendationActive = false;
-    // this.posts = this.searchedPosts.filter(p =>
-    //   (p.text).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
-    //   (p.dateCreated).toLowerCase().includes(this.searchCriteria.toLowerCase())
-    // )
-  }
-
-  searchProfile(){
-    // this.feedActive = false;
-    // this.profileActive = true;
-    // this.posts = this.searchedPosts.filter(p =>
-    //   (p.text).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
-    //   (p.dateCreated).toLowerCase().includes(this.searchCriteria.toLowerCase())
-    // )
   }
 
   seeProfile(id: string){
@@ -248,27 +164,12 @@ export class UserFeedComponent implements OnInit {
     // }
   }
 
-  loadMyInfo(){
-    this.feedActive = false;
-    this.profileActive = false;
-    this.recommendationActive = false;
-    this.informationsActive = true;
-  }
-
-
-
-  updateUser(){
-  }
-
-  generateAPIToken(){
-  }
-
   changeVisibility(){
   }
 
   editInfo() {
     const dialogRef = this.dialog.open(UpdateInfoComponent, {
-      width: '40vw',
+      width: '45vw',
       data: {},
     });
 

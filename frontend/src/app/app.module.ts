@@ -21,6 +21,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatSliderModule} from "@angular/material/slider";
 import { NewPostComponent } from './components/dialogs/new-post/new-post.component';
 import { UpdateInfoComponent } from './components/dialogs/update-info/update-info.component';
+import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UpdateInfoComponent } from './components/dialogs/update-info/update-inf
     PostPageComponent,
     UserFeedComponent,
     NewPostComponent,
-    UpdateInfoComponent
+    UpdateInfoComponent,
+    PostLikesComponent
   ],
   imports: [
     BrowserModule,

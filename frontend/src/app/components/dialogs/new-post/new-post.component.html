@@ -1,5 +1,4 @@
-<div style="    max-height: calc(100vh - 200px);
-overflow-y: auto;">
+<div>
   <h2 mat-dialog-title>Create a post</h2>
   <mat-divider></mat-divider>
   <form #registrationForm = "ngForm" style="margin-top: 0.5vw; margin-left: 1vw; margin-right: 1vw; margin-bottom: 0.5vw;">
@@ -11,23 +10,13 @@ overflow-y: auto;">
 
     <div class="row"  style="margin-bottom: -1.5vw;">
       <div class="col-md-12 mb-4 pb-2">
-        <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  <!-- border-style: solid; border-color: gainsboro; border-width: 0.5px; -->
-          <textarea matInput style="height: 10vw;"  name="text" placeholder="What do you want to talk about?"></textarea>
+        <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  
+          <textarea matInput style="height: 10vw;" [(ngModel)]="post.description"  name="text" placeholder="What do you want to talk about?"></textarea>
         </mat-form-field>
       </div>
     </div>
 
-    <!-- <div class="row">
-    <div class="col-md-12 mb-4 pb-2">
-        <div class="example-full-width">
-            <textarea matInput style="height: 10vw;" placeholder="What do you want to talk about?"></textarea>
-        </div>
-    </div>
-    </div> -->
-
     <div class="row" style="margin-bottom: -1vw;">
-
-
       <div class="form-outline; col-md-10 mb-4 pb-2" style="width: 100%;">
         <input type="file"  [(ngModel)]="image" (change)="uploadImage($event)"  name="link" class="form-control"
                appearance="outline" accept="image/*" placeholder="Add an image"/>

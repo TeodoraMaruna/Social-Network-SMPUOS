@@ -31,10 +31,23 @@ public class PostController {
         return new ResponseEntity<>(this.postService.insertPost(postDto),HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/find-post/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<List<PostDto>> findPostForUser(@PathVariable("userId") Integer userId) {
+    @RequestMapping(value = "/find-post/{postId}", method = RequestMethod.GET)
+    public ResponseEntity<PostDto> findPostById(@PathVariable("postId") String postId) {
 
-        return new ResponseEntity<>(this.postService.findAllPostForUserId(userId),HttpStatus.FOUND);
+        return new ResponseEntity<>(this.postService.findById(postId),HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/find-all", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<PostDto>> findAll() {
+
+        return new ResponseEntity<>(this.postService.findAll(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/find-all-posts/user/{userId}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<PostDto>> findAllPostForUserId(@PathVariable Integer userId) {
+
+        return new ResponseEntity<>(this.postService.findAllPostForUserId(userId), HttpStatus.OK);
+    }
+
 }
 

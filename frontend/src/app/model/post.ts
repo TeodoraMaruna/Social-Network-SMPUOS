@@ -3,9 +3,9 @@ import {Like} from "./like";
 import {User} from "./user";
 
 export class Post {
-  Id: string = '';
+  id: String = '';
 
-  description: string = '';
+  description: String = '';
 
   comments: Comment[] = new Array()
 
@@ -13,9 +13,9 @@ export class Post {
 
   user: User = new User();
 
-  imageUrl: string = '';
+  imageUrl: String = '';
 
-  imageBase64: string = '';
+  imageBase64: String = '';
 
   numberOfLikes: number = 0;
 }

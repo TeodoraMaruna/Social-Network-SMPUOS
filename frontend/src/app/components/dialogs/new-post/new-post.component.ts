@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
+import { Post } from 'src/app/model/post';
+import { PostService } from 'src/app/service/post.service';
 
 @Component({
   selector: 'app-new-post',
@@ -7,16 +9,30 @@ import {MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./new-post.component.css']
 })
 export class NewPostComponent implements OnInit {
-  post: any;
-  invalidLink: any;
-  link: any
+
+  constructor(public dialogRef: MatDialogRef<NewPostComponent>, private postService: PostService) { }
+
+  post: Post = new Post();
   image: any;
   url: any;
   uploadedImage: string | ArrayBuffer = ''
 
-  constructor(public dialogRef: MatDialogRef<NewPostComponent>) { }
-
   ngOnInit(): void {
+  }
+
+  clearImage() {
+    
+  }
+
+  onNoClick() {
+    this.dialogRef.close();
+  }
+
+  save() {
+    this.post.user.userId = 1;  // TODO: change - uzeti ulogovanog korisnika
+    // this.post.imageBase64 = this.uploadedImage
+    this.postService.newPost(this.post).subscribe()
+    this.dialogRef.close()
   }
 
   uploadImage(e: any) {
@@ -24,18 +40,6 @@ export class NewPostComponent implements OnInit {
     console.log(this.url)
     const file = e.target.files[0];
     this.createBase64Image(file);
-  }
-
-  clearImage() {
-
-  }
-
-  onNoClick() {
-
-  }
-
-  save() {
-
   }
 
   createBase64Image(file: File){
