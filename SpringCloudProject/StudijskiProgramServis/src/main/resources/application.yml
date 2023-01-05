@@ -1,19 +1,0 @@
-server:
-  port: 9010
-
-spring:
-  application:
-    name: studijski-program-servis
-  data:    mongodb:      host: localhost
-      port: 27017
-      database: BazaPodatakaStudijskihPrograma
-    
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-      healthcheck:
-        enabled: true
-  instance:
-    prefer-ip-address: true
-

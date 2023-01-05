@@ -7,6 +7,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { PostPageComponent } from './components/post-page/post-page.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./shared/auth-interceptor";
+import { RegistrationPageComponent } from './components/registration-page/registration-page.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
 import { UserFeedComponent } from './components/user-feed/user-feed.component';
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -28,6 +30,8 @@ import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.c
     AppComponent,
     HomePageComponent,
     PostPageComponent,
+    RegistrationPageComponent,
+    LoginPageComponent
     UserFeedComponent,
     NewPostComponent,
     UpdateInfoComponent,
