@@ -70,7 +70,7 @@ public class PostService implements IPostService{
         post.setComments(new ArrayList<>());
         User user = new User();
         user.setUserId(postDto.getUser().getUserId());
-        user.setStatus(postDto.getUser().getStatus());
+        user.setPublic(postDto.getUser().getPublic());
         post.setUser(user);
         post.setLikes(new ArrayList<>());
         return post;

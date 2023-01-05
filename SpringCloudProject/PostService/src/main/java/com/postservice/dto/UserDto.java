@@ -3,11 +3,11 @@ package com.postservice.dto;
 public class UserDto {
 
     private Integer userId;
-    private Boolean status;
+    private Boolean isPublic;
 
     public UserDto(Integer userId, Boolean status) {
         this.userId = userId;
-        this.status = status;
+        this.isPublic = status;
     }
 
     public UserDto() {
@@ -21,11 +21,11 @@ public class UserDto {
         this.userId = userId;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean getPublic() {
+        return isPublic;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 }
