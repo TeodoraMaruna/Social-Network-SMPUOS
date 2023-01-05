@@ -48,6 +48,7 @@ public class MyUserService implements IMyUserService {
 		if(!BCrypt.checkpw(authRequest.getPassword(), myUser.getPassword())){
 			return new AuthResponse("");
 		}
+		myUser.setRole("ROLE_USER");
 
 		return new AuthResponse(jwt.generate(myUser, "ACCESS"));
 	}
