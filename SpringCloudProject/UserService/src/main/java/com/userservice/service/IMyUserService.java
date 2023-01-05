@@ -12,6 +12,4 @@ public interface IMyUserService {
 
     boolean addMyUser(MyUserDTO dto);
 
-    boolean checkIfUsernameUnique(String username);
-
 }

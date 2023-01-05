@@ -18,6 +18,7 @@ public class MyUserDTO {
     private String role;
     private Boolean isPublic;
     private String firstName;
+    private String gender;
     private String lastName;
     private String email;
     private String phoneNumber;

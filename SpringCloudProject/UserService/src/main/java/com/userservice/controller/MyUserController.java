@@ -49,5 +49,14 @@ public class MyUserController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    // editUser - put
+    @PutMapping(value = "/edit", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> editUser(@RequestBody MyUserDTO dto) {
+
+        Boolean result = this.myUserService.editMyUser(dto);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
 }
