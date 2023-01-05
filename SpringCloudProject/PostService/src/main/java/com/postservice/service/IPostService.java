@@ -13,4 +13,8 @@ public interface IPostService {
     PostDto insertPost(PostDto postDto) throws IOException, URISyntaxException;
 
     List<PostDto> findAllPostForUserId(Integer userId);
+
+    List<PostDto> findAll();
+
+    PostDto findById(String id);
 }

@@ -19,14 +19,14 @@ public class CommentController {
     private CommentService commentService;
 
     @RequestMapping(value = "/add-comment/{postId}", method = RequestMethod.POST)
-    public ResponseEntity addPost(@RequestBody CommentDto commentDto, @PathVariable("postId") String postId)  {
+    public ResponseEntity addComment(@RequestBody CommentDto commentDto, @PathVariable("postId") String postId)  {
 
         this.commentService.addComment(commentDto, postId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/delete-comment/{postId}/{commentId}", method = RequestMethod.DELETE)
-    public ResponseEntity deletePost(@PathVariable("commentId") Integer commentId,@PathVariable("postId") String postId)  {
+    public ResponseEntity deleteComment(@PathVariable("commentId") Integer commentId,@PathVariable("postId") String postId)  {
 
         this.commentService.deleteComment(commentId, postId);
         return new ResponseEntity(HttpStatus.OK);
