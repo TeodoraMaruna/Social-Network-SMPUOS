@@ -1,4 +1,5 @@
 export class User {
     username: String = "";
-    isPublic: boolean = false; 
+    isPublic: boolean = false;
+    password: any;
 }

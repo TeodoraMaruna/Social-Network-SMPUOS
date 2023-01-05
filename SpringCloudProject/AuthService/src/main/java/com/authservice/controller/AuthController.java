@@ -22,10 +22,11 @@ public class AuthController {
         return new ResponseEntity(this.myUserService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "", produces = "application/json; charset=utf-8")
-    public ResponseEntity<?> info() {
+    @PostMapping(value = "/login", produces = "application/json; charset=utf-8")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        AuthResponse authResponse = this.myUserService.login(authRequest);
+        return new ResponseEntity<>(authResponse,HttpStatus.FOUND);
     }
 
     @PostMapping(value = "/register")
