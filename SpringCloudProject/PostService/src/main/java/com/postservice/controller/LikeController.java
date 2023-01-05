@@ -16,7 +16,7 @@ public class LikeController {
     private LikeService likeService;
 
     @RequestMapping(value = "/add-like/{postId}", method = RequestMethod.POST)
-    public ResponseEntity addPost(@RequestBody LikeDto likeDto, @PathVariable("postId") String postId)  {
+    public ResponseEntity addLike(@RequestBody LikeDto likeDto, @PathVariable("postId") String postId)  {
 
         this.likeService.addLike(likeDto, postId);
         return new ResponseEntity(HttpStatus.CREATED);

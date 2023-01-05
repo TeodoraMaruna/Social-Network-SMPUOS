@@ -1,0 +1,37 @@
+<div>
+  <h2 mat-dialog-title>Create a post</h2>
+  <mat-divider></mat-divider>
+  <form #registrationForm = "ngForm" style="margin-top: 0.5vw; margin-left: 1vw; margin-right: 1vw; margin-bottom: 0.5vw;">
+    <div class="row"  style="margin-bottom: -1.5vw;">
+      <div class="col-md-6 mb-4">
+        <p> Vladimir Jovanovic </p>
+      </div>
+    </div>
+
+    <div class="row"  style="margin-bottom: -1.5vw;">
+      <div class="col-md-12 mb-4 pb-2">
+        <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  
+          <textarea matInput style="height: 10vw;" [(ngModel)]="post.description"  name="text" placeholder="What do you want to talk about?"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom: -1vw;">
+      <div class="form-outline; col-md-10 mb-4 pb-2" style="width: 100%;">
+        <input type="file"  [(ngModel)]="image" (change)="uploadImage($event)"  name="link" class="form-control"
+               appearance="outline" accept="image/*" placeholder="Add an image"/>
+      </div>
+
+      <div class="col-md-1 mb-4 pb-2">
+        <button (click)="clearImage()" style="border-style: none; background-color: white; width: 2.5vw; height: 2.5vw; font-size: 30px; "
+                title="Add new image" ><i class="la la-trash"></i> </button>
+
+      </div>
+    </div>
+
+    <div class="mt-4 pt-2">
+      <input class="btn btn-success btn-lg center-div" style="background-color: #e44d3a; color:white" type="button" (click)="save()" value="Submit" />
+      <input class="btn btn-lg center-div" (click)="onNoClick()" type="button" value="Cancel" />
+    </div>
+  </form>
+</div>

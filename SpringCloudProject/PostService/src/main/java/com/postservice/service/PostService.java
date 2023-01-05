@@ -48,6 +48,21 @@ public class PostService implements IPostService{
         return postDtos;
     }
 
+    @Override
+    public List<PostDto> findAll() {
+        List<PostDto> dtos = new ArrayList<>();
+        for (Post p: this.postRepository.findAll()){
+            dtos.add(modelToDto(p));
+        }
+        return dtos;
+    }
+
+    @Override
+    public PostDto findById(String id) {
+        Post post = this.postRepository.findById(id);
+        return modelToDto(post);
+    }
+
     private Post dtoToModel(PostDto postDto){
         Post post = new Post();
         post.setDescription(postDto.getDescription());
