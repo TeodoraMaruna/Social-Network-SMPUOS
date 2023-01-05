@@ -59,7 +59,6 @@ export class UpdateInfoComponent implements OnInit {
     this.user.gender = this.genderControl.value
     this.updateUserService()
     this.updateConnectionService()
-    // TODO: dodati i za auth service (ako ima) !!!
     this.dialogRef.close();
   }
 

@@ -45,7 +45,7 @@
 
         <div class="user-account">
           <div class="user-info"  (click)="makeVisibleUserAcccountSettings()" style="cursor: pointer;">
-            <a title="">Vladimir Jovanovic</a>
+            <a title=""> Settings </a>
             <i class="la la-sort-down"></i>
           </div>
           <div class="user-account-settingss active" *ngIf="visibleUserAcccountSettings">
@@ -63,15 +63,7 @@
     </div>
   </header><!--header end-->
 
-  <section *ngIf="visible" class="cover-sec">
-    <br>
-    <div class="alert" style="width: 600px; height: 200px; word-break: break-all;
-			white-space: pre-wrap;">
-      <span class="closebtn" (click)="changeVisibility()">&times;</span>
-    </div>
-  </section>
-
-  <section *ngIf="!visible" class="cover-sec">
+  <section class="cover-sec">
     <br> <br><br><br><br><br> <br><br> <br> <br><br> <br> <br>
   </section>
 
@@ -113,7 +105,7 @@
               
               <div class="main-ws-sec">
                 <div class="user-tab-sec">
-                  <h3> {{ user.firstName }} {{ user.lastName }} </h3>       <!-- TODO: ime ulogovanog korisnika -->
+                  <h3> {{ user.firstName }} {{ user.lastName }} </h3>
                   <div class="star-descp">
                     <span> {{ user.username }} </span>
                   </div><!--star-descp end-->
@@ -137,7 +129,12 @@
                       </li>
                       <li data-tab="info-dd">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
@@ -162,7 +159,12 @@
                       </li>
                       <li data-tab="info-dd">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
@@ -187,7 +189,12 @@
                       </li>
                       <li data-tab="info-dd">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
@@ -212,15 +219,50 @@
                       </li>
                       <li data-tab="info-dd" class="active">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
                   </div>
 
+                  <div class="tab-feed st2" *ngIf="blockedActive">
+                    <ul>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFeed()">
+                          <span> <i class="la la-home"></i> Feed </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadMyPosts()">
+                          <span> <i class="la la-user"></i> My posts</span>
+                        </a>
+                      </li>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFollowers()">
+                          <span> <i class="la la-user"></i> Followers </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadFollowRequests()">
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd" class="active">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div><!--user-tab-sec end-->
 
 
+                <!-- PROFILE TAB (MY POSTS) -->
                 <div *ngIf="profileActive" class="product-feed-tab current" id="feed-dd">
                   <div class="posts-section">
                     <ul *ngFor="let p of posts; let i=index">
@@ -289,6 +331,45 @@
                     <br> <br>
                   </div><!--posts-section end-->
                 </div><!--product-feed-tab end-->
+
+
+                <!-- FOLLOWERS TAB -->
+                <div *ngIf="followersActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let f of followers; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                            </div>
+                            <button>Block</button>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>          
+
+
+                <!-- BLOCKED TAB -->
+                <div *ngIf="blockedActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let f of blocked; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <h3> {{ f.username }} </h3> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>    
 
                 <!-- <div *ngIf="feedActive" class="product-feed-tab current" id="feed-dd1">
                   <div class="posts-section">

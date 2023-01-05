@@ -1,12 +1,15 @@
 package com.connectionservice.controller;
 
 import com.connectionservice.dto.CreateConnectionDTO;
+import com.connectionservice.dto.MyUserDTO;
 import com.connectionservice.dto.UserConnectionDTO;
 import com.connectionservice.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 

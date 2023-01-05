@@ -12,6 +12,8 @@ import { Comment } from 'src/app/model/comment';
 import { AuthService } from 'src/app/service/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
+import { UserConnection } from 'src/app/model/user-connection';
+import { ConnectionService } from 'src/app/service/connection.service';
 
 @Component({
   selector: 'app-user-feed',
@@ -20,30 +22,32 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class UserFeedComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private postService: PostService, private authService: AuthService, private userService: UserService,
-    private router: Router) {
+  constructor(public dialog: MatDialog, private postService: PostService, private authService: AuthService, 
+    private userService: UserService, private connectionService: ConnectionService, private router: Router) {
   }
 
   user: User = new User; // current user
   posts: Post[] = [];
-  loaded: boolean = false;
-  username: String = "";
 
   feedActive: boolean = true;
   profileActive: boolean = false;
   followerRequestsActive: boolean = false;
   followersActive: boolean = false;
+  blockedActive: boolean = false;
 
-  visibleUserAcccountSettings: boolean = false;
-  stringBirthday : any;
-  visible: boolean = false;
+  visibleUserAcccountSettings: boolean = false; 
+  visible: boolean = false;                     
+
   users: User[]  = []
+  followers: UserConnection[] = []
+  blocked: UserConnection[] = []
 
   ngOnInit(): void {
     this.feedActive = true;
     this.profileActive = false;
     this.followersActive = false;
     this.followerRequestsActive = false;
+    this.blockedActive = false;
     this.user.username = this.authService.getUsername()
 
     this.loadUserInfo();
@@ -87,6 +91,7 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = false;
     this.followersActive = false;    
     this.followerRequestsActive = false;
+    this.blockedActive = false;
   }
 
   loadMyPosts(){
@@ -94,6 +99,7 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = true;
     this.followersActive = false;    
     this.followerRequestsActive = false;
+    this.blockedActive = false;
 
     if (this.user.username != undefined){
       this.postService.getPostsByUsername(this.user.username).subscribe(
@@ -109,6 +115,27 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = false;
     this.followersActive = true;    
     this.followerRequestsActive = false;
+    this.blockedActive = false;
+
+    if (this.user.username != undefined){
+      this.connectionService.findFollowersForUsername(this.user.username).subscribe(
+        (data: any) => {
+          this.followers=data
+        })
+    }
+  }
+
+  loadBlocked(){
+    this.feedActive = false;
+    this.profileActive = false;
+    this.followersActive = false;    
+    this.followerRequestsActive = false;
+    this.blockedActive = true;
+
+    this.connectionService.findBlockedForUsername(this.user.username).subscribe(
+      (data: any) => {
+        this.blocked=data
+      })
   }
 
   loadFollowRequests(){
@@ -116,6 +143,7 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = false;
     this.followersActive = false;    
     this.followerRequestsActive = true;
+    this.blockedActive = false;
   }
 
   makeVisibleUserAcccountSettings() {
