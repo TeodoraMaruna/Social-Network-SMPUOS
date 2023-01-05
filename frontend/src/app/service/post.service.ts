@@ -29,8 +29,8 @@ export class PostService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/add-comment/` + postId, comment)
   }
 
-  public getPostsByUserId(id: number): Observable<any> {
-    return this._http.get<any>(environment.apiUrl + `${this.userPath}/find-all-posts/user/` + id)
+  public getPostsByUsername(username: String): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/find-all-posts/user/` + username)
   }
 
   public getPostsById(id: String): Observable<any> {

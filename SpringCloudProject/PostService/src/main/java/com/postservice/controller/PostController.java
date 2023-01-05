@@ -43,10 +43,10 @@ public class PostController {
         return new ResponseEntity<>(this.postService.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find-all-posts/user/{userId}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
-    public ResponseEntity<List<PostDto>> findAllPostForUserId(@PathVariable Integer userId) {
+    @RequestMapping(value = "/find-all-posts/user/{username}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<PostDto>> findAllPostForUserId(@PathVariable String username) {
 
-        return new ResponseEntity<>(this.postService.findAllPostForUserId(userId), HttpStatus.OK);
+        return new ResponseEntity<>(this.postService.findAllPostForUsername(username), HttpStatus.OK);
     }
 
 }

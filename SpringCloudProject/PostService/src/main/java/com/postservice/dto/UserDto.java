@@ -2,30 +2,30 @@ package com.postservice.dto;
 
 public class UserDto {
 
-    private Integer userId;
-    private Boolean status;
+    private String username;
+    private Boolean isPublic;
 
-    public UserDto(Integer userId, Boolean status) {
-        this.userId = userId;
-        this.status = status;
+    public UserDto(String username, Boolean status) {
+        this.username = username;
+        this.isPublic = status;
     }
 
     public UserDto() {
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean getPublic() {
+        return isPublic;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
     }
 }
