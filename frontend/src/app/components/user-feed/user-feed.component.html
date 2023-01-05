@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Feed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+</head>
+
+<body >
+<div class="wrapper">
+  <header>
+    <div class="container">
+      <div class="header-data">
+        <div class="logo">
+          <a href="/feed" title=""><img src="assets/logo.png" alt="" height="40px" width="50px"></a>
+        </div>
+        <div class="search-bar">
+          <form>
+            <input type="text" name="search" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by post text...">
+            <button (click)="search()"><i class="la la-search"></i></button>
+          </form>
+        </div>
+        <!--search-bar end-->
+        <nav>
+          <ul>
+            <li>
+              <a href="/feed" title="">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="companies.html" title="">
+                Companies
+              </a>
+            </li>
+            <li>
+              <a href="projects.html" title="">
+                Projects
+              </a>
+            </li>
+            <li>
+              <a href="/user-profiles" title="">
+                Profiles
+              </a>
+              <!-- <ul>
+                <li><a href="user-profile.html" title="">User Profile</a></li>
+                <li><a href="my-profile-feed.html" title="">my-profile-feed</a></li>
+              </ul> -->
+            </li>
+            <li>
+              <a href="jobs.html" title="">
+                Jobs
+              </a>
+            </li>
+            <li>
+              <a href="/messages" title="" class="not-box-open">
+                Messages
+              </a>
+
+            </li>
+            <li>
+              <a href="#" title="" class="not-box-open">
+                Notification
+              </a>
+            </li>
+          </ul>
+        </nav><!--nav end-->
+
+        <div class="user-account">
+          <div class="user-info"  (click)="makeVisibleUserAcccountSettings()" style="cursor: pointer;">
+            <a title="">Vladimir Jovanovic</a>
+            <i class="la la-sort-down"></i>
+          </div>
+          <div class="user-account-settingss active" *ngIf="visibleUserAcccountSettings">
+            <h3>Settings</h3>
+            <ul class="us-links">
+              <li><a href="/account-setting" title="">Account Setting</a></li>
+              <li><a href="#" title="">Privacy</a></li>
+              <li><a href="#" title="">Faqs</a></li>
+              <li><a href="#" title="">Terms & Conditions</a></li>
+            </ul>
+            <h3 class="tc"><a routerLink="." (click)="logout()">Logout</a></h3>
+          </div><!--user-account-settingss end-->
+        </div>
+      </div><!--header-data end-->
+    </div>
+  </header><!--header end-->
+
+  <section *ngIf="visible" class="cover-sec">
+    <br>
+    <div class="alert" style="width: 600px; height: 200px; word-break: break-all;
+			white-space: pre-wrap;">
+      <span class="closebtn" (click)="changeVisibility()">&times;</span>
+    </div>
+  </section>
+
+  <section *ngIf="!visible" class="cover-sec">
+    <br> <br><br><br><br><br> <br><br> <br> <br><br> <br> <br>
+  </section>
+
+  <main>
+    <div class="main-section">
+      <div class="container">
+        <div class="main-section-data">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="main-left-sidebar">
+                <div class="user_profile">
+                  <div class="user-pro-img">
+                    <img src="assets\cv__29__generated.jpg" style="width: 170px; height: 170px;" alt="">
+                    <a href="#" title=""><i class="fa fa-camera"></i></a>
+                  </div><!--user-pro-img end-->
+                  <ul class="social_links">
+                    <li><a title=""><i class="la la-user"></i> Vladimir Jovanovic </a></li>
+                    <li><a title=""><i class="la la-at"></i> jovanoc!gmail.com </a></li>
+                    <li><a title=""><i class="la la-phone"></i> 0642581473  </a></li>
+                    <li><a title=""><i class="la la-heart"></i> male </a></li>
+                    <li><a title=""><i class="la la-calendar"></i> 22.03.1212  </a></li>
+                  </ul>
+
+                  <div >
+                    <div class="sign_link" style="background-color: #e44d3a;">
+                      <a routerLink="."  style="color:white; font-size: large" (click)="editInfo()"><i class="fa fa-pencil"></i> Edit info</a>
+                    </div>
+                  </div>
+                  <div >
+                    <div class="sign_link" style="background-color: #e44d3a;">
+                      <a routerLink="."  style="color:white; font-size: large" (click)="newPost()"><i class="la la-upload"></i> New Post</a>
+                    </div>
+                  </div>
+                </div><!--user_profile end-->
+              </div><!--main-left-sidebar end-->
+            </div>
+            <div class="col-lg-6">
+              <div class="main-ws-sec">
+                <div class="user-tab-sec">
+                  <h3> JOvanovic Vladimir </h3>       <!-- TODO: ime ulogovanog korisnika -->
+                  <div class="star-descp">
+                    <span> rrrrrrrrrrrrrr </span>
+                  </div><!--star-descp end-->
+                  <div class="tab-feed st2" *ngIf="feedActive">
+                    <ul>
+                      <li data-tab="feed-dd" class="active">
+                        <a routerLink="." (click)="loadFeed()">
+                          <span> <i class="la la-home"></i> Feed </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadMyPosts()">
+                          <span> <i class="la la-user"></i> My Profile</span>
+                        </a>
+                      </li>
+                      <li data-tab="profile-dd">
+                        <a routerLink="." (click)="loadMyInfo()">
+                          <span> <i class="la la-question"></i> My informations</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div><!-- tab-feed end-->
+                  <div class="tab-feed st2" *ngIf="profileActive">
+                    <ul>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFeed()">
+                          <span> <i class="la la-home"></i> Feed </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd" class="active">
+                        <a routerLink="." (click)="loadMyPosts()">
+                          <span> <i class="la la-user"></i> My Profile</span>
+                        </a>
+                      </li>
+                      <li data-tab="profile-dd">
+                        <a routerLink="." (click)="loadMyInfo()">
+                          <span> <i class="la la-question"></i> My informations</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div><!-- tab-feed end-->
+                  <div class="tab-feed st2" *ngIf="recommendationActive">
+                    <ul>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFeed()">
+                          <span> <i class="la la-home"></i> Feed </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadMyPosts()">
+                          <span> <i class="la la-user"></i> My Profile</span>
+                        </a>
+                      </li>
+                      <li data-tab="profile-dd">
+                        <a routerLink="." (click)="loadMyInfo()">
+                          <span> <i class="la la-question"></i> My informations</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div><!-- tab-feed end-->
+                  <div class="tab-feed st2" *ngIf="informationsActive">
+                    <ul>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFeed()">
+                          <span> <i class="la la-home"></i> Feed </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadMyPosts()">
+                          <span> <i class="la la-user"></i> My Profile</span>
+                        </a>
+                      </li>
+                      <li data-tab="profile-dd" class="active">
+                        <a routerLink="." (click)="loadMyInfo()">
+                          <span> <i class="la la-question"></i> My informations</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div><!-- tab-feed end-->
+                </div><!--user-tab-sec end-->
+
+
+                <div *ngIf="profileActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let p of posts; let i=index"> <!--POSTS -->
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> Vladimir Jovanovic </h3> </a>
+                              <span> <i class="la la-calendar"></i> 22.03.1222} </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="job_descp">
+                          <p > dokument </p>
+
+                          <ul *ngIf="p.imageUrl != ''">
+                            &nbsp;
+                            <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
+                          </ul>
+                        </div>
+
+                        <div class="job-status-bar">
+                          <ul class="like-com">
+                            <li>
+                              <a routerLink="." title="Like" (click)="like('s')"><i class="la la-heart"></i> Likes (5) </a>
+                              <a routerLink="." title="See likes" (click)="seeLikes('s')"><i class="la la-expand"></i>  </a>
+                            </li>
+                          </ul>
+                          <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
+                        </div>
+                      </div>
+
+                      <ul *ngFor="let c of p.comments">
+                        <div class="comment-section" style="margin-bottom: -2vw; margin-top: -1vw; ">
+                          <div class="comment-sec">
+                            <ul>
+                              <li>
+                                <div class="comment-list">
+                                  <div class="bg-img">
+                                    <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                  </div>
+                                  <div class="comment">
+                                    <h3> Vladimir jovanovic </h3> <!-- {{ c.user['user'].name }} {{ c.user['user'].lastName }} -->
+                                    <p> sssss </p>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </ul>
+                      <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
+                        <div class="post-comment">
+                          <div class="cm_img">
+                            <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                          </div>
+                          <div class="comment_box">
+                            <form (ngSubmit)="comment('s', $event)">
+                              <input type="text" placeholder="Post a comment" name="comment">
+                              <button type="submit">Send</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                    <br> <br>
+                  </div><!--posts-section end-->
+                </div><!--product-feed-tab end-->
+
+                <div *ngIf="recommendationActive" class="product-feed-tab current" id="recc-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let p of jobOffers; let i=index"> <!--POSTS -->
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3> Vladimir Jovanovic ** </h3> </a>
+                              <span> <i class="la la-calendar"></i> 22.03.1999 </span>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="job_descp">
+                          <p  style="font-weight: bold;"> Moze? </p>
+
+
+                          <ul *ngIf="p.imageUrl != ''">
+                            &nbsp;
+                            <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
+                          </ul>
+
+                        </div>
+
+
+
+                        <div class="job-status-bar">
+                          <ul class="like-com">
+                            <li>
+                              <a routerLink="." title="Like" (click)="like('s')"><i class="la la-heart"></i> Likes (5) </a>
+                              <a routerLink="." title="See likes" (click)="seeLikes('s')"><i class="la la-expand"></i>  </a>
+                            </li>
+                          </ul>
+                          <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
+                        </div>
+
+
+                        <ul *ngFor="let c of p.comments">
+                          <div class="comment-section" style="margin-bottom: -2vw; margin-top: -1vw; ">
+                            <div class="comment-sec">
+                              <ul>
+                                <li>
+                                  <div class="comment-list">
+                                    <div class="bg-img">
+                                      <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                    </div>
+                                    <div class="comment">
+                                      <h3>  Vladimir Jovanovic </h3> <!-- {{ c.user['user'].name }} {{ c.user['user'].lastName }} -->
+                                      <p> Ludo </p>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </ul>
+
+                        <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
+                          <div class="post-comment">
+                            <div class="cm_img">
+                              <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                            </div>
+                            <div class="comment_box">
+                              <form (ngSubmit)="comment('s', $event)">
+                                <input type="text" placeholder="Post a comment" name="comment">
+                                <button type="submit">Send</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+
+
+                    </ul>
+
+
+
+
+                    <br> <br>
+                  </div>
+
+
+
+
+                </div><!--product-feed-tab end-->
+
+
+                <div *ngIf="feedActive" class="product-feed-tab current" id="feed-dd1">
+                  <div class="posts-section">
+                    <ul *ngFor="let p of posts; let i=index"> <!--POSTS -->
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3> Vladijmir Jovanmpvic</h3> </a>
+                              <span> <i class="la la-calendar"></i> 220.3.111 </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="job_descp">
+                          <p > ssss </p>
+
+                          <ul *ngIf="p.imageUrl != ''">
+                            &nbsp;
+                            <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
+                          </ul>
+
+                        </div>
+
+                        <div class="job-status-bar">
+                          <ul class="like-com">
+                            <li>
+                              <a routerLink="." title="Like" (click)="like('s')"><i class="la la-heart"></i> Likes (5) </a>
+                              <a routerLink="." title="See likes" (click)="seeLikes('s')"><i class="la la-expand"></i>  </a>
+                            </li>
+
+                          </ul>
+                          <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
+                        </div>
+                      </div>
+
+                      <ul *ngFor="let c of p.comments">
+                        <div class="comment-section" style="margin-bottom: -2vw; margin-top: -1vw; ">
+                          <div class="comment-sec">
+                            <ul>
+                              <li>
+                                <div class="comment-list">
+                                  <div class="bg-img">
+                                    <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                  </div>
+                                  <div class="comment">
+                                    <h3>  Vladimir Jovanovic </h3> <!-- {{ c.user['user'].name }} {{ c.user['user'].lastName }} -->
+                                    <p> sssss </p>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </ul>
+                      <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
+                        <div class="post-comment">
+                          <div class="cm_img">
+                            <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                          </div>
+                          <div class="comment_box">
+                            <form (ngSubmit)="comment('s', $event)">
+                              <input type="text" placeholder="Post a comment" name="comment">
+                              <button type="submit">Send</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                    <br> <br>
+                  </div><!--posts-section end-->
+                </div><!--product-feed-tab end-->
+
+                <!--my informations section-->
+
+
+
+              </div><!--main-ws-sec end-->
+            </div>
+            <div class="col-lg-3">
+              <div class="right-sidebar">
+                <div class="message-btn">
+                  <a href="#" title=""><i class="fa fa-envelope"></i> Message </a>
+                </div>
+
+                <div class="suggestions full-width">
+                  <div class="sd-title">
+                    <h3>Suggestions</h3>
+                    <i class="la la-ellipsis-v"></i>
+                  </div><!--sd-title end-->
+                  <div class="suggestions-list">
+                    <div class="suggestion-usd" *ngFor="let u of users">
+                      <!-- <img src="http://via.placeholder.com/35x35" alt=""> -->
+                      <div class="sgt-text">
+                        <!-- <h4>{{u.name}} {{u.lastName}}</h4> -->
+                        <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3> Vladimir Jovanovic</h3> </a>
+
+                        <span>V@.s</span>
+                      </div>
+                      <span><i class="la la-plus" (click)="follow()"></i></span>
+                    </div>
+
+                    <!-- <div class="view-more">
+                      <a href="#" title="">View More</a>
+                    </div> -->
+                  </div><!--suggestions-list end-->
+                </div><!--suggestions end-->
+              </div><!--right-sidebar end-->
+            </div>
+          </div>
+        </div><!-- main-section-data end-->
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footy-sec mn no-margin">
+      <div class="container">
+        <ul>
+          <li><a href="#" title="">Help Center</a></li>
+          <li><a href="#" title="">Privacy Policy</a></li>
+          <li><a href="#" title="">Community Guidelines</a></li>
+          <li><a href="#" title="">Cookies Policy</a></li>
+          <li><a href="#" title="">Career</a></li>
+          <li><a href="#" title="">Forum</a></li>
+          <li><a href="#" title="">Language</a></li>
+          <li><a href="#" title="">Copyright Policy</a></li>
+        </ul>
+        <p>Copyright 2018</p>
+      </div>
+    </div>
+  </footer><!--footer end-->
+</div><!--theme-layout end-->
+
+
+</body>
+</html>
