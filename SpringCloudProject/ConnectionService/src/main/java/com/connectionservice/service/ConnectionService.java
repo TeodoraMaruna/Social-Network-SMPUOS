@@ -259,4 +259,11 @@ public class ConnectionService implements IConnectionService {
         }
         return connections;
     }
+
+    @Override
+    public void editUser(UserConnectionDTO dto){
+        UserConnection connection = this.connectionRepository.findByUsername(dto.getUsername());
+        connection.setPublic(dto.isPublic());
+        this.connectionRepository.save(connection);
+    }
 }

@@ -35,4 +35,5 @@ public interface IConnectionService {
 
     List<UserConnectionDTO> findRecommendedUsers(String username);
 
+    void editUser(UserConnectionDTO dto);
 }

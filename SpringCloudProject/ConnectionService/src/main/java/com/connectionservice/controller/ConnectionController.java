@@ -106,4 +106,11 @@ public class ConnectionController {
         return new ResponseEntity(connectionService.findRecommendedUsers(username), HttpStatus.OK);
     }
 
+    @PutMapping(value= "/editUser", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> editUser(@RequestBody UserConnectionDTO dto) {
+
+        this.connectionService.editUser(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

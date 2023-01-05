@@ -35,7 +35,7 @@ import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.c
     UserFeedComponent,
     NewPostComponent,
     UpdateInfoComponent,
-    PostLikesComponent
+    PostLikesComponent,
   ],
   imports: [
     BrowserModule,

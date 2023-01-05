@@ -9,6 +9,9 @@ import { PostService } from 'src/app/service/post.service';
 import { PostLikesComponent } from '../dialogs/post-likes/post-likes.component';
 import { Like } from 'src/app/model/like';
 import { Comment } from 'src/app/model/comment';
+import { AuthService } from 'src/app/service/auth.service';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-user-feed',
@@ -17,12 +20,14 @@ import { Comment } from 'src/app/model/comment';
 })
 export class UserFeedComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private postService: PostService) {
+  constructor(public dialog: MatDialog, private postService: PostService, private authService: AuthService, private userService: UserService,
+    private router: Router) {
   }
 
   user: User = new User; // current user
   posts: Post[] = [];
   loaded: boolean = false;
+  username: String = "";
 
   feedActive: boolean = true;
   profileActive: boolean = false;
@@ -39,9 +44,20 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = false;
     this.followersActive = false;
     this.followerRequestsActive = false;
+    this.user.username = this.authService.getUsername()
+
+    this.loadUserInfo();
     this.getRecommendation()
   }
 
+  loadUserInfo(){
+    if (this.user.username != undefined){
+      this.userService.getUserByUsername(this.user.username).subscribe(
+        (data: any) => {
+          this.user=data
+        })
+    }
+  }
 
   getRecommendation(){
     // let userId =  localStorage.getItem("user");
@@ -78,11 +94,9 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = true;
     this.followersActive = false;    
     this.followerRequestsActive = false;
-    // let userId = localStorage.getItem("user");
-    let username = "tea" // TODO: change
 
-    if (username != undefined){
-      this.postService.getPostsByUsername(username).subscribe(
+    if (this.user.username != undefined){
+      this.postService.getPostsByUsername(this.user.username).subscribe(
         (data: any[]) => {
           this.posts = []
           this.posts = data
@@ -111,20 +125,15 @@ export class UserFeedComponent implements OnInit {
   comment(post: Post, event: any){
     let postComment = new Comment();
     postComment.content = event.target.comment.value
-    postComment.username = "jana"
+    postComment.username = this.user.username
     this.postService.commentPost(post.id, postComment).subscribe()
 
     window.location.reload()
-    // if(this.feedActive){
-    //   this.loadFeed();
-    // } else {
-    //   this.loadMyPosts();
-    // }
   }
 
   like(post: Post){
     let like = new Like();
-    like.username = "tea";  // TODO: change - uzeti ulogovanog korisnika
+    like.username = this.user.username
     this.postService.likePost(post.id, like).subscribe()
     
     window.location.reload()
@@ -152,8 +161,8 @@ export class UserFeedComponent implements OnInit {
   }
 
   logout(){
-    // this.authService.logout();
-    // this.router.navigate(['']);
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
   seeProfile(id: string){

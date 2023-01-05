@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import { Post } from 'src/app/model/post';
+import { AuthService } from 'src/app/service/auth.service';
 import { PostService } from 'src/app/service/post.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { PostService } from 'src/app/service/post.service';
 })
 export class NewPostComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<NewPostComponent>, private postService: PostService) { }
+  constructor(public dialogRef: MatDialogRef<NewPostComponent>, private postService: PostService, private authService: AuthService) { }
 
   post: Post = new Post();
   image: any;
@@ -29,7 +30,7 @@ export class NewPostComponent implements OnInit {
   }
 
   save() {
-    this.post.user.username = "tea";  // TODO: change - uzeti ulogovanog korisnika
+    this.post.user.username = this.authService.getUsername();
     // this.post.imageBase64 = this.uploadedImage
     this.postService.newPost(this.post).subscribe()
     this.dialogRef.close()

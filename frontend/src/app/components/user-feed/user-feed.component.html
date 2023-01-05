@@ -88,11 +88,11 @@
                     <a href="#" title=""><i class="fa fa-camera"></i></a>
                   </div><!--user-pro-img end-->
                   <ul class="social_links">
-                    <li><a title=""><i class="la la-user"></i> Vladimir Jovanovic </a></li>
-                    <li><a title=""><i class="la la-at"></i> jovanoc!gmail.com </a></li>
-                    <li><a title=""><i class="la la-phone"></i> 0642581473  </a></li>
-                    <li><a title=""><i class="la la-heart"></i> male </a></li>
-                    <li><a title=""><i class="la la-calendar"></i> 22.03.1212  </a></li>
+                    <li><a title=""><i class="la la-book"></i> {{ user.firstName }} {{ user.lastName }} </a></li>
+                    <li><a title=""><i class="la la-user"></i> {{ user.username }} </a></li>
+                    <li><a title=""><i class="la la-at"></i> {{ user.email }} </a></li>
+                    <li><a title=""><i class="la la-phone"></i> {{ user.phoneNumber }}  </a></li>
+                    <li><a title=""><i class="la la-heart"></i> {{ user.gender }} </a></li>
                   </ul>
 
                   <div >
@@ -113,9 +113,9 @@
               
               <div class="main-ws-sec">
                 <div class="user-tab-sec">
-                  <h3> Jovanovic Vladimir </h3>       <!-- TODO: ime ulogovanog korisnika -->
+                  <h3> {{ user.firstName }} {{ user.lastName }} </h3>       <!-- TODO: ime ulogovanog korisnika -->
                   <div class="star-descp">
-                    <span> opiiiiis </span>
+                    <span> {{ user.username }} </span>
                   </div><!--star-descp end-->
                   
                   <div class="tab-feed st2" *ngIf="feedActive">
@@ -229,7 +229,7 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> TODO: Vladimir Jovanovic </h3> </a>
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ p.user.username }} </h3> </a>
                             </div>
                           </div>
                         </div>
@@ -263,7 +263,7 @@
                                     <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
                                   </div>
                                   <div class="comment">
-                                    <h3> {{ c.username }} </h3> <!-- {{ c.user['user'].name }} {{ c.user['user'].lastName }} -->
+                                    <h3> {{ c.username }} </h3>
                                     <p> {{ c.content }} </p>
                                   </div>
                                 </div>

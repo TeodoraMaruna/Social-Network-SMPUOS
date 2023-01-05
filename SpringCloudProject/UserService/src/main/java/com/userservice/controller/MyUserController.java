@@ -1,12 +1,15 @@
 package com.userservice.controller;
 
 import com.userservice.dto.MyUserDTO;
+import com.userservice.dto.UserConnectionDTO;
 import com.userservice.model.MyUser;
 import com.userservice.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -53,6 +56,14 @@ public class MyUserController {
     public ResponseEntity<?> editUser(@RequestBody MyUserDTO dto) {
 
         Boolean result = this.myUserService.editMyUser(dto);
+
+        // poziv edita iz connection servisa
+//        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+//        RestTemplate restTemplate = restTemplateBuilder.build();
+//        UserConnectionDTO userConnectionDTO = new UserConnectionDTO(dto.getUsername(), dto.getIsPublic());
+//        restTemplate.getForObject("http://localhost:9000/connection-service/editUser" + userConnectionDTO,
+//                UserConnectionDTO.class, 1);
+
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
