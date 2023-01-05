@@ -41,6 +41,17 @@ public class MyUserService implements IMyUserService {
 		return dtos;
 	}
 
+	@Override
+	public AuthResponse login(AuthRequest authRequest) {
+
+		MyUser myUser = this.myUserRepository.findByUsername(authRequest.getUsername());
+		if(!BCrypt.checkpw(authRequest.getPassword(), myUser.getPassword())){
+			return new AuthResponse("");
+		}
+
+		return new AuthResponse(jwt.generate(myUser, "ACCESS"));
+	}
+
 	public AuthRequest register(AuthRequest authRequest) {
 		//do validation if user already exists
 		authRequest.setPassword(BCrypt.hashpw(authRequest.getPassword(), BCrypt.gensalt()));
@@ -50,6 +61,8 @@ public class MyUserService implements IMyUserService {
 
 		return authRequest;
 	}
+
+
 
 //	public AuthResponse login(AuthRequest authRequest) {
 //		//do validation if user already exists
