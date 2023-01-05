@@ -60,7 +60,10 @@ public class PostService implements IPostService{
     @Override
     public PostDto findById(String id) {
         Post post = this.postRepository.findById(id);
-        return modelToDto(post);
+        if (post != null) {
+            return modelToDto(post);
+        }
+        return null;
     }
 
     private Post dtoToModel(PostDto postDto){

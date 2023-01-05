@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 @Setter
@@ -18,15 +19,26 @@ public class MyUser {
 
     @Id
     private String username;
-    @Column(name = "password", nullable = false)
-    private String password;
+
+//    @Column(name = "password", nullable = false)
+//    private String password;
+
     @Column(name = "role")
     private String role;
 
-    // isPublic
-    // firstName
-    // lastName
-    // email
-    // broj telefona
-    // datum rodjenja
+    @Column(name = "isPublic")
+    private Boolean isPublic;
+
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
 }
