@@ -3,9 +3,11 @@ package com.postservice.controller;
 import com.postservice.dto.PostDto;
 import com.postservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,6 +35,12 @@ public class PostController {
 
     @RequestMapping(value = "/find-post/{postId}", method = RequestMethod.GET)
     public ResponseEntity<PostDto> findPostById(@PathVariable("postId") String postId) {
+
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        RestTemplate restTemplate = restTemplateBuilder.build();
+//        StudijskiProgramDTO studijskiProgram = restTemplate.getForObject(
+//                "http://localhost:9000/studijski-program-servis/get-studijski-program?id=" + studijskiProgramNaKonkursu.getStudijskiProgramId(),
+//                StudijskiProgramDTO.class, 1);
 
         return new ResponseEntity<>(this.postService.findById(postId),HttpStatus.OK);
     }
