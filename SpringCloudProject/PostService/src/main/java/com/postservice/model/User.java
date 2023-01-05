@@ -2,30 +2,16 @@ package com.postservice.model;
 
 public class User {
 
-    private Integer userId;
+//    private Integer userId;
     private Boolean isPublic;
     private String username;
 
-    public User(Integer userId, Boolean status) {
-        this.userId = userId;
-        this.isPublic = status;
-    }
-
-    public User(Integer userId, Boolean status, String username) {
-        this.userId = userId;
+    public User(Boolean status, String username) {
         this.isPublic = status;
         this.username = username;
     }
 
     public User() {
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Boolean getPublic() {

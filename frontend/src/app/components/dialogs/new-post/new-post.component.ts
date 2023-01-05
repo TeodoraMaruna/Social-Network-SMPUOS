@@ -29,7 +29,7 @@ export class NewPostComponent implements OnInit {
   }
 
   save() {
-    this.post.user.userId = 1;  // TODO: change - uzeti ulogovanog korisnika
+    this.post.user.username = "tea";  // TODO: change - uzeti ulogovanog korisnika
     // this.post.imageBase64 = this.uploadedImage
     this.postService.newPost(this.post).subscribe()
     this.dialogRef.close()

@@ -79,10 +79,10 @@ export class UserFeedComponent implements OnInit {
     this.followersActive = false;    
     this.followerRequestsActive = false;
     // let userId = localStorage.getItem("user");
-    let userId = 1 // TODO: change
+    let username = "tea" // TODO: change
 
-    if (userId != undefined){
-      this.postService.getPostsByUserId(userId).subscribe(
+    if (username != undefined){
+      this.postService.getPostsByUsername(username).subscribe(
         (data: any[]) => {
           this.posts = []
           this.posts = data

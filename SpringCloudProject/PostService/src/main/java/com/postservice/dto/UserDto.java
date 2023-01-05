@@ -2,23 +2,23 @@ package com.postservice.dto;
 
 public class UserDto {
 
-    private Integer userId;
+    private String username;
     private Boolean isPublic;
 
-    public UserDto(Integer userId, Boolean status) {
-        this.userId = userId;
+    public UserDto(String username, Boolean status) {
+        this.username = username;
         this.isPublic = status;
     }
 
     public UserDto() {
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Boolean getPublic() {

@@ -38,8 +38,8 @@ public class PostService implements IPostService{
     }
 
     @Override
-    public List<PostDto> findAllPostForUserId(Integer userId) {
-        List<Post> posts = this.postRepository.findByUser_UserId(userId);
+    public List<PostDto> findAllPostForUsername(String username) {
+        List<Post> posts = this.postRepository.findByUser_Username(username);
         List<PostDto> postDtos = new ArrayList<>();
         for(Post p: posts){
             PostDto postDto = modelToDto(p);
@@ -69,7 +69,7 @@ public class PostService implements IPostService{
         post.setNumberOfLikes(0);
         post.setComments(new ArrayList<>());
         User user = new User();
-        user.setUserId(postDto.getUser().getUserId());
+        user.setUsername(postDto.getUser().getUsername());
         user.setPublic(postDto.getUser().getPublic());
         post.setUser(user);
         post.setLikes(new ArrayList<>());
