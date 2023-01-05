@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { UserConnection } from 'src/app/model/user-connection';
 import { ConnectionService } from 'src/app/service/connection.service';
+import { CreateConnection } from 'src/app/model/create-connection';
 
 @Component({
   selector: 'app-user-feed',
@@ -136,6 +137,15 @@ export class UserFeedComponent implements OnInit {
       (data: any) => {
         this.blocked=data
       })
+  }
+
+  blockUser(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.receiverUsername = receiverUsername;
+    connection.senderUsername = this.user.username;
+    this.connectionService.blockUser(connection).subscribe()
+
+    window.location.reload()
   }
 
   loadFollowRequests(){

@@ -344,8 +344,16 @@
                             <div class="usy-name">
                               <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
                             </div>
-                            <button>Block</button>
                           </div>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #e44d3a;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="blockUser(f.username)">Block</button>
                         </div>
                       </div>
                     </ul>
