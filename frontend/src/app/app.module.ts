@@ -31,7 +31,7 @@ import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.c
     HomePageComponent,
     PostPageComponent,
     RegistrationPageComponent,
-    LoginPageComponent
+    LoginPageComponent,
     UserFeedComponent,
     NewPostComponent,
     UpdateInfoComponent,
