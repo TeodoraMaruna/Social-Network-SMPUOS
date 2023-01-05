@@ -26,7 +26,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
 
         AuthResponse authResponse = this.myUserService.login(authRequest);
-        return new ResponseEntity<>(authResponse,HttpStatus.FOUND);
+        return new ResponseEntity<>(authResponse,HttpStatus.OK);
     }
 
     @PostMapping(value = "/register")
