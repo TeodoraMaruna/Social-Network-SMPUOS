@@ -26,7 +26,7 @@
           <div class="col-lg-6">
             <div class="login-sec">
               <ul class="sign-control">
-                <li data-tab="tab-1"><a href="login" title="">Login</a></li>
+                <li data-tab="tab-1"><a href="registration" title="">Register</a></li>
               </ul>
 
               <div class="sign_in_sec current" id="tab-1">
@@ -35,9 +35,53 @@
                   <div class="row">
                     <div class="col-lg-12 no-pdd">
                       <div class="sn-field">
-                        <input [(ngModel)]="user.username" type="text" name="username" placeholder="Username" autocomplete="off">
+                        <input [(ngModel)]="user.username" type="text" name="username" placeholder="Username..." autocomplete="off">
                         <i class="la la-user"></i>
                       </div><!--sn-field end-->
+                    </div>
+                    <div class="col-lg-12 no-pdd">
+                      <div class="sn-field">
+                        <input [(ngModel)]="user.firstName" type="text" name="firstName" placeholder="First name..." autocomplete="off">
+                        <i class="la la-user"></i>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 no-pdd">
+                      <div class="sn-field">
+                        <input [(ngModel)]="user.lastName" type="text" name="lastName" placeholder="Last name..." autocomplete="off">
+                        <i class="la la-user"></i>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 no-pdd">
+                      <div class="sn-field">
+                        <input [(ngModel)]="user.email" type="text" name="email" placeholder="Email..." autocomplete="off">
+                        <i class="la la-globe"></i>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 no-pdd">
+                      <div class="sn-field">
+                        <input [(ngModel)]="user.phoneNumber" type="password" name="phoneNumber" placeholder="Phone number..." autocomplete="off">
+                        <i class="la la-mobile-phone"></i>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 no-pdd">
+                      <div class="sn-field">
+                        <select (change)="selectGender($event)">
+                          <option>Gender*</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
+                        <i class="la la-users"></i>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 no-pdd">
+                      <div class="sn-field">
+                        <select (change)="selectVisibility($event)">
+                          <option>Visibility*</option>
+                          <option>Private</option>
+                          <option>Public</option>
+                        </select>
+                        <i class="la la-lock"></i>
+                      </div>
                     </div>
                     <div class="col-lg-12 no-pdd">
                       <div class="sn-field">
@@ -45,23 +89,14 @@
                         <i class="la la-lock"></i>
                       </div>
                     </div>
-                    <!-- <div>
-                      <label style="color: red; font-size: 12px;">{{messageLogin}}</label>
-                    </div> -->
                     <div class="col-lg-12 no-pdd">
-                      <div class="checky-sec">
-                        <div class="fgt-sec">
-                          <input type="checkbox" name="cc" id="c1">
-                          <label for="c1">
-                            <span></span>
-                          </label>
-                          <small>Remember me</small>
-                        </div><!--fgt-sec end-->
-                        <a href="/account-recovery" title="">Forgot Password?</a>
+                      <div class="sn-field">
+                        <input [(ngModel)]="password" type="password" name="password" placeholder="Password" autocomplete="off">
+                        <i class="la la-lock"></i>
                       </div>
                     </div>
                     <div class="col-lg-12 no-pdd">
-                      <button type="submit" value="submit" (click)="register()">Register</button>
+                      <button type="submit" value="submit" (click)="signup()">Login</button>
                     </div>
                   </div>
                 </form>
@@ -83,4 +118,3 @@
 </div><!--theme-layout end-->
 </body>
 </html>
-

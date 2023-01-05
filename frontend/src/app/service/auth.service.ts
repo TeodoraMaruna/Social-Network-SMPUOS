@@ -5,6 +5,7 @@ import {map, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {UserTokenState} from "../model/user-token-state";
 import {JwtUtilsService} from "./jwt-utils.service";
+import {Comment} from "../model/comment";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class AuthService {
     };
 
     console.log(body)
-    return this._http.post<UserTokenState>(`http://localhost:9000/auth-service/login`,body)
+    return this._http.post<UserTokenState>(`${this.userPath}/login`,body)
       .pipe(map((res) => {
         console.log("uslo")
         console.log(res)
@@ -37,6 +38,10 @@ export class AuthService {
           token
         }));
       }));
+  }
+
+  public register(user: User): Observable<User> {
+    return this._http.post<User>(`${this.userPath}/register`, user)
   }
 
   isLoggedIn(): boolean {
