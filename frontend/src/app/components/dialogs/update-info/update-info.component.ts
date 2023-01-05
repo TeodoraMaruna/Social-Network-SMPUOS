@@ -20,7 +20,6 @@ export class UpdateInfoComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.genderControl = new FormControl('Female');
   }
@@ -30,7 +29,7 @@ export class UpdateInfoComponent implements OnInit {
   }
 
   cancel() {
-
+    this.dialogRef.close();
   }
 
   update() {
