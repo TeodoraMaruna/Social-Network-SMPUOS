@@ -53,14 +53,20 @@ public class MyUserService implements IMyUserService {
 		return new AuthResponse(jwt.generate(myUser, "ACCESS"));
 	}
 
-	public AuthRequest register(AuthRequest authRequest) {
+	public MyUserDTO register(MyUserDTO myUserDTO) {
 		//do validation if user already exists
-		authRequest.setPassword(BCrypt.hashpw(authRequest.getPassword(), BCrypt.gensalt()));
+		MyUser myUser = this.myUserRepository.findByUsername(myUserDTO.getUsername());
+		if(myUser != null){
+			return new MyUserDTO();
+		}
+
+		myUserDTO.setPassword(BCrypt.hashpw(myUserDTO.getPassword(), BCrypt.gensalt()));
+		myUserDTO.setRole("ROLE_USER");
 
 		// TODO: check if username unique
-		MyUser user = this.myUserRepository.save(new MyUser(authRequest.getUsername(), authRequest.getPassword(), authRequest.getRole()));
+		this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole()));
 
-		return authRequest;
+		return myUserDTO;
 	}
 
 
