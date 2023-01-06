@@ -26,18 +26,13 @@
         <nav>
           <ul>
             <li>
-              <a href="/feed" title="">
+              <a href="/user-feed" title="">
                 Home
               </a>
             </li>
             <li>
-              <a href="/user-profiles" title="">
+              <a href="/profiles" title="">
                 Profiles
-              </a>
-            </li>
-            <li>
-              <a href="#" title="" class="not-box-open">
-                Notification
               </a>
             </li>
           </ul>
@@ -509,15 +504,14 @@
                     <i class="la la-ellipsis-v"></i>
                   </div><!--sd-title end-->
                   <div class="suggestions-list">
-                    <div class="suggestion-usd" *ngFor="let u of users">
-                      <!-- <img src="http://via.placeholder.com/35x35" alt=""> -->
+                    <div class="suggestion-usd" *ngFor="let u of recommended">
+                      <img src="assets\cv__29__generated.jpg" style="width: 35px; height: 35px;" alt="">
                       <div class="sgt-text">
-                        <!-- <h4>{{u.name}} {{u.lastName}}</h4> -->
-                        <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3> Vladimir Jovanovic</h3> </a>
-
-                        <span>V@.s</span>
+                        <h4> {{ u.username }} </h4>
+                        <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3>   </h3> </a>
+                        <!-- <span>V@.s</span> -->
                       </div>
-                      <span><i class="la la-plus" (click)="follow()"></i></span>
+                      <span><i class="la la-plus" (click)="follow(u.username)"></i></span>
                     </div>
 
                     

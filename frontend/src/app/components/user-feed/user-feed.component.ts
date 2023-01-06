@@ -39,7 +39,7 @@ export class UserFeedComponent implements OnInit {
   visibleUserAcccountSettings: boolean = false; 
   visible: boolean = false;                     
 
-  users: User[]  = []
+  recommended: User[]  = []
   followers: UserConnection[] = []
   followRequests: UserConnection[] = []
   blocked: UserConnection[] = []
@@ -66,26 +66,22 @@ export class UserFeedComponent implements OnInit {
   }
 
   getRecommendation(){
-    // let userId =  localStorage.getItem("user");
-    //
-    // this.connectionService.getRecommendation(userId).subscribe(
-    //   (data) => {
-    //     console.log(data)
-    //     this.getUsersFromRecommendation(data['users'])
-    //   })
-
+    if (this.user.username != undefined){
+      this.connectionService.findRecommended(this.user.username).subscribe(
+        (data: any) => {
+          this.recommended=[]
+          this.recommended=data
+        })
+    }
   }
 
-  follow(){
-    // var followDTO = {
-    //   "userID": user.id,
-    //   "isPublic": user.isPublic,
-    //   "isPublicLogged": false
-    // }
-    //
-    // this.connectionService.connect(followDTO).subscribe((res: any) => {
-    //   window.location.reload()
-    // })
+  follow(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = this.user.username;
+    connection.receiverUsername = receiverUsername;
+    this.connectionService.createConnection(connection).subscribe()
+
+    this.getRecommendation();
   }
 
   loadFeed(){

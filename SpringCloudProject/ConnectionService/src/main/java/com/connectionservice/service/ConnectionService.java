@@ -248,7 +248,7 @@ public class ConnectionService implements IConnectionService {
 
             for (UserConnection connection : user.getFollowers()) {
                 for (UserConnection c : connection.getFollowers()) {
-                    if (!connections.contains(c)
+                    if (!containsUser(connections, c)
                             && !user.getFollowers().contains(c)
                             && !user.getUsername().equals(c.getUsername())
                             && !user.getBlocked().contains(c) && !user.getBlockedBy().contains(c)) {
@@ -258,6 +258,15 @@ public class ConnectionService implements IConnectionService {
             }
         }
         return connections;
+    }
+
+    public boolean containsUser(List<UserConnectionDTO> connections, UserConnection c){
+        for (UserConnectionDTO dto: connections){
+            if (dto.getUsername().equals(c.getUsername())){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

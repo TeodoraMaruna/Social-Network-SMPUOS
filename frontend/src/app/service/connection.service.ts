@@ -24,12 +24,12 @@ export class ConnectionService {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/followRequests/` + username)
   }
 
-  public findRecommendedForUsername(username: String): Observable<any> {
-    return this._http.get<any>(environment.apiUrl + `${this.userPath}/findRecommended/` + username)
-  }
-
   public findBlockedForUsername(username: String): Observable<any> {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/findBlocked/` + username)
+  }
+
+  public findRecommended(username: String): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/findRecommended/` + username)
   }
 
   public editUser(user: UserConnection): Observable<any> {
@@ -46,6 +46,10 @@ export class ConnectionService {
 
   public rejectFollowRequest(conn: CreateConnection): Observable<any> {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/rejectFollowRequest`, conn)
+  }
+
+  public createConnection(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/connection`, conn)
   }
 
 }
