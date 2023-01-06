@@ -137,14 +137,14 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @DeleteMapping(value= "/removeFollower", produces = "application/json; charset=utf-8")
+    @PostMapping(value= "/removeFollower", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> removeFollower(@RequestBody CreateConnectionDTO connectionDTO) {
 
         this.connectionService.removeFollower(connectionDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value= "/removeFollowRequest", produces = "application/json; charset=utf-8")
+    @PostMapping(value= "/removeFollowRequest", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> removeFollowRequest(@RequestBody CreateConnectionDTO connectionDTO) {
 
         this.connectionService.removeFollowRequest(connectionDTO);

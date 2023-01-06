@@ -31,7 +31,7 @@
               </a>
             </li>
             <li>
-              <a href="/profiles" title="">
+              <a href="/search-profiles" title="">
                 Profiles
               </a>
             </li>
@@ -412,6 +412,15 @@
                               <a routerLink="." title="Show profile" (click)="seeProfile(f.username)"> <h3> {{ f.username }} </h3> </a>
                             </div>
                           </div>
+                          <button style="
+                          position: absolute; 
+                          right: 9vw;
+                          width: 6vw; 
+                          height: 3vw; 
+                          background-color: #51a5fb;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="unfollow(f.username)">Unfollow</button>
                           <button style="
                           position: absolute; 
                           right: 3vw;

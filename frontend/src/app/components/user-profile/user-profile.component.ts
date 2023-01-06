@@ -32,6 +32,7 @@ export class UserProfileComponent implements OnInit {
   showMessage: boolean = false;
   loaded1: boolean = false;
   loaded2: boolean = false;
+  visibleUserAcccountSettings: boolean = false; 
 
   ngOnInit(): void {
     this.username = this.route.snapshot.paramMap.get('username')!;
@@ -142,6 +143,15 @@ export class UserProfileComponent implements OnInit {
         this.loaded2 = true;
       }
     )
+  }
+
+  makeVisibleUserAcccountSettings() {
+    this.visibleUserAcccountSettings = !this.visibleUserAcccountSettings
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
 }

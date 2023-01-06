@@ -95,6 +95,20 @@ export class UserFeedComponent implements OnInit {
     window.location.reload()
   }
 
+  unfollow(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = this.user.username;
+    connection.receiverUsername = receiverUsername;
+    this.connectionService.removeFollower(connection).subscribe()
+
+    alert("Successful unfollow!")
+    this.getRecommendation();
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
+  }
+
   loadFeed(){
     this.feedActive = false;    
     this.profileActive = false;

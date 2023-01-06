@@ -68,6 +68,10 @@ export class ConnectionService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUserSentFollowRequest`, conn)
   }
 
+  public removeFollower(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeFollower`, conn)
+  }
+
   public removeBlocked(conn: CreateConnection): Observable<any> {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlocked`, conn)
   }
