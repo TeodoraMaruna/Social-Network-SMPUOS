@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Feed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+</head>
+
+<body>
+<div class="wrapper">
+  <header>
+    <div class="container">
+      <div class="header-data">
+        <div class="logo">
+          <a href="/feed" title=""><img src="assets/logo.png" alt="" height="40px" width="50px"></a>
+        </div>
+        <div class="search-bar">
+        </div> 
+        <nav>
+          <ul>
+            <li>
+              <a href="/user-feed" title="">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="/profiles" title="">
+                Profiles
+              </a>
+            </li>
+          </ul>
+        </nav><!--nav end-->
+        <div class="user-account">
+        </div>
+      </div><!--header-data end-->
+    </div>
+  </header><!--header end-->
+
+  <section class="cover-sec">
+    <br> <br><br><br><br><br> <br><br> <br> <br><br> <br> <br>
+  </section>
+
+  <main>
+    <div class="main-section">
+      <div class="container">
+        <div class="main-section-data">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="main-left-sidebar">
+                <div class="user_profile">
+                  <div class="user-pro-img">
+                    <img src="assets\cv__29__generated.jpg" style="width: 170px; height: 170px;" alt="">
+                    <a href="#" title=""><i class="fa fa-camera"></i></a>
+                  </div><!--user-pro-img end-->
+                  <ul class="social_links">
+                    <li><a title=""><i class="la la-book"></i> {{ user.firstName }} {{ user.lastName }} </a></li>
+                    <li><a title=""><i class="la la-user"></i> {{ user.username }} </a></li>
+                    <li><a title=""><i class="la la-at"></i> {{ user.email }} </a></li>
+                    <li><a title=""><i class="la la-phone"></i> {{ user.phoneNumber }}  </a></li>
+                    <li><a title=""><i class="la la-heart"></i> {{ user.gender }} </a></li>
+                  </ul>
+
+                </div><!--user_profile end-->
+              </div><!--main-left-sidebar end-->
+            </div>
+            
+            <div class="col-lg-6">
+              
+              <div class="main-ws-sec">
+                <div class="user-tab-sec">
+                  <div class="row">  
+                    <h3> {{ user.firstName }} {{ user.lastName }} </h3>
+                    <div style="color: #eeeeee; display: flex; justify-content: right; margin: auto"> FollowingFollowing </div>
+                    <div *ngIf="followEachOther" style="font-style: italic; display: flex; justify-content: right; margin: auto"> Following </div>
+                  </div>
+                  <div class="star-descp">
+                    <span> {{ user.username }} </span>
+                  </div><!--star-descp end-->  
+                
+                    <!-- POSTS -->
+                    <div *ngIf="allowedAccess" class="product-feed-tab current" id="feed-dd">
+                        <div class="posts-section">
+                            <ul *ngFor="let p of posts; let i=index">
+                            <div class="post-bar">
+                                <div class="post_topbar">
+                                <div class="usy-dt">
+                                    <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                                    <div class="usy-name">
+                                     <h3 style="font-size: large; font-weight: bold;"> {{ p.user.username }} </h3>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div class="job_descp">
+                                <p> {{ p.description }} </p>
+                                <ul *ngIf="p.imageUrl != ''">
+                                    &nbsp;
+                                    <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
+                                </ul>
+                                </div>
+
+                                <div class="job-status-bar">
+                                <ul class="like-com">
+                                    <li>
+                                    <a routerLink="." title="Like" (click)="like(p)"><i class="la la-heart"></i> Likes ({{ p.numberOfLikes }}) </a>
+                                    <a routerLink="." title="See likes" (click)="seeLikes(p)"><i class="la la-expand"></i>  </a>
+                                    </li>
+                                </ul>
+                                <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
+                                </div>
+                            </div>
+
+                            <ul *ngFor="let c of p.comments">
+                                <div class="comment-section" style="margin-bottom: -2vw; margin-top: -1vw; ">
+                                <div class="comment-sec">
+                                    <ul>
+                                    <li>
+                                        <div class="comment-list">
+                                        <div class="bg-img">
+                                            <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                        </div>
+                                        <div class="comment">
+                                            <h3 style="font-size: large;"> {{ c.username }} </h3>
+                                            <p> {{ c.content }} </p>
+                                        </div>
+                                        </div>
+                                    </li>
+                                    </ul>
+                                </div>
+                                </div>
+                            </ul>
+                            <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
+                                <div class="post-comment">
+                                <div class="cm_img">
+                                    <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                </div>
+                                <div class="comment_box">
+                                    <form (ngSubmit)="comment(p, $event)">
+                                    <input type="text" placeholder="Post a comment" name="comment">
+                                    <button type="submit">Send</button>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                            </ul>
+                            <br> <br>
+                        </div><!--posts-section end-->
+                    </div><!--product-feed-tab end-->
+                    <div *ngIf="showMessage" class="product-feed-tab current" id="feed-dd">
+                        This profile is private!
+                    </div>
+
+                </div><!--main-ws-sec end-->
+              </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="right-sidebar">
+                    <div>
+                        <div *ngIf="!followEachOther">
+                          <button (click)="follow(user.username)" class="sign_link" style="color: white; background-color: #51a5fb; font-size: large; display: flex;
+                           justify-content: center; margin: auto; border: none; outline: none;"> Follow</button>
+                        </div>
+                        <div *ngIf="followEachOther">
+                            <button class="sign_link" style="color: white; background-color: gray; font-size: large; display: flex;
+                             justify-content: center; margin: auto; border: none; outline: none;"> Follow</button>
+                          </div> <br><br><br>
+                        <div class="sign_link" style="background-color: #e44d3a;">
+                            <a routerLink="." (click)="block(user.username)" style="color:white; font-size: large;display: flex; justify-content: center; margin: auto;"> Block</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        </div><!-- main-section-data end-->
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footy-sec mn no-margin">
+      <div class="container">
+        <ul>
+          <li><a href="#" title="">Help Center</a></li>
+          <li><a href="#" title="">Privacy Policy</a></li>
+          <li><a href="#" title="">Community Guidelines</a></li>
+          <li><a href="#" title="">Cookies Policy</a></li>
+          <li><a href="#" title="">Career</a></li>
+          <li><a href="#" title="">Forum</a></li>
+          <li><a href="#" title="">Language</a></li>
+          <li><a href="#" title="">Copyright Policy</a></li>
+        </ul>
+        <p>Copyright 2018</p>
+      </div>
+    </div>
+  </footer><!--footer end-->
+</div><!--theme-layout end-->
+
+
+</body>
+</html>

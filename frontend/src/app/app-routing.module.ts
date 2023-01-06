@@ -5,6 +5,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import {PostPageComponent} from "./components/post-page/post-page.component";
 import {UserFeedComponent} from "./components/user-feed/user-feed.component";
 import { RegistrationPageComponent } from './components/registration-page/registration-page.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,9 @@ const routes: Routes = [
   },
   {
     path: 'user-feed', component: UserFeedComponent
+  },
+  {
+    path: 'user-profile/:username', component: UserProfileComponent
   }
 ]
 

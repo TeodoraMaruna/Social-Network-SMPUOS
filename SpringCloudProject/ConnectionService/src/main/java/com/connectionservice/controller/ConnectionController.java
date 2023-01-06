@@ -151,6 +151,20 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping(value= "/removeBlocked", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeBlocked(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeBlocked(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value= "/removeBlockedBy", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeBlockedBy(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeBlockedBy(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping(value = "/findRecommended/{username}", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<UserConnectionDTO>> findRecommendedUsers(@PathVariable String username) {
 
@@ -162,6 +176,12 @@ public class ConnectionController {
 
         this.connectionService.editUser(dto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value= "/checkIfUsersFollowEachOther", produces = "application/json; charset=utf-8")
+    public ResponseEntity<Boolean> checkIfUsersFollowEachOther(@RequestBody CreateConnectionDTO dto) {
+
+        return new ResponseEntity<>(this.connectionService.checkIfUsersFollowEachOther(dto), HttpStatus.OK);
     }
 
 }

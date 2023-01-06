@@ -1,0 +1,36 @@
+.edit-info{
+    background-color: #e44d3a;
+    color:white;
+    font-weight: lighter;
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+  }
+  
+  .alert {
+    padding: 20px;
+    background-color: lightgreen; /* Red */
+    color: white;
+  
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    content: normal;
+  }
+  
+  /* The close button */
+  .closebtn {
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  
+  }
+  
+  /* When moving the mouse over the close button */
+  .closebtn:hover {
+    color: black;
+  }
+  

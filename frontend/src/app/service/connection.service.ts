@@ -60,4 +60,8 @@ export class ConnectionService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/connection`, conn)
   }
 
+  public checkIfUsersFollowEachOther(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUsersFollowEachOther`, conn)
+  }
+
 }

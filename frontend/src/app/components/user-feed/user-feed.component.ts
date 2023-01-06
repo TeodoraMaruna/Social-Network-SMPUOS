@@ -87,7 +87,7 @@ export class UserFeedComponent implements OnInit {
     connection.receiverUsername = receiverUsername;
     this.connectionService.createConnection(connection).subscribe()
 
-    alert("User successfully followed!")
+    alert("Successful follow or follow request!")
     this.getRecommendation();
     this.loadFeed()
     this.loadFollowers()
@@ -240,7 +240,6 @@ export class UserFeedComponent implements OnInit {
     window.location.reload()
   }
 
-
   seeLikes(post: Post){
     const dialogRef = this.dialog.open(PostLikesComponent, {
       width: '400px',
@@ -266,15 +265,10 @@ export class UserFeedComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  seeProfile(id: string){
-    // let userId =  localStorage.getItem("user");
-    //
-    // if (id != userId){
-    //   this.router.navigate(['profile', id])
-    // }
-  }
-
-  changeVisibility(){
+  seeProfile(username: String){
+    if (username != undefined){
+      this.router.navigate(['user-profile', username]);
+    }
   }
 
   editInfo() {

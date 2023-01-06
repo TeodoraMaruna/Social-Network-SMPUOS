@@ -188,11 +188,6 @@ public class ConnectionService implements IConnectionService {
     }
 
     @Override
-    public List<UserConnectionDTO> findPostsFromFollowersForUser(String username){
-        return null;
-    }
-
-        @Override
     public List<UserConnectionDTO> findFollowRequestsForUser(String username){
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
@@ -333,5 +328,32 @@ public class ConnectionService implements IConnectionService {
     @Override
     public void removeFollowRequest(CreateConnectionDTO dto) {
         this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeBlocked(CreateConnectionDTO dto) {
+        this.connectionRepository.removeBlocked(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeBlockedBy(CreateConnectionDTO dto) {
+        this.connectionRepository.removeBlockedBy(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public boolean checkIfUsersFollowEachOther(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        for (UserConnection u: receiver.getFollowers()){
+            if (u.getUsername().equals(sender.getUsername())){
+                return true;
+            }
+        }
+        return false;
     }
 }
