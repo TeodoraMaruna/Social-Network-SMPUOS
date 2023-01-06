@@ -57,11 +57,29 @@ public class ConnectionService implements IConnectionService {
             receiver.createFollower(sender);
             sender.createFollower(receiver);
             this.connectionRepository.save(sender);
+            this.connectionRepository.save(receiver);
+
+            this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+            this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
         } else {
+            // ako je sender private - provera da li je receiver vec poslao follow request senderu
+            if (!sender.isPublic()){
+                for(UserConnection s: sender.getFollowRequests()){
+                    if (s.getUsername().equals(receiver.getUsername())){  // receiver je vec poslao follow request senderu
+                        receiver.createFollower(sender);                  // sender i receiver postaju followers
+                        sender.createFollower(receiver);
+                        this.connectionRepository.save(sender);
+                        this.connectionRepository.save(receiver);
+                        this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
+                        return true;
+                    }
+                }
+            }
+
             // kreiranje zahteva za konekciju
             receiver.createFollowRequests(sender);
+            this.connectionRepository.save(receiver);
         }
-        this.connectionRepository.save(receiver);
         return true;
     }
 

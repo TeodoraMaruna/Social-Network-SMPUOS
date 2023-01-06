@@ -285,6 +285,7 @@ export class UserFeedComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       window.location.reload();
+      alert("User info saved!")
     });
   }
 }
