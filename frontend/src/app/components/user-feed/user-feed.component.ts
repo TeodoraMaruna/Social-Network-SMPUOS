@@ -41,6 +41,7 @@ export class UserFeedComponent implements OnInit {
 
   users: User[]  = []
   followers: UserConnection[] = []
+  followRequests: UserConnection[] = []
   blocked: UserConnection[] = []
 
   ngOnInit(): void {
@@ -148,12 +149,35 @@ export class UserFeedComponent implements OnInit {
     window.location.reload()
   }
 
+  approveFollowRequest(senderUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = senderUsername;
+    connection.receiverUsername = this.user.username;
+    this.connectionService.approveFollowRequest(connection).subscribe()
+
+    window.location.reload()
+  }
+
+  rejectFollowRequest(senderUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = senderUsername;
+    connection.receiverUsername = this.user.username;
+    this.connectionService.rejectFollowRequest(connection).subscribe()
+
+    window.location.reload()
+  }
+
   loadFollowRequests(){
     this.feedActive = false;
     this.profileActive = false;
     this.followersActive = false;    
     this.followerRequestsActive = true;
     this.blockedActive = false;
+
+    this.connectionService.findFollowRequestsForUsername(this.user.username).subscribe(
+      (data: any) => {
+        this.followRequests=data
+      })
   }
 
   makeVisibleUserAcccountSettings() {

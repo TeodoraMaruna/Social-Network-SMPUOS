@@ -360,6 +360,50 @@
                   </div>
                 </div>          
 
+                <!-- FOLLOW REQUESTS  TAB -->
+                <div *ngIf="followerRequestsActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let f of followRequests; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                            </div>
+                          </div>
+                          <button style="
+                          position: absolute; 
+                          right: 15vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #437fd2;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="approveFollowRequest(f.username)">Approve</button>
+                          <button style="
+                          position: absolute; 
+                          right: 9vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #437fd2;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="rejectFollowRequest(f.username)">Reject</button>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #e44d3a;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="blockUser(f.username)">Block</button>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>
 
                 <!-- BLOCKED TAB -->
                 <div *ngIf="blockedActive" class="product-feed-tab current" id="feed-dd">

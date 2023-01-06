@@ -39,4 +39,13 @@ export class ConnectionService {
   public blockUser(conn: CreateConnection): Observable<any> {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/blockUser`, conn)
   }
+
+  public approveFollowRequest(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/approveFollowRequest`, conn)
+  }
+
+  public rejectFollowRequest(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/rejectFollowRequest`, conn)
+  }
+
 }
