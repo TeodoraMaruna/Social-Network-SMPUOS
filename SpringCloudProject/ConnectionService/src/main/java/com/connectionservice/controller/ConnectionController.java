@@ -184,4 +184,10 @@ public class ConnectionController {
         return new ResponseEntity<>(this.connectionService.checkIfUsersFollowEachOther(dto), HttpStatus.OK);
     }
 
+    @PostMapping(value= "/checkIfUserSentFollowRequest", produces = "application/json; charset=utf-8")
+    public ResponseEntity<Boolean> checkIfUserSentFollowRequest(@RequestBody CreateConnectionDTO dto) {
+
+        return new ResponseEntity<>(this.connectionService.checkIfUserSentFollowRequest(dto), HttpStatus.OK);
+    }
+
 }

@@ -44,7 +44,10 @@ public interface IConnectionService {
     void removeFollowRequest(CreateConnectionDTO dto);
 
     void removeBlocked(CreateConnectionDTO dto);
+
     void removeBlockedBy(CreateConnectionDTO dto);
 
     boolean checkIfUsersFollowEachOther(CreateConnectionDTO dto);
+
+    boolean checkIfUserSentFollowRequest(CreateConnectionDTO dto);
 }

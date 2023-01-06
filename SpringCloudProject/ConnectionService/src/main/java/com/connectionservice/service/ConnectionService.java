@@ -356,4 +356,21 @@ public class ConnectionService implements IConnectionService {
         }
         return false;
     }
+
+    @Override
+    public boolean checkIfUserSentFollowRequest(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        for (UserConnection u: receiver.getFollowRequests()){
+            if (u.getUsername().equals(sender.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

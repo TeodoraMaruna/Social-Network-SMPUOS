@@ -8,7 +8,7 @@
   <meta name="keywords" content="" />
 </head>
 
-<body>
+<body *ngIf="loaded1 && loaded2">
 <div class="wrapper">
   <header>
     <div class="container">
@@ -72,9 +72,10 @@
                 <div class="user-tab-sec">
                   <div class="row">  
                     <h3> {{ user.firstName }} {{ user.lastName }} </h3>
-                    <div style="color: #eeeeee; display: flex; justify-content: right; margin: auto"> FollowingFollowing </div>
+                    <div *ngIf="followEachOther" style="color: #eeeeee; display: flex; justify-content: right; margin: auto"> FollowingFollowing </div>
                     <div *ngIf="followEachOther" style="font-style: italic; display: flex; justify-content: right; margin: auto"> Following </div>
-                  </div>
+                    <div *ngIf="followRequestSent" style="font-style: italic; display: flex; justify-content: right; margin: auto"> Follow request sent </div>
+                </div>
                   <div class="star-descp">
                     <span> {{ user.username }} </span>
                   </div><!--star-descp end-->  
@@ -159,11 +160,11 @@
             <div class="col-lg-3">
                 <div class="right-sidebar">
                     <div>
-                        <div *ngIf="!followEachOther">
+                        <div *ngIf="!followEachOther && !followRequestSent">
                           <button (click)="follow(user.username)" class="sign_link" style="color: white; background-color: #51a5fb; font-size: large; display: flex;
                            justify-content: center; margin: auto; border: none; outline: none;"> Follow</button>
                         </div>
-                        <div *ngIf="followEachOther">
+                        <div *ngIf="followEachOther || followRequestSent">
                             <button class="sign_link" style="color: white; background-color: gray; font-size: large; display: flex;
                              justify-content: center; margin: auto; border: none; outline: none;"> Follow</button>
                           </div> <br><br><br>

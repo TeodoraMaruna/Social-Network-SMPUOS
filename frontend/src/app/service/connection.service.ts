@@ -64,6 +64,10 @@ export class ConnectionService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUsersFollowEachOther`, conn)
   }
 
+  public checkIfUserSentFollowRequest(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUserSentFollowRequest`, conn)
+  }
+
   public removeBlocked(conn: CreateConnection): Observable<any> {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlocked`, conn)
   }

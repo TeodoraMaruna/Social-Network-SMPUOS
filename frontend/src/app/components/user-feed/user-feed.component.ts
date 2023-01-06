@@ -283,7 +283,7 @@ export class UserFeedComponent implements OnInit {
 
   seeProfile(username: String){
     if (username != undefined){
-      this.router.navigate(['user-profile', username]);
+      this.router.navigate(['/user-profile', username]);
     }
   }
 
@@ -298,4 +298,5 @@ export class UserFeedComponent implements OnInit {
       alert("User info saved!")
     });
   }
+
 }
