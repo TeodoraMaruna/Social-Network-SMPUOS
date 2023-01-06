@@ -376,7 +376,7 @@ public class ConnectionService implements IConnectionService {
 
     @Override
     public List<UserConnectionDTO> allowedUserConnections(String username) {
-        // TODO:
+        // TODO:    
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
             return null;
