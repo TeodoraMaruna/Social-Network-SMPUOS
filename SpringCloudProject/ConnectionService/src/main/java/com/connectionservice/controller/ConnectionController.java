@@ -190,4 +190,10 @@ public class ConnectionController {
         return new ResponseEntity<>(this.connectionService.checkIfUserSentFollowRequest(dto), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/allowedUserConnections/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<UserConnectionDTO>> findAllowedUserConnections(@PathVariable String username) {
+
+        return new ResponseEntity(connectionService.allowedUserConnections(username), HttpStatus.OK);
+    }
+
 }

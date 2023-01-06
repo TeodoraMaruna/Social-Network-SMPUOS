@@ -4,7 +4,6 @@ import {Post} from "../../model/post";
 import {MatDialog} from "@angular/material/dialog";
 import {NewPostComponent} from "../dialogs/new-post/new-post.component";
 import {UpdateInfoComponent} from "../dialogs/update-info/update-info.component";
-import {FormBuilder, FormGroup} from "@angular/forms";
 import { PostService } from 'src/app/service/post.service';
 import { PostLikesComponent } from '../dialogs/post-likes/post-likes.component';
 import { Like } from 'src/app/model/like';

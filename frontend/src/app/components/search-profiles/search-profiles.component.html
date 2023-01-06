@@ -1,1 +1,75 @@
-<p>search-profiles works!</p>
+
+<body>
+    <div class="wrapper">
+      <header>
+        <div class="container">
+          <div class="header-data">
+            <div class="logo">
+              <a href="/feed" title=""><img src="assets/" alt="" height="40px" width="50px"></a>
+            </div>
+            <div class="search-bar">
+            </div> 
+            <nav>
+              <ul>
+                <li *ngIf="!loggedIn">
+                    <a href="/login" title="">
+                      Login
+                    </a>
+                </li>
+                <li *ngIf="!loggedIn">
+                    <a href="/registration" title="">
+                      Register
+                    </a>
+                </li>
+                <li *ngIf="loggedIn">
+                  <a href="/user-feed" title="">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="/search-profiles" title="">
+                    Profiles
+                  </a>
+                </li>
+              </ul>
+            </nav><!--nav end-->
+            <div *ngIf="loggedIn" class="user-account">
+                <div class="user-info"  (click)="makeVisibleUserAcccountSettings()" style="cursor: pointer;">
+                  <a title=""> Settings </a>
+                  <i class="la la-sort-down"></i>
+                </div>
+                <div class="user-account-settingss active" *ngIf="visibleUserAcccountSettings">
+                  <h3>Settings</h3>
+                  <ul class="us-links">
+                    <li><a href="#" title="">Account Setting</a></li>
+                    <li><a href="#" title="">Privacy</a></li>
+                    <li><a href="#" title="">Faqs</a></li>
+                    <li><a href="#" title="">Terms & Conditions</a></li>
+                  </ul>
+                  <h3 class="tc"><a routerLink="." (click)="logout()">Logout</a></h3>
+                </div><!--user-account-settingss end-->
+              </div>
+          </div>
+        </div>
+      </header>
+    </div>    
+
+    <div class="search-bar">
+        <div class="row">
+        <input type="text" name="search" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by username, first name, last name...">
+        <div class="row">
+            <button (click)="search()"><i class="la la-search"></i></button>
+            <button (click)="clear()"><i class="la la-ban"></i></button>
+        </div>    
+    </div>
+    </div>
+    <ul *ngFor="let u of searchedUsers; let i=index">
+        <div class="post-bar">
+            <div>{{ u.username }}</div>
+            <div>{{ u.firstName }} {{ u.lastName }}</div>
+            <div>{{ u.email }}</div>
+            <button (click)="seeProfile(u.username)"></button>
+        </div>
+    </ul>
+
+</body>

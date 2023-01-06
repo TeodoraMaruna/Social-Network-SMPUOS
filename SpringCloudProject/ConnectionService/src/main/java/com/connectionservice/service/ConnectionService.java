@@ -373,4 +373,27 @@ public class ConnectionService implements IConnectionService {
         }
         return false;
     }
+
+    @Override
+    public List<UserConnectionDTO> allowedUserConnections(String username) {
+        // TODO:
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        if (user == null){
+            return null;
+        }
+
+        List<UserConnectionDTO> dtos = new ArrayList<>();
+        List<UserConnection> blocked = user.getBlocked();
+        List<UserConnection> blockedBy = user.getBlockedBy();
+        List<UserConnection> allUsers = this.connectionRepository.findAll();
+
+        allUsers.removeAll(blocked);
+        allUsers.removeAll(blockedBy);
+
+        for(UserConnection u: allUsers){
+            dtos.add(new UserConnectionDTO(u.getUsername(), u.isPublic()));
+        }
+
+        return dtos;
+    }
 }

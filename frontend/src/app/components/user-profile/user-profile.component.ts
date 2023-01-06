@@ -32,16 +32,20 @@ export class UserProfileComponent implements OnInit {
   showMessage: boolean = false;
   loaded1: boolean = false;
   loaded2: boolean = false;
-  visibleUserAcccountSettings: boolean = false; 
+  visibleUserAcccountSettings: boolean = false;
+  loggedIn: boolean = false; 
 
   ngOnInit(): void {
     this.username = this.route.snapshot.paramMap.get('username')!;
     this.loadUser();
     this.checkIfUsersFollowEachOther();
     this.checkIfUserSentFollowRequest();
+    this.checkIfUserLoggedIn();
   }
 
   loadUser(){
+    this.loggedIn = this.authService.isLoggedIn()
+
     if (this.username != undefined){
       this.userService.getUserByUsername(this.username).subscribe(
         (data: any) => {
@@ -111,38 +115,63 @@ export class UserProfileComponent implements OnInit {
   }
 
   checkIfUsersFollowEachOther(){
-    let connection = new CreateConnection()
-    connection.receiverUsername = this.username
-    connection.senderUsername = this.authService.getUsername()
-    this.connectionService.checkIfUsersFollowEachOther(connection).subscribe(
-      (data: any) => {
-        this.followEachOther=data
-        console.log("follow each other", this.followEachOther)
+    if (this.loggedIn){
+      let connection = new CreateConnection()
+      connection.receiverUsername = this.username
+      connection.senderUsername = this.authService.getUsername()
+      this.connectionService.checkIfUsersFollowEachOther(connection).subscribe(
+        (data: any) => {
+          this.followEachOther=data
+          console.log("follow each other", this.followEachOther)
 
-        if(this.followEachOther || this.user.isPublic){
-          this.allowedAccess = true;
-          this.showMessage = false;
-        } else {
-          this.allowedAccess = false;
-          this.showMessage = true;
+          if(this.followEachOther || this.user.isPublic){
+            this.allowedAccess = true;
+            this.showMessage = false;
+          } else {
+            this.allowedAccess = false;
+            this.showMessage = true;
+          }
+          this.loaded1 = true;
         }
-        this.loaded1 = true;
-      }
-    )
+      )
+    }
   }
 
   // ne moze mu poslati request ako je vec zapratio - pisace follow request sent
   checkIfUserSentFollowRequest(){
-    let connection = new CreateConnection()
-    connection.receiverUsername = this.username
-    connection.senderUsername = this.authService.getUsername()
-    this.connectionService.checkIfUserSentFollowRequest(connection).subscribe(
-      (data: any) => {
-        this.followRequestSent=data
-        console.log("follow request sent", this.followRequestSent)
-        this.loaded2 = true;
-      }
-    )
+    if (this.loggedIn){
+      let connection = new CreateConnection()
+      connection.receiverUsername = this.username
+      connection.senderUsername = this.authService.getUsername()
+      this.connectionService.checkIfUserSentFollowRequest(connection).subscribe(
+        (data: any) => {
+          this.followRequestSent=data
+          console.log("follow request sent", this.followRequestSent)
+          this.loaded2 = true;
+        }
+      )
+    }  
+  }
+
+  checkIfUserLoggedIn(){
+    if (!this.loggedIn){
+      this.loaded1 = true;
+      this.loaded2 = true;
+
+      if (this.username != undefined){
+        this.userService.getUserByUsername(this.username).subscribe(
+          (data: any) => {
+            this.user=data
+            if (this.user.isPublic){
+              this.allowedAccess = true;
+              this.showMessage = false;
+            } else {
+              this.allowedAccess = false;
+              this.showMessage = true;
+            }
+          })
+        }
+    }
   }
 
   makeVisibleUserAcccountSettings() {

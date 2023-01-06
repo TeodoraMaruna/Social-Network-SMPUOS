@@ -50,4 +50,7 @@ public interface IConnectionService {
     boolean checkIfUsersFollowEachOther(CreateConnectionDTO dto);
 
     boolean checkIfUserSentFollowRequest(CreateConnectionDTO dto);
+
+    List<UserConnectionDTO> allowedUserConnections(String username);
+
 }

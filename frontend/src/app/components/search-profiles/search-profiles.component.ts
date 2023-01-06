@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from 'src/app/model/user';
+import { AuthService } from 'src/app/service/auth.service';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-search-profiles',
@@ -7,9 +11,69 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchProfilesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
+
+  users: User[] = [];
+  searchedUsers: User[] = [];
+  searchCriteria: string = "";
+  loggedIn: boolean = false;
+  visibleUserAcccountSettings: boolean = false;
 
   ngOnInit(): void {
+    this.determineIfUserLoggedIn();
   }
 
+  determineIfUserLoggedIn(){
+    // izbaciti blokirane profile ili profile koji su nas blokirali -> proslediti username, ako je username null - dobaviti sve korisnike
+    // let username = this.authService.getUsername();
+    
+    this.loggedIn = this.authService.isLoggedIn()
+    if (this.loggedIn){
+      this.loadAllowedUsers()
+    } 
+    else {
+      this.loadUsers();
+    }
+    console.log("ulogovani korisnik", this.loggedIn)
+  }
+
+  loadUsers(){
+    this.userService.getAll().subscribe(
+      (data: any) => {
+        this.users=data
+      })
+  }
+
+  loadAllowedUsers(){
+    // TODO:
+  }
+
+  seeProfile(username: String){
+    if (username != undefined){
+      this.router.navigate(['/user-profile', username]);
+    }
+  }
+
+  clear(){
+    this.searchedUsers = []
+    this.searchCriteria = "";
+  }
+
+  search(){
+    this.searchedUsers = this.users.filter(u =>
+      (u.username).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
+      (u.firstName).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||  
+      (u.lastName).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||      
+      (u.email).toLowerCase().includes(this.searchCriteria.toLowerCase())
+    )
+  }
+
+  makeVisibleUserAcccountSettings() {
+    this.visibleUserAcccountSettings = !this.visibleUserAcccountSettings
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['']);
+  }
 }

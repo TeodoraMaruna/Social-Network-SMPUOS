@@ -20,19 +20,29 @@
         </div> 
         <nav>
           <ul>
-            <li>
-              <a href="/user-feed" title="">
-                Home
+            <li *ngIf="!loggedIn">
+              <a href="/login" title="">
+                Login
               </a>
-            </li>
-            <li>
-              <a href="/search-profiles" title="">
-                Profiles
+          </li>
+          <li *ngIf="!loggedIn">
+              <a href="/registration" title="">
+                Register
               </a>
-            </li>
+          </li>
+          <li *ngIf="loggedIn">
+            <a href="/user-feed" title="">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="/search-profiles" title="">
+              Profiles
+            </a>
+          </li>
           </ul>
         </nav><!--nav end-->
-        <div class="user-account">
+        <div *ngIf="loggedIn" class="user-account">
             <div class="user-info"  (click)="makeVisibleUserAcccountSettings()" style="cursor: pointer;">
               <a title=""> Settings </a>
               <i class="la la-sort-down"></i>
@@ -119,12 +129,19 @@
                                 </div>
 
                                 <div class="job-status-bar">
-                                <ul class="like-com">
+                                <ul class="like-com" *ngIf="loggedIn">
                                     <li>
                                     <a routerLink="." title="Like" (click)="like(p)"><i class="la la-heart"></i> Likes ({{ p.numberOfLikes }}) </a>
                                     <a routerLink="." title="See likes" (click)="seeLikes(p)"><i class="la la-expand"></i>  </a>
                                     </li>
                                 </ul>
+
+                                <ul class="like-com" *ngIf="!loggedIn">
+                                  <li>
+                                  <a title="Like"><i class="la la-heart"></i> Likes ({{ p.numberOfLikes }}) </a>
+                                  <a routerLink="." title="See likes" (click)="seeLikes(p)"><i class="la la-expand"></i>  </a>
+                                  </li>
+                              </ul>
                                 <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
                                 </div>
                             </div>
@@ -149,16 +166,16 @@
                                 </div>
                             </ul>
                             <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
-                                <div class="post-comment">
-                                <div class="cm_img">
-                                    <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
-                                </div>
-                                <div class="comment_box">
-                                    <form (ngSubmit)="comment(p, $event)">
-                                    <input type="text" placeholder="Post a comment" name="comment">
-                                    <button type="submit">Send</button>
-                                    </form>
-                                </div>
+                                <div class="post-comment" *ngIf="loggedIn">
+                                  <div class="cm_img">
+                                      <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                  </div>
+                                  <div  class="comment_box">
+                                      <form (ngSubmit)="comment(p, $event)">
+                                      <input type="text" placeholder="Post a comment" name="comment">
+                                      <button type="submit">Send</button>
+                                      </form>
+                                  </div>
                                 </div>
                             </div>
                             </ul>
@@ -175,7 +192,7 @@
 
             <div class="col-lg-3">
                 <div class="right-sidebar">
-                    <div>
+                    <div *ngIf="loggedIn">
                         <div *ngIf="!followEachOther && !followRequestSent">
                           <button (click)="follow(user.username)" class="sign_link" style="color: white; background-color: #51a5fb; font-size: large; display: flex;
                            justify-content: center; margin: auto; border: none; outline: none;"> Follow</button>
