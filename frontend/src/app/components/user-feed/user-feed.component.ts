@@ -172,6 +172,22 @@ export class UserFeedComponent implements OnInit {
     window.location.reload()
   }
 
+  unblockUser(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.receiverUsername = receiverUsername;
+    connection.senderUsername = this.user.username;
+    this.connectionService.removeBlocked(connection).subscribe()
+    this.connectionService.removeBlockedBy(connection).subscribe()
+
+    alert("User successfully unblocked!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    this.loadBlocked()
+    window.location.reload()
+  }
+
   approveFollowRequest(senderUsername: String){
     let connection = new CreateConnection();
     connection.senderUsername = senderUsername;

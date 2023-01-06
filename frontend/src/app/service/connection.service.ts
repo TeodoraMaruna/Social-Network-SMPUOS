@@ -64,4 +64,12 @@ export class ConnectionService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUsersFollowEachOther`, conn)
   }
 
+  public removeBlocked(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlocked`, conn)
+  }
+
+  public removeBlockedBy(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlockedBy`, conn)
+  }
+
 }

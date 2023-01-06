@@ -506,6 +506,15 @@
                               <h3> {{ f.username }} </h3> 
                             </div>
                           </div>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 6vw; 
+                          height: 3vw; 
+                          background-color: #51a5fb;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="unblockUser(f.username)">Unblock</button>
                         </div>
                       </div>
                     </ul>

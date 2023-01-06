@@ -151,14 +151,14 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value= "/removeBlocked", produces = "application/json; charset=utf-8")
+    @PostMapping(value= "/removeBlocked", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> removeBlocked(@RequestBody CreateConnectionDTO connectionDTO) {
 
         this.connectionService.removeBlocked(connectionDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value= "/removeBlockedBy", produces = "application/json; charset=utf-8")
+    @PostMapping(value= "/removeBlockedBy", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> removeBlockedBy(@RequestBody CreateConnectionDTO connectionDTO) {
 
         this.connectionService.removeBlockedBy(connectionDTO);
