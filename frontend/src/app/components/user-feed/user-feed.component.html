@@ -8,7 +8,7 @@
   <meta name="keywords" content="" />
 </head>
 
-<body >
+<body *ngIf="loaded && loadedFeed">
 <div class="wrapper">
   <header>
     <div class="container">
@@ -26,18 +26,13 @@
         <nav>
           <ul>
             <li>
-              <a href="/feed" title="">
+              <a href="/user-feed" title="">
                 Home
               </a>
             </li>
             <li>
-              <a href="/user-profiles" title="">
+              <a href="/profiles" title="">
                 Profiles
-              </a>
-            </li>
-            <li>
-              <a href="#" title="" class="not-box-open">
-                Notification
               </a>
             </li>
           </ul>
@@ -45,13 +40,13 @@
 
         <div class="user-account">
           <div class="user-info"  (click)="makeVisibleUserAcccountSettings()" style="cursor: pointer;">
-            <a title="">Vladimir Jovanovic</a>
+            <a title=""> Settings </a>
             <i class="la la-sort-down"></i>
           </div>
           <div class="user-account-settingss active" *ngIf="visibleUserAcccountSettings">
             <h3>Settings</h3>
             <ul class="us-links">
-              <li><a href="/account-setting" title="">Account Setting</a></li>
+              <li><a href="#" title="">Account Setting</a></li>
               <li><a href="#" title="">Privacy</a></li>
               <li><a href="#" title="">Faqs</a></li>
               <li><a href="#" title="">Terms & Conditions</a></li>
@@ -63,15 +58,7 @@
     </div>
   </header><!--header end-->
 
-  <section *ngIf="visible" class="cover-sec">
-    <br>
-    <div class="alert" style="width: 600px; height: 200px; word-break: break-all;
-			white-space: pre-wrap;">
-      <span class="closebtn" (click)="changeVisibility()">&times;</span>
-    </div>
-  </section>
-
-  <section *ngIf="!visible" class="cover-sec">
+  <section class="cover-sec">
     <br> <br><br><br><br><br> <br><br> <br> <br><br> <br> <br>
   </section>
 
@@ -88,11 +75,11 @@
                     <a href="#" title=""><i class="fa fa-camera"></i></a>
                   </div><!--user-pro-img end-->
                   <ul class="social_links">
-                    <li><a title=""><i class="la la-user"></i> Vladimir Jovanovic </a></li>
-                    <li><a title=""><i class="la la-at"></i> jovanoc!gmail.com </a></li>
-                    <li><a title=""><i class="la la-phone"></i> 0642581473  </a></li>
-                    <li><a title=""><i class="la la-heart"></i> male </a></li>
-                    <li><a title=""><i class="la la-calendar"></i> 22.03.1212  </a></li>
+                    <li><a title=""><i class="la la-book"></i> {{ user.firstName }} {{ user.lastName }} </a></li>
+                    <li><a title=""><i class="la la-user"></i> {{ user.username }} </a></li>
+                    <li><a title=""><i class="la la-at"></i> {{ user.email }} </a></li>
+                    <li><a title=""><i class="la la-phone"></i> {{ user.phoneNumber }}  </a></li>
+                    <li><a title=""><i class="la la-heart"></i> {{ user.gender }} </a></li>
                   </ul>
 
                   <div >
@@ -113,9 +100,9 @@
               
               <div class="main-ws-sec">
                 <div class="user-tab-sec">
-                  <h3> Jovanovic Vladimir </h3>       <!-- TODO: ime ulogovanog korisnika -->
+                  <h3> {{ user.firstName }} {{ user.lastName }} </h3>
                   <div class="star-descp">
-                    <span> opiiiiis </span>
+                    <span> {{ user.username }} </span>
                   </div><!--star-descp end-->
                   
                   <div class="tab-feed st2" *ngIf="feedActive">
@@ -137,7 +124,12 @@
                       </li>
                       <li data-tab="info-dd">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
@@ -162,7 +154,12 @@
                       </li>
                       <li data-tab="info-dd">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
@@ -187,7 +184,12 @@
                       </li>
                       <li data-tab="info-dd">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
@@ -212,24 +214,59 @@
                       </li>
                       <li data-tab="info-dd" class="active">
                         <a routerLink="." (click)="loadFollowRequests()">
-                          <span> <i class="la la-user"></i> Follow requests</span>
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
                         </a>
                       </li>
                     </ul>
                   </div>
 
+                  <div class="tab-feed st2" *ngIf="blockedActive">
+                    <ul>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFeed()">
+                          <span> <i class="la la-home"></i> Feed </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadMyPosts()">
+                          <span> <i class="la la-user"></i> My posts</span>
+                        </a>
+                      </li>
+                      <li data-tab="feed-dd">
+                        <a routerLink="." (click)="loadFollowers()">
+                          <span> <i class="la la-user"></i> Followers </span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd">
+                        <a routerLink="." (click)="loadFollowRequests()">
+                          <span> <i class="la la-user"></i> Requests</span>
+                        </a>
+                      </li>
+                      <li data-tab="info-dd" class="active">
+                        <a routerLink="." (click)="loadBlocked()">
+                          <span> <i class="la la-ban"></i> Blocked</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div><!--user-tab-sec end-->
 
 
-                <div *ngIf="profileActive" class="product-feed-tab current" id="feed-dd">
+                <!-- FEED TAB (MY POSTS) -->
+                <div *ngIf="feedActive" class="product-feed-tab current" id="feed-dd">
                   <div class="posts-section">
-                    <ul *ngFor="let p of posts; let i=index">
+                    <ul *ngFor="let p of feed; let i=index">
                       <div class="post-bar">
                         <div class="post_topbar">
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> TODO: Vladimir Jovanovic </h3> </a>
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ p.user.username }} </h3> </a>
                             </div>
                           </div>
                         </div>
@@ -263,7 +300,7 @@
                                     <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
                                   </div>
                                   <div class="comment">
-                                    <h3> {{ c.username }} </h3> <!-- {{ c.user['user'].name }} {{ c.user['user'].lastName }} -->
+                                    <h3> {{ c.username }} </h3>
                                     <p> {{ c.content }} </p>
                                   </div>
                                 </div>
@@ -289,6 +326,191 @@
                     <br> <br>
                   </div><!--posts-section end-->
                 </div><!--product-feed-tab end-->
+
+
+
+                <!-- PROFILE TAB (MY POSTS) -->
+                <div *ngIf="profileActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let p of posts; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ p.user.username }} </h3> </a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="job_descp">
+                          <p> {{ p.description }} </p>
+                          <ul *ngIf="p.imageUrl != ''">
+                            &nbsp;
+                            <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
+                          </ul>
+                        </div>
+
+                        <div class="job-status-bar">
+                          <ul class="like-com">
+                            <li>
+                              <a routerLink="." title="Like" (click)="like(p)"><i class="la la-heart"></i> Likes ({{ p.numberOfLikes }}) </a>
+                              <a routerLink="." title="See likes" (click)="seeLikes(p)"><i class="la la-expand"></i>  </a>
+                            </li>
+                          </ul>
+                          <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
+                        </div>
+                      </div>
+
+                      <ul *ngFor="let c of p.comments">
+                        <div class="comment-section" style="margin-bottom: -2vw; margin-top: -1vw; ">
+                          <div class="comment-sec">
+                            <ul>
+                              <li>
+                                <div class="comment-list">
+                                  <div class="bg-img">
+                                    <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                                  </div>
+                                  <div class="comment">
+                                    <h3> {{ c.username }} </h3>
+                                    <p> {{ c.content }} </p>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </ul>
+                      <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
+                        <div class="post-comment">
+                          <div class="cm_img">
+                            <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
+                          </div>
+                          <div class="comment_box">
+                            <form (ngSubmit)="comment(p, $event)">
+                              <input type="text" placeholder="Post a comment" name="comment">
+                              <button type="submit">Send</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                    <br> <br>
+                  </div><!--posts-section end-->
+                </div><!--product-feed-tab end-->
+
+
+                <!-- FOLLOWERS TAB -->
+                <div *ngIf="followersActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let f of followers; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                            </div>
+                          </div>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #e44d3a;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="blockUser(f.username)">Block</button>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>          
+
+                <!-- FOLLOW REQUESTS  TAB -->
+                <div *ngIf="followerRequestsActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let f of followRequests; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                            </div>
+                          </div>
+                          <button style="
+                          position: absolute; 
+                          right: 15vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #437fd2;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="approveFollowRequest(f.username)">Approve</button>
+                          <button style="
+                          position: absolute; 
+                          right: 9vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #437fd2;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="rejectFollowRequest(f.username)">Reject</button>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #e44d3a;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="blockUser(f.username)">Block</button>
+                        </div>
+                      </div>
+                    </ul>
+                    <p *ngIf="sentFollowRequests.length!=0" style="font-size: medium;">Sent follow requests by {{ user.firstName }} {{ user.lastName }}: </p> 
+                    <ul *ngFor="let f of sentFollowRequests; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                            </div>
+                          </div>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #e44d3a;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="blockUser(f.username)">Block</button>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- BLOCKED TAB -->
+                <div *ngIf="blockedActive" class="product-feed-tab current" id="feed-dd">
+                  <div class="posts-section">
+                    <ul *ngFor="let f of blocked; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <h3> {{ f.username }} </h3> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                  </div>
+                </div>    
 
                 <!-- <div *ngIf="feedActive" class="product-feed-tab current" id="feed-dd1">
                   <div class="posts-section">
@@ -376,15 +598,14 @@
                     <i class="la la-ellipsis-v"></i>
                   </div><!--sd-title end-->
                   <div class="suggestions-list">
-                    <div class="suggestion-usd" *ngFor="let u of users">
-                      <!-- <img src="http://via.placeholder.com/35x35" alt=""> -->
+                    <div class="suggestion-usd" *ngFor="let u of recommended">
+                      <img src="assets\cv__29__generated.jpg" style="width: 35px; height: 35px;" alt="">
                       <div class="sgt-text">
-                        <!-- <h4>{{u.name}} {{u.lastName}}</h4> -->
-                        <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3> Vladimir Jovanovic</h3> </a>
-
-                        <span>V@.s</span>
+                        <h4> {{ u.username }} </h4>
+                        <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3>   </h3> </a>
+                        <!-- <span>V@.s</span> -->
                       </div>
-                      <span><i class="la la-plus" (click)="follow()"></i></span>
+                      <span><i class="la la-plus" (click)="follow(u.username)"></i></span>
                     </div>
 
                     

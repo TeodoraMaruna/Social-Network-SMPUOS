@@ -57,11 +57,29 @@ public class ConnectionService implements IConnectionService {
             receiver.createFollower(sender);
             sender.createFollower(receiver);
             this.connectionRepository.save(sender);
+            this.connectionRepository.save(receiver);
+
+            this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+            this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
         } else {
+            // ako je sender private - provera da li je receiver vec poslao follow request senderu
+            if (!sender.isPublic()){
+                for(UserConnection s: sender.getFollowRequests()){
+                    if (s.getUsername().equals(receiver.getUsername())){  // receiver je vec poslao follow request senderu
+                        receiver.createFollower(sender);                  // sender i receiver postaju followers
+                        sender.createFollower(receiver);
+                        this.connectionRepository.save(sender);
+                        this.connectionRepository.save(receiver);
+                        this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
+                        return true;
+                    }
+                }
+            }
+
             // kreiranje zahteva za konekciju
             receiver.createFollowRequests(sender);
+            this.connectionRepository.save(receiver);
         }
-        this.connectionRepository.save(receiver);
         return true;
     }
 
@@ -170,6 +188,11 @@ public class ConnectionService implements IConnectionService {
     }
 
     @Override
+    public List<UserConnectionDTO> findPostsFromFollowersForUser(String username){
+        return null;
+    }
+
+        @Override
     public List<UserConnectionDTO> findFollowRequestsForUser(String username){
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
@@ -180,6 +203,25 @@ public class ConnectionService implements IConnectionService {
         List<UserConnectionDTO> dtos = new ArrayList<>();
         for (UserConnection userConnection: followRequests){
             dtos.add(new UserConnectionDTO(userConnection.getUsername(), userConnection.isPublic()));
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<UserConnectionDTO> findSentFollowRequestsForUser(String username) {
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        if (user == null){
+            return null;
+        }
+
+        List<UserConnectionDTO> dtos = new ArrayList<>();
+        for (UserConnection userConnection: this.connectionRepository.findAll()){
+            List<UserConnection> followRequests = userConnection.getFollowRequests();
+            for (UserConnection u: followRequests){
+                if (u.getUsername().equals(username)){
+                    dtos.add(new UserConnectionDTO(userConnection.getUsername(), userConnection.isPublic()));
+                }
+            }
         }
         return dtos;
     }
@@ -248,7 +290,7 @@ public class ConnectionService implements IConnectionService {
 
             for (UserConnection connection : user.getFollowers()) {
                 for (UserConnection c : connection.getFollowers()) {
-                    if (!connections.contains(c)
+                    if (!containsUser(connections, c)
                             && !user.getFollowers().contains(c)
                             && !user.getUsername().equals(c.getUsername())
                             && !user.getBlocked().contains(c) && !user.getBlockedBy().contains(c)) {
@@ -258,5 +300,38 @@ public class ConnectionService implements IConnectionService {
             }
         }
         return connections;
+    }
+
+    public boolean containsUser(List<UserConnectionDTO> connections, UserConnection c){
+        for (UserConnectionDTO dto: connections){
+            if (dto.getUsername().equals(c.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void editUser(UserConnectionDTO dto){
+        UserConnection user = this.connectionRepository.findByUsername(dto.getUsername());
+        user.setPublic(dto.isPublic());
+        this.connectionRepository.save(user);
+
+        // aproveAllFollowRequests
+        if (dto.isPublic()){
+            for(UserConnection connection: user.getFollowRequests()) {
+                approveFollowRequest(new CreateConnectionDTO(connection.getUsername(), user.getUsername()));
+            }
+        }
+    }
+
+    @Override
+    public void removeFollower(CreateConnectionDTO dto){
+        this.connectionRepository.removeFollower(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeFollowRequest(CreateConnectionDTO dto) {
+        this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
     }
 }

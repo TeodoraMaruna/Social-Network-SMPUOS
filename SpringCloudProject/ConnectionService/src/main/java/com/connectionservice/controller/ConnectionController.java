@@ -1,13 +1,19 @@
 package com.connectionservice.controller;
 
 import com.connectionservice.dto.CreateConnectionDTO;
+import com.connectionservice.dto.PostDTO;
+import com.connectionservice.dto.PostListDTO;
 import com.connectionservice.dto.UserConnectionDTO;
 import com.connectionservice.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -65,10 +71,41 @@ public class ConnectionController {
         return new ResponseEntity(connectionService.findFollowersForUser(username), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/postsFromFollowers/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<PostDTO>> findPostsFromFollowersForUser(@PathVariable String username) {
+
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        List<PostDTO> allPosts = new ArrayList<>();
+
+        // za svakog korisnika da vrati listu postova
+        for(UserConnectionDTO dto: connectionService.findFollowersForUser(username)){
+            ResponseEntity<PostDTO[]> response =
+                    restTemplate.getForEntity(
+                            "http://localhost:9000/post-service/find-all-posts/user/"
+                                    + dto.getUsername(), PostDTO[].class);
+            PostDTO[] posts = response.getBody();
+
+            if (posts != null) {
+                for (PostDTO p : posts) {
+                    allPosts.add(p);
+                }
+            }
+        }
+
+        return new ResponseEntity(allPosts, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/followRequests/{username}", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<UserConnectionDTO>> findFollowRequestsForUser(@PathVariable String username) {
 
         return new ResponseEntity(connectionService.findFollowRequestsForUser(username), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/sentFollowRequests/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<UserConnectionDTO>> findSentFollowRequestsForUser(@PathVariable String username) {
+
+        return new ResponseEntity(connectionService.findSentFollowRequestsForUser(username), HttpStatus.OK);
     }
 
     @GetMapping(value = "/findBlocked/{username}", produces = "application/json; charset=utf-8")
@@ -100,10 +137,31 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    @DeleteMapping(value= "/removeFollower", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeFollower(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeFollower(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value= "/removeFollowRequest", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeFollowRequest(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeFollowRequest(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping(value = "/findRecommended/{username}", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<UserConnectionDTO>> findRecommendedUsers(@PathVariable String username) {
 
         return new ResponseEntity(connectionService.findRecommendedUsers(username), HttpStatus.OK);
+    }
+
+    @PutMapping(value= "/editUser", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> editUser(@RequestBody UserConnectionDTO dto) {
+
+        this.connectionService.editUser(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

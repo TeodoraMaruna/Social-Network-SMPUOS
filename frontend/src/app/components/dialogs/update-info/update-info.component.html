@@ -6,23 +6,23 @@
       <div class="col-md-12 mb-4 pb-2">
         <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  <!-- border-style: solid; border-color: gainsboro; border-width: 0.5px; -->
           <mat-label>Username</mat-label>
-          <input matInput class="example-full-width" appearance="outline"  name="text" placeholder="" disabled>
+          <input matInput class="example-full-width" appearance="outline" [(ngModel)]="user.username" name="username" placeholder="" disabled>
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  <!-- border-style: solid; border-color: gainsboro; border-width: 0.5px; -->
           <mat-label>First name</mat-label>
-          <input matInput class="example-full-width" appearance="outline"  name="text" placeholder="First name...">
+          <input matInput class="example-full-width" appearance="outline" [(ngModel)]="user.firstName" name="first" placeholder="First name...">
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  <!-- border-style: solid; border-color: gainsboro; border-width: 0.5px; -->
           <mat-label>Last name</mat-label>
-          <input matInput class="example-full-width" appearance="outline" name="text" placeholder="Last name...">
+          <input matInput class="example-full-width" appearance="outline" [(ngModel)]="user.lastName" name="last" placeholder="Last name...">
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  <!-- border-style: solid; border-color: gainsboro; border-width: 0.5px; -->
           <mat-label>Email</mat-label>
-          <input matInput class="example-full-width" appearance="outline"   name="text" placeholder="Email...">
+          <input matInput class="example-full-width" appearance="outline" [(ngModel)]="user.email" name="email" placeholder="Email...">
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;">  <!-- border-style: solid; border-color: gainsboro; border-width: 0.5px; -->
           <mat-label>Phone number</mat-label>
-          <input matInput class="example-full-width" appearance="outline"  name="text" placeholder="Phone number...">
+          <input matInput class="example-full-width" appearance="outline" [(ngModel)]="user.phoneNumber" name="text" placeholder="Phone number...">
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline" style="width: 33vw;" [color]="genderControl.value">
           <mat-label>Gender*</mat-label>
@@ -31,8 +31,23 @@
             <mat-option value="Male">Male</mat-option>
           </mat-select>
         </mat-form-field>
-  
-        <label>{{message}} </label>
+        <div>  &nbsp;&nbsp;
+          <div *ngIf="user.isPublic">
+            <input type="radio" id="public" name="public" class="example-full-width" (click)="publicUser()" appearance="outline" checked>
+            <label for="public" style="font-size: large;">&nbsp;Public</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+            <input type="radio" id="private" name="private" class="example-full-width" (click)="privateUser()" appearance="outline">
+            <label for="private" style="font-size: large;">&nbsp;Private</label>  
+          </div>
+          <div *ngIf="!user.isPublic">
+            <input type="radio" id="public" name="public" class="example-full-width" (click)="publicUser()" appearance="outline">
+            <label for="public" style="font-size: large;">&nbsp;Public</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    
+            <input type="radio" id="private" name="private" class="example-full-width" (click)="privateUser()" appearance="outline" checked>
+            <label for="private" style="font-size: large;">&nbsp;Private</label>  
+          </div>
+        </div>
+        <br>
 
         <div class="mt-4 pt-2">
           <input class="btn btn-success btn-lg center-div" style="background-color: #e44d3a; color:white" type="button" (click)="update()" value="Submit" />
@@ -42,9 +57,3 @@
     </div>
   </form>
 </div>
-
-
-
-
-
-
