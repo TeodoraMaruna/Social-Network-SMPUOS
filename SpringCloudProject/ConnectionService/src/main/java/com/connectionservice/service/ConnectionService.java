@@ -170,6 +170,11 @@ public class ConnectionService implements IConnectionService {
     }
 
     @Override
+    public List<UserConnectionDTO> findPostsFromFollowersForUser(String username){
+        return null;
+    }
+
+        @Override
     public List<UserConnectionDTO> findFollowRequestsForUser(String username){
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){

@@ -29,6 +29,7 @@ export class UserFeedComponent implements OnInit {
 
   user: User = new User; // current user
   posts: Post[] = [];
+  feed: Post[] = [];
 
   feedActive: boolean = true;
   profileActive: boolean = false;
@@ -39,6 +40,7 @@ export class UserFeedComponent implements OnInit {
   visibleUserAcccountSettings: boolean = false; 
   visible: boolean = false;                     
   loaded: Boolean = false;
+  loadedFeed: Boolean = false;
 
   recommended: User[]  = []
   followers: UserConnection[] = []
@@ -55,7 +57,8 @@ export class UserFeedComponent implements OnInit {
     this.user.username = this.authService.getUsername()
 
     this.loadUserInfo();
-    this.getRecommendation()
+    this.loadFeed();
+    this.getRecommendation();
   }
 
   loadUserInfo(){
@@ -84,16 +87,30 @@ export class UserFeedComponent implements OnInit {
     connection.receiverUsername = receiverUsername;
     this.connectionService.createConnection(connection).subscribe()
 
-    // window.location.reload()
+    alert("User successfully followed!")
     this.getRecommendation();
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
   }
 
   loadFeed(){
-    this.feedActive = true;    
+    this.feedActive = false;    
     this.profileActive = false;
     this.followersActive = false;    
     this.followerRequestsActive = false;
     this.blockedActive = false;
+
+    if (this.user.username != undefined){
+      this.connectionService.findPostsFromFollowers(this.user.username).subscribe(
+        (data: any[]) => {
+          this.feed = []
+          this.feed = data
+          this.feedActive = true;    
+          this.loadedFeed = true;
+        })
+    }
   }
 
   loadMyPosts(){
@@ -146,6 +163,12 @@ export class UserFeedComponent implements OnInit {
     connection.senderUsername = this.user.username;
     this.connectionService.blockUser(connection).subscribe()
 
+    alert("User successfully blocked!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    this.loadBlocked()
     window.location.reload()
   }
 
@@ -155,6 +178,11 @@ export class UserFeedComponent implements OnInit {
     connection.receiverUsername = this.user.username;
     this.connectionService.approveFollowRequest(connection).subscribe()
 
+    alert("Follow request approved!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
     window.location.reload()
   }
 
@@ -164,6 +192,11 @@ export class UserFeedComponent implements OnInit {
     connection.receiverUsername = this.user.username;
     this.connectionService.rejectFollowRequest(connection).subscribe()
 
+    alert("Follow request rejected!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
     window.location.reload()
   }
 

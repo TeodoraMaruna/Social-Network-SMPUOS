@@ -1,7 +1,8 @@
 package com.connectionservice.controller;
 
 import com.connectionservice.dto.CreateConnectionDTO;
-import com.connectionservice.dto.MyUserDTO;
+import com.connectionservice.dto.PostDTO;
+import com.connectionservice.dto.PostListDTO;
 import com.connectionservice.dto.UserConnectionDTO;
 import com.connectionservice.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -66,6 +69,31 @@ public class ConnectionController {
     public ResponseEntity<List<UserConnectionDTO>> findFollowersForUser(@PathVariable String username) {
 
         return new ResponseEntity(connectionService.findFollowersForUser(username), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/postsFromFollowers/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<PostDTO>> findPostsFromFollowersForUser(@PathVariable String username) {
+
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        List<PostDTO> allPosts = new ArrayList<>();
+
+        // za svakog korisnika da vrati listu postova
+        for(UserConnectionDTO dto: connectionService.findFollowersForUser(username)){
+            ResponseEntity<PostDTO[]> response =
+                    restTemplate.getForEntity(
+                            "http://localhost:9000/post-service/find-all-posts/user/"
+                                    + dto.getUsername(), PostDTO[].class);
+            PostDTO[] posts = response.getBody();
+
+            if (posts != null) {
+                for (PostDTO p : posts) {
+                    allPosts.add(p);
+                }
+            }
+        }
+
+        return new ResponseEntity(allPosts, HttpStatus.OK);
     }
 
     @GetMapping(value = "/followRequests/{username}", produces = "application/json; charset=utf-8")

@@ -24,6 +24,10 @@ export class ConnectionService {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/followRequests/` + username)
   }
 
+  public findPostsFromFollowers(username: String): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/postsFromFollowers/` + username)
+  }
+
   public findSentFollowRequestsForUsername(username: String): Observable<any> {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/sentFollowRequests/` + username)
   }

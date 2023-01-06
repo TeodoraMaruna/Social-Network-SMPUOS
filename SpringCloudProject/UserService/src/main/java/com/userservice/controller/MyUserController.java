@@ -56,14 +56,6 @@ public class MyUserController {
     public ResponseEntity<?> editUser(@RequestBody MyUserDTO dto) {
 
         Boolean result = this.myUserService.editMyUser(dto);
-
-        // poziv edita iz connection servisa
-//        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-//        RestTemplate restTemplate = restTemplateBuilder.build();
-//        UserConnectionDTO userConnectionDTO = new UserConnectionDTO(dto.getUsername(), dto.getIsPublic());
-//        restTemplate.getForObject("http://localhost:9000/connection-service/editUser" + userConnectionDTO,
-//                UserConnectionDTO.class, 1);
-
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }

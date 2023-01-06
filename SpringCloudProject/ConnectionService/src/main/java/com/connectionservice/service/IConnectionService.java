@@ -25,6 +25,8 @@ public interface IConnectionService {
 
     List<UserConnectionDTO> findFollowersForUser(String username);
 
+    List<UserConnectionDTO> findPostsFromFollowersForUser(String username);
+
     List<UserConnectionDTO> findFollowRequestsForUser(String username);
 
     List<UserConnectionDTO> findSentFollowRequestsForUser(String username);
