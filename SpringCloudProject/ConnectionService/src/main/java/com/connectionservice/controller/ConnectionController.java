@@ -74,6 +74,12 @@ public class ConnectionController {
         return new ResponseEntity(connectionService.findFollowRequestsForUser(username), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/sentFollowRequests/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<UserConnectionDTO>> findSentFollowRequestsForUser(@PathVariable String username) {
+
+        return new ResponseEntity(connectionService.findSentFollowRequestsForUser(username), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/findBlocked/{username}", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<UserConnectionDTO>> findBlockedUsersForUser(@PathVariable String username) {
 
@@ -101,6 +107,20 @@ public class ConnectionController {
             return new ResponseEntity(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @DeleteMapping(value= "/removeFollower", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeFollower(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeFollower(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value= "/removeFollowRequest", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeFollowRequest(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeFollowRequest(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/findRecommended/{username}", produces = "application/json; charset=utf-8")

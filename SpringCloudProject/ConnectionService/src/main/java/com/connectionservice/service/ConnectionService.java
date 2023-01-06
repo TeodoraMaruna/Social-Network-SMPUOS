@@ -185,6 +185,25 @@ public class ConnectionService implements IConnectionService {
     }
 
     @Override
+    public List<UserConnectionDTO> findSentFollowRequestsForUser(String username) {
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        if (user == null){
+            return null;
+        }
+
+        List<UserConnectionDTO> dtos = new ArrayList<>();
+        for (UserConnection userConnection: this.connectionRepository.findAll()){
+            List<UserConnection> followRequests = userConnection.getFollowRequests();
+            for (UserConnection u: followRequests){
+                if (u.getUsername().equals(username)){
+                    dtos.add(new UserConnectionDTO(userConnection.getUsername(), userConnection.isPublic()));
+                }
+            }
+        }
+        return dtos;
+    }
+
+    @Override
     public List<UserConnectionDTO> findBlockedUsersForUser(String username) {
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
@@ -271,8 +290,25 @@ public class ConnectionService implements IConnectionService {
 
     @Override
     public void editUser(UserConnectionDTO dto){
-        UserConnection connection = this.connectionRepository.findByUsername(dto.getUsername());
-        connection.setPublic(dto.isPublic());
-        this.connectionRepository.save(connection);
+        UserConnection user = this.connectionRepository.findByUsername(dto.getUsername());
+        user.setPublic(dto.isPublic());
+        this.connectionRepository.save(user);
+
+        // aproveAllFollowRequests
+        if (dto.isPublic()){
+            for(UserConnection connection: user.getFollowRequests()) {
+                approveFollowRequest(new CreateConnectionDTO(connection.getUsername(), user.getUsername()));
+            }
+        }
+    }
+
+    @Override
+    public void removeFollower(CreateConnectionDTO dto){
+        this.connectionRepository.removeFollower(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeFollowRequest(CreateConnectionDTO dto) {
+        this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
     }
 }

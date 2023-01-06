@@ -38,11 +38,13 @@ export class UserFeedComponent implements OnInit {
 
   visibleUserAcccountSettings: boolean = false; 
   visible: boolean = false;                     
+  loaded: Boolean = false;
 
   recommended: User[]  = []
   followers: UserConnection[] = []
   followRequests: UserConnection[] = []
   blocked: UserConnection[] = []
+  sentFollowRequests: UserConnection[] = []
 
   ngOnInit(): void {
     this.feedActive = true;
@@ -71,6 +73,7 @@ export class UserFeedComponent implements OnInit {
         (data: any) => {
           this.recommended=[]
           this.recommended=data
+          this.loaded = true;
         })
     }
   }
@@ -81,6 +84,7 @@ export class UserFeedComponent implements OnInit {
     connection.receiverUsername = receiverUsername;
     this.connectionService.createConnection(connection).subscribe()
 
+    // window.location.reload()
     this.getRecommendation();
   }
 
@@ -174,6 +178,12 @@ export class UserFeedComponent implements OnInit {
       (data: any) => {
         this.followRequests=data
       })
+
+       
+    this.connectionService.findSentFollowRequestsForUsername(this.user.username).subscribe(
+      (data: any) => {
+        this.sentFollowRequests=data
+      }) 
   }
 
   makeVisibleUserAcccountSettings() {

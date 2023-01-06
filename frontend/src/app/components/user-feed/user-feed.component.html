@@ -8,7 +8,7 @@
   <meta name="keywords" content="" />
 </head>
 
-<body >
+<body *ngIf="loaded">
 <div class="wrapper">
   <header>
     <div class="container">
@@ -46,7 +46,7 @@
           <div class="user-account-settingss active" *ngIf="visibleUserAcccountSettings">
             <h3>Settings</h3>
             <ul class="us-links">
-              <li><a href="/account-setting" title="">Account Setting</a></li>
+              <li><a href="#" title="">Account Setting</a></li>
               <li><a href="#" title="">Privacy</a></li>
               <li><a href="#" title="">Faqs</a></li>
               <li><a href="#" title="">Terms & Conditions</a></li>
@@ -385,6 +385,28 @@
                           color:white;
                           font-weight: lighter; 
                           border: none;" (click)="rejectFollowRequest(f.username)">Reject</button>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 5vw; 
+                          height: 3vw; 
+                          background-color: #e44d3a;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="blockUser(f.username)">Block</button>
+                        </div>
+                      </div>
+                    </ul>
+                    <p *ngIf="sentFollowRequests.length!=0" style="font-size: medium;">Sent follow requests by {{ user.firstName }} {{ user.lastName }}: </p> 
+                    <ul *ngFor="let f of sentFollowRequests; let i=index">
+                      <div class="post-bar">
+                        <div class="post_topbar">
+                          <div class="usy-dt">
+                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
+                            <div class="usy-name">
+                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                            </div>
+                          </div>
                           <button style="
                           position: absolute; 
                           right: 3vw;

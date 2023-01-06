@@ -24,6 +24,10 @@ export class ConnectionService {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/followRequests/` + username)
   }
 
+  public findSentFollowRequestsForUsername(username: String): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/sentFollowRequests/` + username)
+  }
+
   public findBlockedForUsername(username: String): Observable<any> {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/findBlocked/` + username)
   }
