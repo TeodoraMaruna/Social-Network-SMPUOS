@@ -4,11 +4,16 @@ import {Post} from "../../model/post";
 import {MatDialog} from "@angular/material/dialog";
 import {NewPostComponent} from "../dialogs/new-post/new-post.component";
 import {UpdateInfoComponent} from "../dialogs/update-info/update-info.component";
-import {FormBuilder, FormGroup} from "@angular/forms";
 import { PostService } from 'src/app/service/post.service';
 import { PostLikesComponent } from '../dialogs/post-likes/post-likes.component';
 import { Like } from 'src/app/model/like';
 import { Comment } from 'src/app/model/comment';
+import { AuthService } from 'src/app/service/auth.service';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/service/user.service';
+import { UserConnection } from 'src/app/model/user-connection';
+import { ConnectionService } from 'src/app/service/connection.service';
+import { CreateConnection } from 'src/app/model/create-connection';
 
 @Component({
   selector: 'app-user-feed',
@@ -17,60 +22,108 @@ import { Comment } from 'src/app/model/comment';
 })
 export class UserFeedComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private postService: PostService) {
+  constructor(public dialog: MatDialog, private postService: PostService, private authService: AuthService, 
+    private userService: UserService, private connectionService: ConnectionService, private router: Router) {
   }
 
   user: User = new User; // current user
   posts: Post[] = [];
-  loaded: boolean = false;
+  feed: Post[] = [];
 
   feedActive: boolean = true;
   profileActive: boolean = false;
   followerRequestsActive: boolean = false;
   followersActive: boolean = false;
+  blockedActive: boolean = false;
 
-  visibleUserAcccountSettings: boolean = false;
-  stringBirthday : any;
-  visible: boolean = false;
-  users: User[]  = []
+  visibleUserAcccountSettings: boolean = false; 
+  visible: boolean = false;                     
+  loaded: Boolean = false;
+  loadedFeed: Boolean = false;
+
+  recommended: User[]  = []
+  followers: UserConnection[] = []
+  followRequests: UserConnection[] = []
+  blocked: UserConnection[] = []
+  sentFollowRequests: UserConnection[] = []
 
   ngOnInit(): void {
     this.feedActive = true;
     this.profileActive = false;
     this.followersActive = false;
     this.followerRequestsActive = false;
-    this.getRecommendation()
+    this.blockedActive = false;
+    this.user.username = this.authService.getUsername()
+
+    this.loadUserInfo();
+    this.loadFeed();
+    this.getRecommendation();
   }
 
+  loadUserInfo(){
+    if (this.user.username != undefined){
+      this.userService.getUserByUsername(this.user.username).subscribe(
+        (data: any) => {
+          this.user=data
+        })
+    }
+  }
 
   getRecommendation(){
-    // let userId =  localStorage.getItem("user");
-    //
-    // this.connectionService.getRecommendation(userId).subscribe(
-    //   (data) => {
-    //     console.log(data)
-    //     this.getUsersFromRecommendation(data['users'])
-    //   })
-
+    if (this.user.username != undefined){
+      this.connectionService.findRecommended(this.user.username).subscribe(
+        (data: any) => {
+          this.recommended=[]
+          this.recommended=data
+          this.loaded = true;
+        })
+    }
   }
 
-  follow(){
-    // var followDTO = {
-    //   "userID": user.id,
-    //   "isPublic": user.isPublic,
-    //   "isPublicLogged": false
-    // }
-    //
-    // this.connectionService.connect(followDTO).subscribe((res: any) => {
-    //   window.location.reload()
-    // })
+  follow(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = this.user.username;
+    connection.receiverUsername = receiverUsername;
+    this.connectionService.createConnection(connection).subscribe()
+
+    alert("Successful follow or follow request!")
+    this.getRecommendation();
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
+  }
+
+  unfollow(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = this.user.username;
+    connection.receiverUsername = receiverUsername;
+    this.connectionService.removeFollower(connection).subscribe()
+
+    alert("Successful unfollow!")
+    this.getRecommendation();
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
   }
 
   loadFeed(){
-    this.feedActive = true;    
+    this.feedActive = false;    
     this.profileActive = false;
     this.followersActive = false;    
     this.followerRequestsActive = false;
+    this.blockedActive = false;
+
+    if (this.user.username != undefined){
+      this.connectionService.findPostsFromFollowers(this.user.username).subscribe(
+        (data: any[]) => {
+          this.feed = []
+          this.feed = data
+          this.feedActive = true;    
+          this.loadedFeed = true;
+        })
+    }
   }
 
   loadMyPosts(){
@@ -78,11 +131,10 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = true;
     this.followersActive = false;    
     this.followerRequestsActive = false;
-    // let userId = localStorage.getItem("user");
-    let username = "tea" // TODO: change
+    this.blockedActive = false;
 
-    if (username != undefined){
-      this.postService.getPostsByUsername(username).subscribe(
+    if (this.user.username != undefined){
+      this.postService.getPostsByUsername(this.user.username).subscribe(
         (data: any[]) => {
           this.posts = []
           this.posts = data
@@ -95,6 +147,86 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = false;
     this.followersActive = true;    
     this.followerRequestsActive = false;
+    this.blockedActive = false;
+
+    if (this.user.username != undefined){
+      this.connectionService.findFollowersForUsername(this.user.username).subscribe(
+        (data: any) => {
+          this.followers=data
+        })
+    }
+  }
+
+  loadBlocked(){
+    this.feedActive = false;
+    this.profileActive = false;
+    this.followersActive = false;    
+    this.followerRequestsActive = false;
+    this.blockedActive = true;
+
+    this.connectionService.findBlockedForUsername(this.user.username).subscribe(
+      (data: any) => {
+        this.blocked=data
+      })
+  }
+
+  blockUser(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.receiverUsername = receiverUsername;
+    connection.senderUsername = this.user.username;
+    this.connectionService.blockUser(connection).subscribe()
+
+    alert("User successfully blocked!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    this.loadBlocked()
+    window.location.reload()
+  }
+
+  unblockUser(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.receiverUsername = receiverUsername;
+    connection.senderUsername = this.user.username;
+    this.connectionService.removeBlocked(connection).subscribe()
+    this.connectionService.removeBlockedBy(connection).subscribe()
+
+    alert("User successfully unblocked!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    this.loadBlocked()
+    window.location.reload()
+  }
+
+  approveFollowRequest(senderUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = senderUsername;
+    connection.receiverUsername = this.user.username;
+    this.connectionService.approveFollowRequest(connection).subscribe()
+
+    alert("Follow request approved!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
+  }
+
+  rejectFollowRequest(senderUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = senderUsername;
+    connection.receiverUsername = this.user.username;
+    this.connectionService.rejectFollowRequest(connection).subscribe()
+
+    alert("Follow request rejected!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
   }
 
   loadFollowRequests(){
@@ -102,6 +234,18 @@ export class UserFeedComponent implements OnInit {
     this.profileActive = false;
     this.followersActive = false;    
     this.followerRequestsActive = true;
+    this.blockedActive = false;
+
+    this.connectionService.findFollowRequestsForUsername(this.user.username).subscribe(
+      (data: any) => {
+        this.followRequests=data
+      })
+
+       
+    this.connectionService.findSentFollowRequestsForUsername(this.user.username).subscribe(
+      (data: any) => {
+        this.sentFollowRequests=data
+      }) 
   }
 
   makeVisibleUserAcccountSettings() {
@@ -111,25 +255,19 @@ export class UserFeedComponent implements OnInit {
   comment(post: Post, event: any){
     let postComment = new Comment();
     postComment.content = event.target.comment.value
-    postComment.username = "jana"
+    postComment.username = this.user.username
     this.postService.commentPost(post.id, postComment).subscribe()
 
     window.location.reload()
-    // if(this.feedActive){
-    //   this.loadFeed();
-    // } else {
-    //   this.loadMyPosts();
-    // }
   }
 
   like(post: Post){
     let like = new Like();
-    like.username = "tea";  // TODO: change - uzeti ulogovanog korisnika
+    like.username = this.user.username
     this.postService.likePost(post.id, like).subscribe()
     
     window.location.reload()
   }
-
 
   seeLikes(post: Post){
     const dialogRef = this.dialog.open(PostLikesComponent, {
@@ -152,19 +290,14 @@ export class UserFeedComponent implements OnInit {
   }
 
   logout(){
-    // this.authService.logout();
-    // this.router.navigate(['']);
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 
-  seeProfile(id: string){
-    // let userId =  localStorage.getItem("user");
-    //
-    // if (id != userId){
-    //   this.router.navigate(['profile', id])
-    // }
-  }
-
-  changeVisibility(){
+  seeProfile(username: String){
+    if (username != undefined){
+      this.router.navigate(['/user-profile', username]);
+    }
   }
 
   editInfo() {
@@ -175,6 +308,8 @@ export class UserFeedComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       window.location.reload();
+      alert("User info saved!")
     });
   }
+
 }

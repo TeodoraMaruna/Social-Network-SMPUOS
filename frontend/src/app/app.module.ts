@@ -24,6 +24,8 @@ import {MatSliderModule} from "@angular/material/slider";
 import { NewPostComponent } from './components/dialogs/new-post/new-post.component';
 import { UpdateInfoComponent } from './components/dialogs/update-info/update-info.component';
 import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { SearchProfilesComponent } from './components/search-profiles/search-profiles.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.c
     UserFeedComponent,
     NewPostComponent,
     UpdateInfoComponent,
-    PostLikesComponent
+    PostLikesComponent,
+    UserProfileComponent,
+    SearchProfilesComponent,
   ],
   imports: [
     BrowserModule,

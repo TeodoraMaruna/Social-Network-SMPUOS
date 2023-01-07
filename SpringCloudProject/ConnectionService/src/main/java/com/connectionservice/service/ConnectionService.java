@@ -64,11 +64,29 @@ public class ConnectionService implements IConnectionService {
             receiver.createFollower(sender);
             sender.createFollower(receiver);
             this.connectionRepository.save(sender);
+            this.connectionRepository.save(receiver);
+
+            this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+            this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
         } else {
+            // ako je sender private - provera da li je receiver vec poslao follow request senderu
+            if (!sender.isPublic()){
+                for(UserConnection s: sender.getFollowRequests()){
+                    if (s.getUsername().equals(receiver.getUsername())){  // receiver je vec poslao follow request senderu
+                        receiver.createFollower(sender);                  // sender i receiver postaju followers
+                        sender.createFollower(receiver);
+                        this.connectionRepository.save(sender);
+                        this.connectionRepository.save(receiver);
+                        this.connectionRepository.removeFollowRequest(dto.getReceiverUsername(), dto.getSenderUsername());
+                        return true;
+                    }
+                }
+            }
+
             // kreiranje zahteva za konekciju
             receiver.createFollowRequests(sender);
+            this.connectionRepository.save(receiver);
         }
-        this.connectionRepository.save(receiver);
         return true;
     }
 
@@ -192,6 +210,25 @@ public class ConnectionService implements IConnectionService {
     }
 
     @Override
+    public List<UserConnectionDTO> findSentFollowRequestsForUser(String username) {
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        if (user == null){
+            return null;
+        }
+
+        List<UserConnectionDTO> dtos = new ArrayList<>();
+        for (UserConnection userConnection: this.connectionRepository.findAll()){
+            List<UserConnection> followRequests = userConnection.getFollowRequests();
+            for (UserConnection u: followRequests){
+                if (u.getUsername().equals(username)){
+                    dtos.add(new UserConnectionDTO(userConnection.getUsername(), userConnection.isPublic()));
+                }
+            }
+        }
+        return dtos;
+    }
+
+    @Override
     public List<UserConnectionDTO> findBlockedUsersForUser(String username) {
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
@@ -255,7 +292,7 @@ public class ConnectionService implements IConnectionService {
 
             for (UserConnection connection : user.getFollowers()) {
                 for (UserConnection c : connection.getFollowers()) {
-                    if (!connections.contains(c)
+                    if (!containsUserDTO(connections, c)
                             && !user.getFollowers().contains(c)
                             && !user.getUsername().equals(c.getUsername())
                             && !user.getBlocked().contains(c) && !user.getBlockedBy().contains(c)) {
@@ -276,4 +313,110 @@ public class ConnectionService implements IConnectionService {
             return new UserConnectionDTO(username,false, "CONNECTION_SERVICE_ROLLBACK");
         }
     }
+  
+    public boolean containsUserDTO(List<UserConnectionDTO> connections, UserConnection c){
+        for (UserConnectionDTO dto: connections){
+            if (dto.getUsername().equals(c.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsUser(List<UserConnection> connections, UserConnection c){
+        for (UserConnection user: connections){
+            if (user.getUsername().equals(c.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void editUser(UserConnectionDTO dto){
+        UserConnection user = this.connectionRepository.findByUsername(dto.getUsername());
+        user.setPublic(dto.isPublic());
+        this.connectionRepository.save(user);
+
+        // aproveAllFollowRequests
+        if (dto.isPublic()){
+            for(UserConnection connection: user.getFollowRequests()) {
+                approveFollowRequest(new CreateConnectionDTO(connection.getUsername(), user.getUsername()));
+            }
+        }
+    }
+
+    @Override
+    public void removeFollower(CreateConnectionDTO dto){
+        this.connectionRepository.removeFollower(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeFollowRequest(CreateConnectionDTO dto) {
+        this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeBlocked(CreateConnectionDTO dto) {
+        this.connectionRepository.removeBlocked(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeBlockedBy(CreateConnectionDTO dto) {
+        this.connectionRepository.removeBlockedBy(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public boolean checkIfUsersFollowEachOther(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        for (UserConnection u: receiver.getFollowers()){
+            if (u.getUsername().equals(sender.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkIfUserSentFollowRequest(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        for (UserConnection u: receiver.getFollowRequests()){
+            if (u.getUsername().equals(sender.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<UserConnectionDTO> allowedUserConnections(String username) {
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        if (user == null){
+            return null;
+        }
+
+        List<UserConnectionDTO> dtos = new ArrayList<>();
+        List<UserConnection> blocked = user.getBlocked();
+        List<UserConnection> blockedBy = user.getBlockedBy();
+
+        for(UserConnection u: this.connectionRepository.findAll()) {
+            if (!containsUser(blocked, u) && !containsUser(blockedBy, u) && !u.getUsername().equals(username)){
+                dtos.add(new UserConnectionDTO(u.getUsername(), u.isPublic()));
+            }
+        }
+        return dtos;
+    }
+  
 }

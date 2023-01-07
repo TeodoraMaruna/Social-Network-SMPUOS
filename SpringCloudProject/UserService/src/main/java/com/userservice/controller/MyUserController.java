@@ -1,7 +1,6 @@
 package com.userservice.controller;
 
 import com.userservice.dto.MyUserDTO;
-import com.userservice.model.MyUser;
 import com.userservice.service.MyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +54,7 @@ public class MyUserController {
     public ResponseEntity<?> editUser(@RequestBody MyUserDTO dto) {
 
         Boolean result = this.myUserService.editMyUser(dto);
+
         if (result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
