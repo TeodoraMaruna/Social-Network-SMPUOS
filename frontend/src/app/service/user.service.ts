@@ -18,6 +18,10 @@ export class UserService {
     return this._http.get<any>(environment.apiUrl + `${this.userPath}/findByUsername/` + username)
   }
 
+  public getAll(): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/findAll`)
+  }
+
   public editUser(user: User): Observable<any> {
     return this._http.put<any>(environment.apiUrl + `${this.userPath}/edit`, user)
   }

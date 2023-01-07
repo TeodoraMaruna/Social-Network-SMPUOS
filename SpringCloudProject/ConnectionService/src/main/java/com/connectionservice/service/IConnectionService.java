@@ -25,8 +25,6 @@ public interface IConnectionService {
 
     List<UserConnectionDTO> findFollowersForUser(String username);
 
-    List<UserConnectionDTO> findPostsFromFollowersForUser(String username);
-
     List<UserConnectionDTO> findFollowRequestsForUser(String username);
 
     List<UserConnectionDTO> findSentFollowRequestsForUser(String username);
@@ -44,4 +42,15 @@ public interface IConnectionService {
     void removeFollower(CreateConnectionDTO dto);
 
     void removeFollowRequest(CreateConnectionDTO dto);
+
+    void removeBlocked(CreateConnectionDTO dto);
+
+    void removeBlockedBy(CreateConnectionDTO dto);
+
+    boolean checkIfUsersFollowEachOther(CreateConnectionDTO dto);
+
+    boolean checkIfUserSentFollowRequest(CreateConnectionDTO dto);
+
+    List<UserConnectionDTO> allowedUserConnections(String username);
+
 }

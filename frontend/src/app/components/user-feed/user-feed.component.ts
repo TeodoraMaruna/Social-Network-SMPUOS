@@ -4,7 +4,6 @@ import {Post} from "../../model/post";
 import {MatDialog} from "@angular/material/dialog";
 import {NewPostComponent} from "../dialogs/new-post/new-post.component";
 import {UpdateInfoComponent} from "../dialogs/update-info/update-info.component";
-import {FormBuilder, FormGroup} from "@angular/forms";
 import { PostService } from 'src/app/service/post.service';
 import { PostLikesComponent } from '../dialogs/post-likes/post-likes.component';
 import { Like } from 'src/app/model/like';
@@ -87,7 +86,21 @@ export class UserFeedComponent implements OnInit {
     connection.receiverUsername = receiverUsername;
     this.connectionService.createConnection(connection).subscribe()
 
-    alert("User successfully followed!")
+    alert("Successful follow or follow request!")
+    this.getRecommendation();
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    window.location.reload()
+  }
+
+  unfollow(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.senderUsername = this.user.username;
+    connection.receiverUsername = receiverUsername;
+    this.connectionService.removeFollower(connection).subscribe()
+
+    alert("Successful unfollow!")
     this.getRecommendation();
     this.loadFeed()
     this.loadFollowers()
@@ -172,6 +185,22 @@ export class UserFeedComponent implements OnInit {
     window.location.reload()
   }
 
+  unblockUser(receiverUsername: String){
+    let connection = new CreateConnection();
+    connection.receiverUsername = receiverUsername;
+    connection.senderUsername = this.user.username;
+    this.connectionService.removeBlocked(connection).subscribe()
+    this.connectionService.removeBlockedBy(connection).subscribe()
+
+    alert("User successfully unblocked!")
+    this.getRecommendation()
+    this.loadFeed()
+    this.loadFollowers()
+    this.loadFollowRequests()
+    this.loadBlocked()
+    window.location.reload()
+  }
+
   approveFollowRequest(senderUsername: String){
     let connection = new CreateConnection();
     connection.senderUsername = senderUsername;
@@ -240,7 +269,6 @@ export class UserFeedComponent implements OnInit {
     window.location.reload()
   }
 
-
   seeLikes(post: Post){
     const dialogRef = this.dialog.open(PostLikesComponent, {
       width: '400px',
@@ -266,15 +294,10 @@ export class UserFeedComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  seeProfile(id: string){
-    // let userId =  localStorage.getItem("user");
-    //
-    // if (id != userId){
-    //   this.router.navigate(['profile', id])
-    // }
-  }
-
-  changeVisibility(){
+  seeProfile(username: String){
+    if (username != undefined){
+      this.router.navigate(['/user-profile', username]);
+    }
   }
 
   editInfo() {
@@ -288,4 +311,5 @@ export class UserFeedComponent implements OnInit {
       alert("User info saved!")
     });
   }
+
 }

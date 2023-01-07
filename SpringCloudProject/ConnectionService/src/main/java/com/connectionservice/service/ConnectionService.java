@@ -188,11 +188,6 @@ public class ConnectionService implements IConnectionService {
     }
 
     @Override
-    public List<UserConnectionDTO> findPostsFromFollowersForUser(String username){
-        return null;
-    }
-
-        @Override
     public List<UserConnectionDTO> findFollowRequestsForUser(String username){
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
@@ -290,7 +285,7 @@ public class ConnectionService implements IConnectionService {
 
             for (UserConnection connection : user.getFollowers()) {
                 for (UserConnection c : connection.getFollowers()) {
-                    if (!containsUser(connections, c)
+                    if (!containsUserDTO(connections, c)
                             && !user.getFollowers().contains(c)
                             && !user.getUsername().equals(c.getUsername())
                             && !user.getBlocked().contains(c) && !user.getBlockedBy().contains(c)) {
@@ -302,9 +297,18 @@ public class ConnectionService implements IConnectionService {
         return connections;
     }
 
-    public boolean containsUser(List<UserConnectionDTO> connections, UserConnection c){
+    public boolean containsUserDTO(List<UserConnectionDTO> connections, UserConnection c){
         for (UserConnectionDTO dto: connections){
             if (dto.getUsername().equals(c.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsUser(List<UserConnection> connections, UserConnection c){
+        for (UserConnection user: connections){
+            if (user.getUsername().equals(c.getUsername())){
                 return true;
             }
         }
@@ -333,5 +337,68 @@ public class ConnectionService implements IConnectionService {
     @Override
     public void removeFollowRequest(CreateConnectionDTO dto) {
         this.connectionRepository.removeFollowRequest(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeBlocked(CreateConnectionDTO dto) {
+        this.connectionRepository.removeBlocked(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public void removeBlockedBy(CreateConnectionDTO dto) {
+        this.connectionRepository.removeBlockedBy(dto.getSenderUsername(), dto.getReceiverUsername());
+    }
+
+    @Override
+    public boolean checkIfUsersFollowEachOther(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        for (UserConnection u: receiver.getFollowers()){
+            if (u.getUsername().equals(sender.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkIfUserSentFollowRequest(CreateConnectionDTO dto) {
+        UserConnection receiver = this.connectionRepository.findByUsername(dto.getReceiverUsername());
+        UserConnection sender = this.connectionRepository.findByUsername(dto.getSenderUsername());
+        boolean exception = checkIfUsersExists(dto);
+        if (!exception){
+            return false;
+        }
+
+        for (UserConnection u: receiver.getFollowRequests()){
+            if (u.getUsername().equals(sender.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<UserConnectionDTO> allowedUserConnections(String username) {
+        UserConnection user = this.connectionRepository.findByUsername(username);
+        if (user == null){
+            return null;
+        }
+
+        List<UserConnectionDTO> dtos = new ArrayList<>();
+        List<UserConnection> blocked = user.getBlocked();
+        List<UserConnection> blockedBy = user.getBlockedBy();
+
+        for(UserConnection u: this.connectionRepository.findAll()) {
+            if (!containsUser(blocked, u) && !containsUser(blockedBy, u) && !u.getUsername().equals(username)){
+                dtos.add(new UserConnectionDTO(u.getUsername(), u.isPublic()));
+            }
+        }
+        return dtos;
     }
 }

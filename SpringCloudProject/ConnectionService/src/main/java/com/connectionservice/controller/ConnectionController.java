@@ -1,9 +1,6 @@
 package com.connectionservice.controller;
 
-import com.connectionservice.dto.CreateConnectionDTO;
-import com.connectionservice.dto.PostDTO;
-import com.connectionservice.dto.PostListDTO;
-import com.connectionservice.dto.UserConnectionDTO;
+import com.connectionservice.dto.*;
 import com.connectionservice.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -137,17 +133,31 @@ public class ConnectionController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @DeleteMapping(value= "/removeFollower", produces = "application/json; charset=utf-8")
+    @PostMapping(value= "/removeFollower", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> removeFollower(@RequestBody CreateConnectionDTO connectionDTO) {
 
         this.connectionService.removeFollower(connectionDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value= "/removeFollowRequest", produces = "application/json; charset=utf-8")
+    @PostMapping(value= "/removeFollowRequest", produces = "application/json; charset=utf-8")
     public ResponseEntity<?> removeFollowRequest(@RequestBody CreateConnectionDTO connectionDTO) {
 
         this.connectionService.removeFollowRequest(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value= "/removeBlocked", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeBlocked(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeBlocked(connectionDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value= "/removeBlockedBy", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> removeBlockedBy(@RequestBody CreateConnectionDTO connectionDTO) {
+
+        this.connectionService.removeBlockedBy(connectionDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -162,6 +172,41 @@ public class ConnectionController {
 
         this.connectionService.editUser(dto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value= "/checkIfUsersFollowEachOther", produces = "application/json; charset=utf-8")
+    public ResponseEntity<Boolean> checkIfUsersFollowEachOther(@RequestBody CreateConnectionDTO dto) {
+
+        return new ResponseEntity<>(this.connectionService.checkIfUsersFollowEachOther(dto), HttpStatus.OK);
+    }
+
+    @PostMapping(value= "/checkIfUserSentFollowRequest", produces = "application/json; charset=utf-8")
+    public ResponseEntity<Boolean> checkIfUserSentFollowRequest(@RequestBody CreateConnectionDTO dto) {
+
+        return new ResponseEntity<>(this.connectionService.checkIfUserSentFollowRequest(dto), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/allowedUserConnections/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<MyUserDTO>> findAllowedUserConnections(@PathVariable String username) {
+
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        List<MyUserDTO> myUserDTOS = new ArrayList<>();
+
+        // za svakog korisnika da vrati listu postova
+        for(UserConnectionDTO dto: connectionService.allowedUserConnections(username)){
+            ResponseEntity<MyUserDTO> response =
+                    restTemplate.getForEntity(
+                            "http://localhost:9000/user-service/findByUsername/"
+                                    + dto.getUsername(), MyUserDTO.class);
+            MyUserDTO user = response.getBody();
+
+            if (user != null) {
+                myUserDTOS.add(user);
+            }
+        }
+
+        return new ResponseEntity(myUserDTOS, HttpStatus.OK);
     }
 
 }

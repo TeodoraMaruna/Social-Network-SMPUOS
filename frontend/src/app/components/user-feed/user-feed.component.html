@@ -17,10 +17,6 @@
           <a href="/feed" title=""><img src="assets/logo.png" alt="" height="40px" width="50px"></a>
         </div>
         <div class="search-bar">
-          <!-- <form>
-            <input type="text" name="search" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by post text...">
-            <button (click)="search()"><i class="la la-search"></i></button>
-          </form> -->
         </div> 
         <!--search-bar end-->
         <nav>
@@ -31,7 +27,7 @@
               </a>
             </li>
             <li>
-              <a href="/profiles" title="">
+              <a href="/search-profiles" title="">
                 Profiles
               </a>
             </li>
@@ -82,12 +78,12 @@
                     <li><a title=""><i class="la la-heart"></i> {{ user.gender }} </a></li>
                   </ul>
 
-                  <div >
+                  <div>
                     <div class="sign_link" style="background-color: #e44d3a;">
                       <a routerLink="."  style="color:white; font-size: large" (click)="editInfo()"><i class="fa fa-pencil"></i> Edit info</a>
                     </div>
                   </div>
-                  <div >
+                  <div>
                     <div class="sign_link" style="background-color: #e44d3a;">
                       <a routerLink="."  style="color:white; font-size: large" (click)="newPost()"><i class="la la-upload"></i> New Post</a>
                     </div>
@@ -266,7 +262,7 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ p.user.username }} </h3> </a>
+                              <a routerLink="." title="Show profile" (click)="seeProfile(p.user.username)"> <h3> {{ p.user.username }} </h3> </a>
                             </div>
                           </div>
                         </div>
@@ -338,7 +334,7 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ p.user.username }} </h3> </a>
+                              <a> <h3> {{ p.user.username }} </h3> </a>
                             </div>
                           </div>
                         </div>
@@ -409,9 +405,18 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                              <a routerLink="." title="Show profile" (click)="seeProfile(f.username)"> <h3> {{ f.username }} </h3> </a>
                             </div>
                           </div>
+                          <button style="
+                          position: absolute; 
+                          right: 9vw;
+                          width: 6vw; 
+                          height: 3vw; 
+                          background-color: #51a5fb;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="unfollow(f.username)">Unfollow</button>
                           <button style="
                           position: absolute; 
                           right: 3vw;
@@ -436,7 +441,7 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                              <a routerLink="." title="Show profile" (click)="seeProfile(f.username)"> <h3> {{ f.username }} </h3> </a>
                             </div>
                           </div>
                           <button style="
@@ -444,7 +449,7 @@
                           right: 15vw;
                           width: 5vw; 
                           height: 3vw; 
-                          background-color: #437fd2;  
+                          background-color: #51a5fb;  
                           color:white;
                           font-weight: lighter; 
                           border: none;" (click)="approveFollowRequest(f.username)">Approve</button>
@@ -453,7 +458,7 @@
                           right: 9vw;
                           width: 5vw; 
                           height: 3vw; 
-                          background-color: #437fd2;  
+                          background-color: #51a5fb;  
                           color:white;
                           font-weight: lighter; 
                           border: none;" (click)="rejectFollowRequest(f.username)">Reject</button>
@@ -476,7 +481,7 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('ss')"> <h3> {{ f.username }} </h3> </a>
+                              <a routerLink="." title="Show profile" (click)="seeProfile(f.username)"> <h3> {{ f.username }} </h3> </a>
                             </div>
                           </div>
                           <button style="
@@ -506,86 +511,20 @@
                               <h3> {{ f.username }} </h3> 
                             </div>
                           </div>
+                          <button style="
+                          position: absolute; 
+                          right: 3vw;
+                          width: 6vw; 
+                          height: 3vw; 
+                          background-color: #51a5fb;  
+                          color:white;
+                          font-weight: lighter; 
+                          border: none;" (click)="unblockUser(f.username)">Unblock</button>
                         </div>
                       </div>
                     </ul>
                   </div>
                 </div>    
-
-                <!-- <div *ngIf="feedActive" class="product-feed-tab current" id="feed-dd1">
-                  <div class="posts-section">
-                    <ul *ngFor="let p of posts; let i=index">
-                      <div class="post-bar">
-                        <div class="post_topbar">
-                          <div class="usy-dt">
-                            <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
-                            <div class="usy-name">
-                              <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3> Vladijmir Jovanmpvic</h3> </a>
-                              <span> <i class="la la-calendar"></i> 220.3.111 </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="job_descp">
-                          <p > ssss </p>
-
-                          <ul *ngIf="p.imageUrl != ''">
-                            &nbsp;
-                            <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
-                          </ul>
-
-                        </div>
-
-                        <div class="job-status-bar">
-                          <ul class="like-com">
-                            <li>
-                              <a routerLink="." title="Like" (click)="like(p.Id)"><i class="la la-heart"></i> Likes {{ p.u=numberOfLikes }} </a>
-                              <a routerLink="." title="See likes" (click)="seeLikes(p.Id)"><i class="la la-expand"></i>  </a>
-                            </li>
-
-                          </ul>
-                          <a><i class="la la-comments"></i>Comments ({{ p.comments.length }})</a>
-                        </div>
-                      </div>
-
-                      <ul *ngFor="let c of p.comments">
-                        <div class="comment-section" style="margin-bottom: -2vw; margin-top: -1vw; ">
-                          <div class="comment-sec">
-                            <ul>
-                              <li>
-                                <div class="comment-list">
-                                  <div class="bg-img">
-                                    <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
-                                  </div>
-                                  <div class="comment">
-                                    <h3>  Vladimir Jovanovic </h3> 
-                                    <p> sssss </p>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </ul>
-                      <div class="comment-section" style="margin-bottom: 2vw; margin-top: -1vw; ">
-                        <div class="post-comment">
-                          <div class="cm_img">
-                            <img src="assets\cv__29__generated.jpg" style="width: 40px; height: 40px;" alt="">
-                          </div>
-                          <div class="comment_box">
-                            <form (ngSubmit)="comment('s', $event)">
-                              <input type="text" placeholder="Post a comment" name="comment">
-                              <button type="submit">Send</button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </ul>
-                    <br> <br>
-                  </div>
-                </div>product-feed-tab end -->
-
-
               </div><!--main-ws-sec end-->
             </div>
 
@@ -600,10 +539,9 @@
                   <div class="suggestions-list">
                     <div class="suggestion-usd" *ngFor="let u of recommended">
                       <img src="assets\cv__29__generated.jpg" style="width: 35px; height: 35px;" alt="">
-                      <div class="sgt-text">
-                        <h4> {{ u.username }} </h4>
-                        <a routerLink="." title="Show profile" (click)="seeProfile('s')"> <h3>   </h3> </a>
-                        <!-- <span>V@.s</span> -->
+                      <div class="usy-name">
+                        <!-- <h4> {{ u.username }} </h4> -->
+                        <a routerLink="." title="Show profile" (click)="seeProfile(u.username)"> <h3> {{ u.username }} </h3> </a>
                       </div>
                       <span><i class="la la-plus" (click)="follow(u.username)"></i></span>
                     </div>

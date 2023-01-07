@@ -60,4 +60,28 @@ export class ConnectionService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/connection`, conn)
   }
 
+  public checkIfUsersFollowEachOther(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUsersFollowEachOther`, conn)
+  }
+
+  public checkIfUserSentFollowRequest(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/checkIfUserSentFollowRequest`, conn)
+  }
+
+  public removeFollower(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeFollower`, conn)
+  }
+
+  public removeBlocked(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlocked`, conn)
+  }
+
+  public removeBlockedBy(conn: CreateConnection): Observable<any> {
+    return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlockedBy`, conn)
+  }
+
+  public allowedUserConnections(username: String): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/allowedUserConnections/` + username)
+  }
+
 }
