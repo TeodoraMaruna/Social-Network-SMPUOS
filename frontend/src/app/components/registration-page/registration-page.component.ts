@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-registration-page',
@@ -19,7 +20,8 @@ export class RegistrationPageComponent implements OnInit {
   password: string = '';
   user: User = new User()
 
-  constructor(fb: FormBuilder, private _authService: AuthService,private _router: Router) {
+  constructor(fb: FormBuilder, private _authService: AuthService,private _router: Router,
+              private _snackBar: MatSnackBar) {
     this.options = fb.group({
       gender: this.genderControl
     });
@@ -42,13 +44,20 @@ export class RegistrationPageComponent implements OnInit {
   }
   signup() {
     console.log(this.user)
+    this._snackBar.open("Wait a minute", "In progress");
     this._authService.register(this.user).subscribe(
       (user:User) =>{
           console.log("uspjeh")
+         console.log(user)
+          if(user.sagaStatus === 'FAILED' || user.sagaStatus === null){
+            this._snackBar.open("Somenthing went wrong", "Error!");
+            return;
+          }
+        this._snackBar.open("You are registred", "Success");
         this._router.navigate(['login']);
       },
       (error) =>{
-
+        this._snackBar.open("Somenthing went wrong", "Error!");
       })
 
   }

@@ -16,4 +16,6 @@ public interface ConnectionRepository extends Neo4jRepository<UserConnection, St
 
 	@Query("MATCH(n:UserConnection {username: $senderUsername })-[r:Follower]-(p:UserConnection{username: $receiverUsername }) DELETE r")
 	void removeFollower(@Param("senderUsername") String senderUsername, @Param("receiverUsername") String receiverUsername);
+
+	void deleteByUsername(String username);
 }

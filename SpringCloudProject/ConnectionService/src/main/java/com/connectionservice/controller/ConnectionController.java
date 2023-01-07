@@ -3,6 +3,7 @@ package com.connectionservice.controller;
 import com.connectionservice.dto.CreateConnectionDTO;
 import com.connectionservice.dto.UserConnectionDTO;
 import com.connectionservice.service.ConnectionService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,10 +85,16 @@ public class ConnectionController {
     }
 
     @PostMapping(value= "/registerUserConnection", produces = "application/json; charset=utf-8")
-    public ResponseEntity<?> registerUserConnection(@RequestBody UserConnectionDTO userConnectionDTO) {
+    public ResponseEntity<UserConnectionDTO> registerUserConnection(@RequestBody UserConnectionDTO userConnectionDTO) {
 
-        this.connectionService.registerUserConnection(userConnectionDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        userConnectionDTO = this.connectionService.registerUserConnection(userConnectionDTO);
+        return new ResponseEntity<>(userConnectionDTO,HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(value= "/deleteUserConnection/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<UserConnectionDTO> registerUserConnection(@PathVariable String username) {
+        UserConnectionDTO dto =this.connectionService.deleteUserConnection(username);
+        return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
     @PostMapping(value= "/blockUser", produces = "application/json; charset=utf-8")

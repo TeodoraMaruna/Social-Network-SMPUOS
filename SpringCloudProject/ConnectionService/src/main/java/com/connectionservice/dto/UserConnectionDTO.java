@@ -13,4 +13,10 @@ public class UserConnectionDTO {
 	
     private String username;
     private boolean isPublic;
+    private String sagaStatus;
+
+    public UserConnectionDTO(String username, boolean isPublic) {
+        this.username = username;
+        this.isPublic = isPublic;
+    }
 }

@@ -11,7 +11,7 @@ public interface IConnectionService {
 
     UserConnectionDTO findByUsername(String username);
 
-    void registerUserConnection(UserConnectionDTO dto);
+    UserConnectionDTO registerUserConnection(UserConnectionDTO dto);
 
     boolean createConnectionType(CreateConnectionDTO dto);
 
@@ -35,4 +35,5 @@ public interface IConnectionService {
 
     List<UserConnectionDTO> findRecommendedUsers(String username);
 
+    UserConnectionDTO deleteUserConnection(String username);
 }
