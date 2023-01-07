@@ -22,7 +22,7 @@ export class NewPostComponent implements OnInit {
   }
 
   clearImage() {
-    
+
   }
 
   onNoClick() {
@@ -31,6 +31,7 @@ export class NewPostComponent implements OnInit {
 
   save() {
     this.post.user.username = this.authService.getUsername();
+    this.post.imageBase64 = this.uploadedImage
     // this.post.imageBase64 = this.uploadedImage
     this.postService.newPost(this.post).subscribe()
     this.dialogRef.close()

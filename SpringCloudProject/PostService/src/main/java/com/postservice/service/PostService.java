@@ -66,6 +66,12 @@ public class PostService implements IPostService{
         return null;
     }
 
+    @Override
+    public String findImageLocationByImageId(String id) {
+        Post post = this.postRepository.findById(id);
+        return post.getImage().getImageLocation();
+    }
+
     private Post dtoToModel(PostDto postDto){
         Post post = new Post();
         post.setDescription(postDto.getDescription());
@@ -113,5 +119,7 @@ public class PostService implements IPostService{
         }
         return path;
     }
+
+
 
 }

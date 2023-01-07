@@ -4,12 +4,17 @@ import com.postservice.dto.PostDto;
 import com.postservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -49,6 +54,18 @@ public class PostController {
     public ResponseEntity<List<PostDto>> findAllPostForUserId(@PathVariable String username) {
 
         return new ResponseEntity<>(this.postService.findAllPostForUsername(username), HttpStatus.OK);
+    }
+
+    @GetMapping(
+            value = "/image/{id}"
+    )
+    public ResponseEntity<InputStreamResource> getImageDynamicType(@PathVariable("id") String id) throws FileNotFoundException {
+        String imageLocation = this.postService.findImageLocationByImageId(id);
+        MediaType contentType = MediaType.IMAGE_JPEG;
+        InputStream in = new FileInputStream(imageLocation);;
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .body(new InputStreamResource(in));
     }
 
 }

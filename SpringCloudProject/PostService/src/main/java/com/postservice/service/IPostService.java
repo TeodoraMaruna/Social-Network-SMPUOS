@@ -17,4 +17,6 @@ public interface IPostService {
     List<PostDto> findAll();
 
     PostDto findById(String id);
+
+    String findImageLocationByImageId(String id);
 }
