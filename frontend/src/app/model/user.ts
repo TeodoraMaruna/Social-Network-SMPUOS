@@ -8,4 +8,5 @@ export class User {
     gender: String = "";
     email: String = "";
     phoneNumber: String = "";
+    sagaStatus: String = "";
 }

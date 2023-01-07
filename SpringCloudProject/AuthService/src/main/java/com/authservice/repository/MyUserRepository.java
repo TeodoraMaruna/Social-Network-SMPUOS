@@ -7,4 +7,5 @@ import com.authservice.model.MyUser;
 @Repository
 public interface MyUserRepository extends JpaRepository<MyUser, String>{
 	MyUser findByUsername(String username);
+	void deleteByUsername(String username);
 }

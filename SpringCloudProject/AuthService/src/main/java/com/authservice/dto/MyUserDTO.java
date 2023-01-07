@@ -12,15 +12,18 @@ import lombok.Setter;
 public class MyUserDTO {
 
     private String username;
-    private boolean isPublic;
     private String password;
     private String role;
+    private Boolean isPublic;
     private String firstName;
-    private String lastName;
     private String gender;
+    private String lastName;
     private String email;
     private String phoneNumber;
+    private String sagaStatus;
 
     public MyUserDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 }

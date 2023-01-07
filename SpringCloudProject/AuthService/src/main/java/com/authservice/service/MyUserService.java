@@ -2,14 +2,18 @@ package com.authservice.service;
 
 import com.authservice.dto.AuthRequest;
 import com.authservice.dto.AuthResponse;
+import com.authservice.dto.PostDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.authservice.dto.MyUserDTO;
 import com.authservice.model.MyUser;
 import com.authservice.repository.MyUserRepository;
+import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,10 @@ import java.util.List;
 public class MyUserService implements IMyUserService {
 	@Autowired
     private MyUserRepository myUserRepository;
+	@Autowired
+	private RestTemplate restTemplate;
+	private String transactionStatus = "";
+	private String sagaStatus;
 
 	private final JwtUtil jwt;
 
@@ -45,6 +53,9 @@ public class MyUserService implements IMyUserService {
 	public AuthResponse login(AuthRequest authRequest) {
 
 		MyUser myUser = this.myUserRepository.findByUsername(authRequest.getUsername());
+		if(myUser == null){
+			return new AuthResponse("");
+		}
 		if(!BCrypt.checkpw(authRequest.getPassword(), myUser.getPassword())){
 			return new AuthResponse("");
 		}
@@ -53,6 +64,7 @@ public class MyUserService implements IMyUserService {
 		return new AuthResponse(jwt.generate(myUser, "ACCESS"));
 	}
 
+	@Transactional
 	public MyUserDTO register(MyUserDTO myUserDTO) {
 		//do validation if user already exists
 		MyUser myUser = this.myUserRepository.findByUsername(myUserDTO.getUsername());
@@ -63,12 +75,59 @@ public class MyUserService implements IMyUserService {
 		myUserDTO.setPassword(BCrypt.hashpw(myUserDTO.getPassword(), BCrypt.gensalt()));
 		myUserDTO.setRole("ROLE_USER");
 
-		// TODO: check if username unique
-		this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole()));
+		try {
+			this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole()));
 
+		}catch (Exception e){
+			return new MyUserDTO();
+		}
+		this.sagaOrchestrator("AUTH_SERVICE_CREATED", myUserDTO);
+
+		myUserDTO.setSagaStatus(this.transactionStatus);
 		return myUserDTO;
 	}
 
+
+	public void sagaOrchestrator(String sagaStatus, MyUserDTO myUserDTO){
+
+		switch(sagaStatus) {
+			case "AUTH_SERVICE_CREATED":
+				try {
+					MyUserDTO myUserDTO1 = restTemplate.postForObject("http://localhost:9000/connection-service/registerUserConnection", myUserDTO, MyUserDTO.class);
+					this.sagaStatus = myUserDTO1.getSagaStatus();
+				}catch (Exception e){
+					this.sagaStatus = "AUTH_SERVICE_ROLLBACK";
+				}
+				break;
+			case "CONNECTION_SERVICE_CREATED":
+				try {
+					MyUserDTO myUserDTO1 = restTemplate.postForObject("http://localhost:9000/user-service/add", myUserDTO, MyUserDTO.class);
+					this.sagaStatus = myUserDTO1.getSagaStatus();
+				}catch (Exception e){
+					this.sagaStatus = "CONNECTION_SERVICE_ROLLBACK";
+				}
+				break;
+			case "AUTH_SERVICE_ROLLBACK":
+				this.transactionStatus = "FAILED";
+				this.myUserRepository.deleteByUsername(myUserDTO.getUsername());
+				break;
+			case "CONNECTION_SERVICE_ROLLBACK":
+				try {
+					restTemplate.delete("http://localhost:9000/connection-service/deleteUserConnection/" + myUserDTO.getUsername());
+					this.sagaStatus = "AUTH_SERVICE_ROLLBACK";
+				}catch (Exception e){
+					this.sagaStatus = "CONNECTION_SERVICE_ROLLBACK";
+				}
+				break;
+			case "USER_SERVICE_CREATED":
+				this.transactionStatus = "SUCCESS";
+				break;
+		}
+
+		if(!(this.transactionStatus.equals("SUCCESS") || this.transactionStatus.equals("FAILED"))) {
+			this.sagaOrchestrator(this.sagaStatus, myUserDTO);
+		}
+	}
 
 
 //	public AuthResponse login(AuthRequest authRequest) {

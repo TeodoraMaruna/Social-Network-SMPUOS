@@ -39,13 +39,15 @@ public class MyUserController {
     }
 
     @PostMapping(value = "/add", produces = "application/json; charset=utf-8")
-    public ResponseEntity<?> addMyUser(@RequestBody MyUserDTO dto) {
+    public ResponseEntity<MyUserDTO> addMyUser(@RequestBody MyUserDTO dto) {
 
         Boolean result = this.myUserService.addMyUser(dto);
         if (result) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            dto.setSagaStatus("USER_SERVICE_CREATED");
+            return new ResponseEntity<>(dto,HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.CONFLICT);
+        dto.setSagaStatus("CONNECTION_SERVICE_ROLLBACK");
+        return new ResponseEntity<>(dto, HttpStatus.CONFLICT);
     }
 
     @PutMapping(value = "/edit", produces = "application/json; charset=utf-8")

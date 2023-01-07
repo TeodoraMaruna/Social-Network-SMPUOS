@@ -22,4 +22,7 @@ public interface ConnectionRepository extends Neo4jRepository<UserConnection, St
 
 	@Query("MATCH(n:UserConnection {username: $senderUsername })-[r:BlockedBy]-(p:UserConnection{username: $receiverUsername }) DELETE r")
 	void removeBlockedBy(@Param("senderUsername") String senderUsername, @Param("receiverUsername") String receiverUsername);
+  
+  void deleteByUsername(String username);
+
 }

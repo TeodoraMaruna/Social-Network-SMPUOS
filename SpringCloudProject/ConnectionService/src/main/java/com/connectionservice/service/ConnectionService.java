@@ -37,10 +37,17 @@ public class ConnectionService implements IConnectionService {
         return new UserConnectionDTO(conn.getUsername(), conn.isPublic());
     }
 
-    @Override
-    public void registerUserConnection(UserConnectionDTO dto){
+    public UserConnectionDTO registerUserConnection(UserConnectionDTO dto){
         // TODO: check if username unique
-        this.connectionRepository.save(new UserConnection(dto.getUsername(), dto.isPublic()));
+        try {
+            this.connectionRepository.save(new UserConnection(dto.getUsername(), dto.isPublic()));
+
+        }catch (Exception e){
+            dto.setSagaStatus("AUTH_SERVICE_ROLLBACK");
+            return dto;
+        }
+        dto.setSagaStatus("CONNECTION_SERVICE_CREATED");
+        return dto;
     }
 
     @Override
@@ -297,6 +304,16 @@ public class ConnectionService implements IConnectionService {
         return connections;
     }
 
+    @Override
+    public UserConnectionDTO deleteUserConnection(String username) {
+        try {
+            this.connectionRepository.deleteByUsername(username);
+            return new UserConnectionDTO(username,false, "AUTH_SERVICE_ROLLBACK");
+        }catch (Exception e){
+            return new UserConnectionDTO(username,false, "CONNECTION_SERVICE_ROLLBACK");
+        }
+    }
+  
     public boolean containsUserDTO(List<UserConnectionDTO> connections, UserConnection c){
         for (UserConnectionDTO dto: connections){
             if (dto.getUsername().equals(c.getUsername())){
@@ -401,4 +418,5 @@ public class ConnectionService implements IConnectionService {
         }
         return dtos;
     }
+  
 }
