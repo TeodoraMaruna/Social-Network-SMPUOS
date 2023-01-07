@@ -6,6 +6,7 @@ import com.userservice.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,5 +127,15 @@ public class MyUserService implements IMyUserService{
         dto.setEmail(user.getEmail());
         dto.setPhoneNumber(user.getPhoneNumber());
         return dto;
+    }
+
+    @Transactional
+    public boolean deleteByUsername(String username){
+        MyUser myUser = this.myUserRepository.findMyUserByUsername(username);
+        if (myUser == null){
+            return false;
+        }
+        this.myUserRepository.deleteByUsername(username);
+        return true;
     }
 }

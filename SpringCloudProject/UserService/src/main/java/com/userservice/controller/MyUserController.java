@@ -61,4 +61,14 @@ public class MyUserController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    @DeleteMapping(value = "/delete/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> deleteMyUser(@PathVariable String username) {
+
+        Boolean result = this.myUserService.deleteByUsername(username);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
 }

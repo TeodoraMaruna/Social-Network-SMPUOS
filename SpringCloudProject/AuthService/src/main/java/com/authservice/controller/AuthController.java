@@ -42,4 +42,20 @@ public class AuthController {
         return new ResponseEntity(myUserDTO1, HttpStatus.CREATED);
     }
 
+    @DeleteMapping(value = "/delete/{username}")
+    public ResponseEntity<?> delete(@PathVariable String username) {
+        boolean res = this.myUserService.deleteByUsername(username);
+
+        if (res = false){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findByUsername/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<MyUserDTO> findAll(@PathVariable String username) {
+
+        return new ResponseEntity(this.myUserService.findMyUserByUsername(username), HttpStatus.OK);
+    }
+
 }

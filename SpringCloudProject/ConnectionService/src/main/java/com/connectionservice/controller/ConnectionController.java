@@ -125,8 +125,8 @@ public class ConnectionController {
     }
 
     @DeleteMapping(value= "/deleteUserConnection/{username}", produces = "application/json; charset=utf-8")
-    public ResponseEntity<UserConnectionDTO> registerUserConnection(@PathVariable String username) {
-        UserConnectionDTO dto =this.connectionService.deleteUserConnection(username);
+    public ResponseEntity<UserConnectionDTO> deleteUserConnection(@PathVariable String username) {
+        UserConnectionDTO dto = this.connectionService.deleteUserConnection(username);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
