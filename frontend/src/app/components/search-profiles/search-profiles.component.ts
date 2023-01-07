@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/service/auth.service';
+import { ConnectionService } from 'src/app/service/connection.service';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -11,7 +12,8 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class SearchProfilesComponent implements OnInit {
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private connectionService: ConnectionService,
+     private router: Router) { }
 
   users: User[] = [];
   searchedUsers: User[] = [];
@@ -24,28 +26,34 @@ export class SearchProfilesComponent implements OnInit {
   }
 
   determineIfUserLoggedIn(){
-    // izbaciti blokirane profile ili profile koji su nas blokirali -> proslediti username, ako je username null - dobaviti sve korisnike
-    // let username = this.authService.getUsername();
-    
     this.loggedIn = this.authService.isLoggedIn()
+
     if (this.loggedIn){
       this.loadAllowedUsers()
     } 
     else {
       this.loadUsers();
     }
-    console.log("ulogovani korisnik", this.loggedIn)
+    console.log("is user logged in", this.loggedIn)
   }
 
   loadUsers(){
     this.userService.getAll().subscribe(
       (data: any) => {
+        this.users = []
         this.users=data
       })
   }
 
   loadAllowedUsers(){
-    // TODO:
+    let username = this.authService.getUsername();
+    if (username != null && username != undefined){
+      this.connectionService.allowedUserConnections(username).subscribe(
+        (data: any) => {
+          this.users = []
+          this.users=data
+        })
+    }
   }
 
   seeProfile(username: String){

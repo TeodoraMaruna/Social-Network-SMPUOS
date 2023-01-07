@@ -285,7 +285,7 @@ public class ConnectionService implements IConnectionService {
 
             for (UserConnection connection : user.getFollowers()) {
                 for (UserConnection c : connection.getFollowers()) {
-                    if (!containsUser(connections, c)
+                    if (!containsUserDTO(connections, c)
                             && !user.getFollowers().contains(c)
                             && !user.getUsername().equals(c.getUsername())
                             && !user.getBlocked().contains(c) && !user.getBlockedBy().contains(c)) {
@@ -297,9 +297,18 @@ public class ConnectionService implements IConnectionService {
         return connections;
     }
 
-    public boolean containsUser(List<UserConnectionDTO> connections, UserConnection c){
+    public boolean containsUserDTO(List<UserConnectionDTO> connections, UserConnection c){
         for (UserConnectionDTO dto: connections){
             if (dto.getUsername().equals(c.getUsername())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsUser(List<UserConnection> connections, UserConnection c){
+        for (UserConnection user: connections){
+            if (user.getUsername().equals(c.getUsername())){
                 return true;
             }
         }
@@ -376,7 +385,6 @@ public class ConnectionService implements IConnectionService {
 
     @Override
     public List<UserConnectionDTO> allowedUserConnections(String username) {
-        // TODO:    
         UserConnection user = this.connectionRepository.findByUsername(username);
         if (user == null){
             return null;
@@ -385,15 +393,12 @@ public class ConnectionService implements IConnectionService {
         List<UserConnectionDTO> dtos = new ArrayList<>();
         List<UserConnection> blocked = user.getBlocked();
         List<UserConnection> blockedBy = user.getBlockedBy();
-        List<UserConnection> allUsers = this.connectionRepository.findAll();
 
-        allUsers.removeAll(blocked);
-        allUsers.removeAll(blockedBy);
-
-        for(UserConnection u: allUsers){
-            dtos.add(new UserConnectionDTO(u.getUsername(), u.isPublic()));
+        for(UserConnection u: this.connectionRepository.findAll()) {
+            if (!containsUser(blocked, u) && !containsUser(blockedBy, u) && !u.getUsername().equals(username)){
+                dtos.add(new UserConnectionDTO(u.getUsername(), u.isPublic()));
+            }
         }
-
         return dtos;
     }
 }

@@ -1,9 +1,6 @@
 package com.connectionservice.controller;
 
-import com.connectionservice.dto.CreateConnectionDTO;
-import com.connectionservice.dto.PostDTO;
-import com.connectionservice.dto.PostListDTO;
-import com.connectionservice.dto.UserConnectionDTO;
+import com.connectionservice.dto.*;
 import com.connectionservice.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -191,9 +187,26 @@ public class ConnectionController {
     }
 
     @GetMapping(value = "/allowedUserConnections/{username}", produces = "application/json; charset=utf-8")
-    public ResponseEntity<List<UserConnectionDTO>> findAllowedUserConnections(@PathVariable String username) {
+    public ResponseEntity<List<MyUserDTO>> findAllowedUserConnections(@PathVariable String username) {
 
-        return new ResponseEntity(connectionService.allowedUserConnections(username), HttpStatus.OK);
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        List<MyUserDTO> myUserDTOS = new ArrayList<>();
+
+        // za svakog korisnika da vrati listu postova
+        for(UserConnectionDTO dto: connectionService.allowedUserConnections(username)){
+            ResponseEntity<MyUserDTO> response =
+                    restTemplate.getForEntity(
+                            "http://localhost:9000/user-service/findByUsername/"
+                                    + dto.getUsername(), MyUserDTO.class);
+            MyUserDTO user = response.getBody();
+
+            if (user != null) {
+                myUserDTOS.add(user);
+            }
+        }
+
+        return new ResponseEntity(myUserDTOS, HttpStatus.OK);
     }
 
 }

@@ -80,4 +80,8 @@ export class ConnectionService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/removeBlockedBy`, conn)
   }
 
+  public allowedUserConnections(username: String): Observable<any> {
+    return this._http.get<any>(environment.apiUrl + `${this.userPath}/allowedUserConnections/` + username)
+  }
+
 }

@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 public class MyUserDTO {
 
-    // TODO: delete class
     private String username;
     private String role;
     private Boolean isPublic;
