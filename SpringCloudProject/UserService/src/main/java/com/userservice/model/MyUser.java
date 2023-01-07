@@ -43,4 +43,7 @@ public class MyUser {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    @Column(name = "isRegistered")
+    private Boolean isRegistered;
+
 }

@@ -19,6 +19,8 @@ public class MyUser {
     private String password;
     @Column(name = "role")
     private String role;
+    @Column(name = "isRegistered")
+    private Boolean isRegistered;
 
 
 }

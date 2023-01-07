@@ -6,6 +6,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserTokenState} from "../model/user-token-state";
 import {JwtUtilsService} from "./jwt-utils.service";
 import {Comment} from "../model/comment";
+import {UrlParams} from "../model/url-params";
 
 @Injectable({
   providedIn: 'root'
@@ -70,5 +71,9 @@ export class AuthService {
     } else {
       return undefined;
     }
+  }
+
+  confirmEmail(urlParams: UrlParams) {
+    return this._http.post<User>(`${this.userPath}/email/verification`, urlParams)
   }
 }

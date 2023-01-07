@@ -26,6 +26,7 @@ import { UpdateInfoComponent } from './components/dialogs/update-info/update-inf
 import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SearchProfilesComponent } from './components/search-profiles/search-profiles.component';
+import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { SearchProfilesComponent } from './components/search-profiles/search-pro
     PostLikesComponent,
     UserProfileComponent,
     SearchProfilesComponent,
+    EmailVerificationComponent,
   ],
   imports: [
     BrowserModule,
