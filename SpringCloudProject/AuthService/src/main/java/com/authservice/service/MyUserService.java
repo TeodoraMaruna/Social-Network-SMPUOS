@@ -61,7 +61,7 @@ public class MyUserService implements IMyUserService {
 		if(myUser == null){
 			return new AuthResponse("");
 		}
-		if(!BCrypt.checkpw(authRequest.getPassword(), myUser.getPassword())){
+		if(!BCrypt.checkpw(authRequest.getPassword(), myUser.getPassword()) || myUser.getIsRegistered() == false){
 			return new AuthResponse("");
 		}
 		myUser.setRole("ROLE_USER");
@@ -117,6 +117,7 @@ public class MyUserService implements IMyUserService {
 				try {
 					MyUserDTO myUserDTO1 = restTemplate.postForObject("http://localhost:9000/connection-service/registerUserConnection", myUserDTO, MyUserDTO.class);
 					this.sagaStatus = myUserDTO1.getSagaStatus();
+					System.out.println(this.sagaStatus);
 				}catch (Exception e){
 					this.sagaStatus = "AUTH_SERVICE_ROLLBACK";
 				}
@@ -125,6 +126,7 @@ public class MyUserService implements IMyUserService {
 				try {
 					MyUserDTO myUserDTO1 = restTemplate.postForObject("http://localhost:9000/user-service/add", myUserDTO, MyUserDTO.class);
 					this.sagaStatus = myUserDTO1.getSagaStatus();
+					System.out.println(this.sagaStatus);
 				}catch (Exception e){
 					this.sagaStatus = "CONNECTION_SERVICE_ROLLBACK";
 				}
@@ -138,12 +140,14 @@ public class MyUserService implements IMyUserService {
 				try {
 					restTemplate.delete("http://localhost:9000/connection-service/deleteUserConnection/" + myUserDTO.getUsername());
 					this.sagaStatus = "AUTH_SERVICE_ROLLBACK";
+					System.out.println(this.sagaStatus);
 				}catch (Exception e){
 					this.sagaStatus = "CONNECTION_SERVICE_ROLLBACK";
 				}
 				break;
 			case "USER_SERVICE_CREATED":
 				this.transactionStatus = "SUCCESS";
+				System.out.println(this.sagaStatus);
 				break;
 		}
 
@@ -161,9 +165,10 @@ public class MyUserService implements IMyUserService {
 				String token = UUID.randomUUID().toString();
 				// kreiranje verifikacionog tokena
 				verificationTokenService.save(myUser, token);
-				this.emailService.sendHTMLMail(myUser, email);
+				//this.emailService.sendHTMLMail(myUser, email);
 			} catch (Exception e) {
 				e.printStackTrace();
+				throw e;
 			}
 		}
 	}

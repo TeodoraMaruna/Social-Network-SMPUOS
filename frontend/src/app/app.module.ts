@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
-import { PostPageComponent } from './components/post-page/post-page.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./shared/auth-interceptor";
 import { RegistrationPageComponent } from './components/registration-page/registration-page.component';
@@ -27,12 +26,14 @@ import { PostLikesComponent } from './components/dialogs/post-likes/post-likes.c
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SearchProfilesComponent } from './components/search-profiles/search-profiles.component';
 import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatIconModule} from "@angular/material/icon";
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
-    PostPageComponent,
     RegistrationPageComponent,
     LoginPageComponent,
     UserFeedComponent,
@@ -58,7 +59,10 @@ import { EmailVerificationComponent } from './components/email-verification/emai
     MatInputModule,
     MatSelectModule,
     MatSnackBarModule,
-    RouterModule
+    RouterModule,
+    MatGridListModule,
+    MatIconModule,
+    MatCardModule
   ],
   providers: [
     {

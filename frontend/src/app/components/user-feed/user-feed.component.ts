@@ -312,4 +312,7 @@ export class UserFeedComponent implements OnInit {
     });
   }
 
+  deleteById(id: String) {
+    
+  }
 }

@@ -17,7 +17,7 @@
           <a href="/feed" title=""><img src="assets/logo.png" alt="" height="40px" width="50px"></a>
         </div>
         <div class="search-bar">
-        </div> 
+        </div>
         <!--search-bar end-->
         <nav>
           <ul>
@@ -91,16 +91,16 @@
                 </div><!--user_profile end-->
               </div><!--main-left-sidebar end-->
             </div>
-            
+
             <div class="col-lg-6">
-              
+
               <div class="main-ws-sec">
                 <div class="user-tab-sec">
                   <h3> {{ user.firstName }} {{ user.lastName }} </h3>
                   <div class="star-descp">
                     <span> {{ user.username }} </span>
                   </div><!--star-descp end-->
-                  
+
                   <div class="tab-feed st2" *ngIf="feedActive">
                     <ul>
                       <li data-tab="feed-dd" class="active">
@@ -130,7 +130,7 @@
                       </li>
                     </ul>
                   </div><!-- tab-feed end-->
-                  
+
                   <div class="tab-feed st2" *ngIf="profileActive">
                     <ul>
                       <li data-tab="feed-dd">
@@ -270,9 +270,9 @@
                         <div class="job_descp">
                           <p> {{ p.description }} </p>
                           <ul *ngIf="p.imageUrl != ''">
-                            &nbsp;
                             <img style="max-height: 100%; max-width: 100%;" [src] = "p.imageUrl">
                           </ul>
+
                         </div>
 
                         <div class="job-status-bar">
@@ -337,6 +337,15 @@
                               <a> <h3> {{ p.user.username }} </h3> </a>
                             </div>
                           </div>
+                          <button style="
+                          position: absolute;
+                          right: 3vw;
+                          width: 6vw;
+                          height: 3vw;
+                          background-color: #51a5fb;
+                          color:white;
+                          font-weight: lighter;
+                          border: none;" (click)="deleteById(p.id)"  >Delete</button>
                         </div>
 
                         <div class="job_descp">
@@ -409,28 +418,28 @@
                             </div>
                           </div>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 9vw;
-                          width: 6vw; 
-                          height: 3vw; 
-                          background-color: #51a5fb;  
+                          width: 6vw;
+                          height: 3vw;
+                          background-color: #51a5fb;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="unfollow(f.username)">Unfollow</button>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 3vw;
-                          width: 5vw; 
-                          height: 3vw; 
-                          background-color: #e44d3a;  
+                          width: 5vw;
+                          height: 3vw;
+                          background-color: #e44d3a;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="blockUser(f.username)">Block</button>
                         </div>
                       </div>
                     </ul>
                   </div>
-                </div>          
+                </div>
 
                 <!-- FOLLOW REQUESTS  TAB -->
                 <div *ngIf="followerRequestsActive" class="product-feed-tab current" id="feed-dd">
@@ -445,36 +454,36 @@
                             </div>
                           </div>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 15vw;
-                          width: 5vw; 
-                          height: 3vw; 
-                          background-color: #51a5fb;  
+                          width: 5vw;
+                          height: 3vw;
+                          background-color: #51a5fb;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="approveFollowRequest(f.username)">Approve</button>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 9vw;
-                          width: 5vw; 
-                          height: 3vw; 
-                          background-color: #51a5fb;  
+                          width: 5vw;
+                          height: 3vw;
+                          background-color: #51a5fb;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="rejectFollowRequest(f.username)">Reject</button>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 3vw;
-                          width: 5vw; 
-                          height: 3vw; 
-                          background-color: #e44d3a;  
+                          width: 5vw;
+                          height: 3vw;
+                          background-color: #e44d3a;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="blockUser(f.username)">Block</button>
                         </div>
                       </div>
                     </ul>
-                    <p *ngIf="sentFollowRequests.length!=0" style="font-size: medium;">Sent follow requests by {{ user.firstName }} {{ user.lastName }}: </p> 
+                    <p *ngIf="sentFollowRequests.length!=0" style="font-size: medium;">Sent follow requests by {{ user.firstName }} {{ user.lastName }}: </p>
                     <ul *ngFor="let f of sentFollowRequests; let i=index">
                       <div class="post-bar">
                         <div class="post_topbar">
@@ -485,13 +494,13 @@
                             </div>
                           </div>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 3vw;
-                          width: 5vw; 
-                          height: 3vw; 
-                          background-color: #e44d3a;  
+                          width: 5vw;
+                          height: 3vw;
+                          background-color: #e44d3a;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="blockUser(f.username)">Block</button>
                         </div>
                       </div>
@@ -508,29 +517,29 @@
                           <div class="usy-dt">
                             <img src="assets\cv__29__generated.jpg" style="width: 50px; height: 50px;" alt="">
                             <div class="usy-name">
-                              <h3> {{ f.username }} </h3> 
+                              <h3> {{ f.username }} </h3>
                             </div>
                           </div>
                           <button style="
-                          position: absolute; 
+                          position: absolute;
                           right: 3vw;
-                          width: 6vw; 
-                          height: 3vw; 
-                          background-color: #51a5fb;  
+                          width: 6vw;
+                          height: 3vw;
+                          background-color: #51a5fb;
                           color:white;
-                          font-weight: lighter; 
+                          font-weight: lighter;
                           border: none;" (click)="unblockUser(f.username)">Unblock</button>
                         </div>
                       </div>
                     </ul>
                   </div>
-                </div>    
+                </div>
               </div><!--main-ws-sec end-->
             </div>
 
             <div class="col-lg-3">
               <div class="right-sidebar">
-              
+
                 <div class="suggestions full-width">
                   <div class="sd-title">
                     <h3>Suggestions</h3>
@@ -546,7 +555,7 @@
                       <span><i class="la la-plus" (click)="follow(u.username)"></i></span>
                     </div>
 
-                    
+
                   </div><!--suggestions-list end-->
                 </div><!--suggestions end-->
               </div><!--right-sidebar end-->
