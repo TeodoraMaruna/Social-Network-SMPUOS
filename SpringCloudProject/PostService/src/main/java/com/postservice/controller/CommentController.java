@@ -6,6 +6,7 @@ import com.postservice.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class CommentController {
     private CommentService commentService;
 
     @RequestMapping(value = "/add-comment/{postId}", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity addComment(@RequestBody CommentDto commentDto, @PathVariable("postId") String postId)  {
 
         this.commentService.addComment(commentDto, postId);
@@ -26,6 +28,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/delete-comment/{postId}/{commentId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity deleteComment(@PathVariable("commentId") Integer commentId,@PathVariable("postId") String postId)  {
 
         this.commentService.deleteComment(commentId, postId);

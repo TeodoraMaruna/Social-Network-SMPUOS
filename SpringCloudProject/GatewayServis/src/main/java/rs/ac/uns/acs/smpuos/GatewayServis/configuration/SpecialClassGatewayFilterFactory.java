@@ -33,15 +33,14 @@ public class SpecialClassGatewayFilterFactory
 
             System.out.println("halooo");
             if (routerValidator.isSecured.test(request)) {
-                if (this.isAuthMissing(request))
+                if (this.isAuthMissing(request)) {
                     return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
+                }
 
                 final String token = this.getAuthHeader(request);
 
                 if (jwtUtil.isInvalid(token))
                     return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
-
-//            this.populateRequestWithHeaders(exchange, token);
             }
             return chain.filter(exchange);
         };

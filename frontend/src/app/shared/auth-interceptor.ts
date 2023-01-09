@@ -1,34 +1,25 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {Observable} from "rxjs";
+import {AuthService} from "../service/auth.service";
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    var api = localStorage.getItem('api')
-    if (api == null || api == undefined) {
-
-      req = req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-        },
-      });
-    } else {
-      req = req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('api')}`,
-        },
-      });
-    }
+  constructor(private inj: Injector) {}
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
 
-    return next.handle(req);
+    const authService: AuthService = this.inj.get(AuthService);
+    request = request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${authService.getToken()}`
+      }
+    });
+
+
+    return next.handle(request)
+
   }
 }

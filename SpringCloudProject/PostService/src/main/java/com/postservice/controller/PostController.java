@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,26 +26,28 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET,
-            produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public ResponseEntity getInfo() {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/add-post", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<PostDto> addPost(@RequestBody PostDto postDto) throws IOException, URISyntaxException {
 
         return new ResponseEntity<>(this.postService.insertPost(postDto),HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/find-post/{postId}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<PostDto> findPostById(@PathVariable("postId") String postId) {
 
         return new ResponseEntity<>(this.postService.findById(postId),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/find-all", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<PostDto>> findAll() {
 
         return new ResponseEntity<>(this.postService.findAll(), HttpStatus.OK);
@@ -56,9 +59,7 @@ public class PostController {
         return new ResponseEntity<>(this.postService.findAllPostForUsername(username), HttpStatus.OK);
     }
 
-    @GetMapping(
-            value = "/image/{id}"
-    )
+    @GetMapping(value = "/image/{id}")
     public ResponseEntity<InputStreamResource> getImageDynamicType(@PathVariable("id") String id) throws FileNotFoundException {
         String imageLocation = this.postService.findImageLocationByImageId(id);
         MediaType contentType = MediaType.IMAGE_JPEG;
@@ -68,9 +69,8 @@ public class PostController {
                 .body(new InputStreamResource(in));
     }
 
-    @DeleteMapping(
-            value = "/delete-post/{id}"
-    )
+    @DeleteMapping(value = "/delete-post/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Boolean> deletePostById (@PathVariable("id") String id) {
         this.postService.deleteById(id);
         return new ResponseEntity<>(true, HttpStatus.OK);

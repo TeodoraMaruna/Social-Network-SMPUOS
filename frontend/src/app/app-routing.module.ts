@@ -7,6 +7,7 @@ import { RegistrationPageComponent } from './components/registration-page/regist
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { SearchProfilesComponent } from './components/search-profiles/search-profiles.component';
 import {EmailVerificationComponent} from "./components/email-verification/email-verification.component";
+import {AuthGuard} from "./auth.guard";
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
     path: 'login', component: LoginPageComponent
   },
   {
-    path: 'user-feed', component: UserFeedComponent
+    path: 'user-feed', component: UserFeedComponent, canActivate: [AuthGuard]
   },
   {
     path: 'user-profile/:username', component: UserProfileComponent
