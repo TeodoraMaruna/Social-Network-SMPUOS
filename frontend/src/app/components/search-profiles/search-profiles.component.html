@@ -5,10 +5,10 @@
         <div class="container">
           <div class="header-data">
             <div class="logo">
-              <a href="/feed" title=""><img src="assets/" alt="" height="40px" width="50px"></a>
+              <a href="/feed" title=""><img src="assets/logo.png" alt="" height="40px" width="50px"></a>
             </div>
             <div class="search-bar">
-            </div> 
+            </div>
             <nav>
               <ul>
                 <li *ngIf="!loggedIn">
@@ -52,24 +52,46 @@
           </div>
         </div>
       </header>
-    </div>    
+    </div>
 
-    <div class="search-bar">
+    <div style="margin-top: 20px">
+
+      <mat-grid-list cols="6" rowHeight="2:1" >
+        <mat-grid-tile [colspan]="1" >
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="4" >
+          <div style="width: 100%; display: flex">
+            <input type="text" style="width: 90%" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by username, first name, last name...">
+
+            <button  (click)="search()" style="width: 5%">
+              <mat-icon >search</mat-icon>
+            </button>
+            <button (click)="clear()"  style="width: 5%"> <mat-icon >restart_alt</mat-icon></button>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <div class="container bootdey">
         <div class="row">
-        <input type="text" name="search" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by username, first name, last name...">
-        <div class="row">
-            <button (click)="search()"><i class="la la-search"></i></button>
-            <button (click)="clear()"><i class="la la-ban"></i></button>
-        </div>    
-    </div>
-    </div>
-    <ul *ngFor="let u of searchedUsers; let i=index">
-        <div class="post-bar">
-            <div>{{ u.username }}</div>
-            <div>{{ u.firstName }} {{ u.lastName }}</div>
-            <div>{{ u.email }}</div>
-            <button style="width: 2vw; height: 2vw;" (click)="seeProfile(u.username)"> Profile</button>
+          <div class="col">
+            <div class="user-widget-2">
+              <ul class="list-unstyled" *ngFor="let u of searchedUsers; let i=index">
+                <li class="media" style="background: white; border-radius: 10px">
+                  <img class="rounded-circle d-flex align-self-center" src="assets/cv__29__generated.jpg" >
+                  <div class="media-body">
+                    <h5>{{u.firstName}} {{u.lastName}}</h5>
+                    <p>{{u.username}}</p>
+                    <p>{{u.email}}</p>
+                  </div><button (click)="seeProfile(u.username)" class="d-flex align-self-center"> View</button></li>
+              </ul>
+            </div>
+          </div>
         </div>
-    </ul>
+      </div>
+
+
+    </div>
+
 
 </body>

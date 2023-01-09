@@ -30,7 +30,7 @@ export class SearchProfilesComponent implements OnInit {
 
     if (this.loggedIn){
       this.loadAllowedUsers()
-    } 
+    }
     else {
       this.loadUsers();
     }
@@ -42,7 +42,12 @@ export class SearchProfilesComponent implements OnInit {
       (data: any) => {
         this.users = []
         this.users=data
-      })
+        console.log(this.users)
+      },(error) => {
+
+        console.log("error")
+      }
+      )
   }
 
   loadAllowedUsers(){
@@ -70,8 +75,8 @@ export class SearchProfilesComponent implements OnInit {
   search(){
     this.searchedUsers = this.users.filter(u =>
       (u.username).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
-      (u.firstName).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||  
-      (u.lastName).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||      
+      (u.firstName).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
+      (u.lastName).toLowerCase().includes(this.searchCriteria.toLowerCase()) ||
       (u.email).toLowerCase().includes(this.searchCriteria.toLowerCase())
     )
   }

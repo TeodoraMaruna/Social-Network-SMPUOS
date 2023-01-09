@@ -17,14 +17,14 @@ public class CommentService implements ICommentService{
     @Override
     public void addComment(CommentDto commentDto, String postId) {
         ModelMapper modelMapper =  new ModelMapper();
-        Post post = this.postRepository.findById(postId);
+        Post post = this.postRepository.findById(postId).get();
         post.addComment(modelMapper.map(commentDto, Comments.class));
         this.postRepository.save(post);
     }
 
     @Override
     public void deleteComment(Integer commentId, String postId) {
-        Post post = this.postRepository.findById(postId);
+        Post post = this.postRepository.findById(postId).get();
         post.deleteComment(commentId);
         this.postRepository.save(post);
     }

@@ -22,6 +22,8 @@ spring:
           predicates:
             - Path=/post-service/**
           filters:
+            - name: SpecialClass
+              order: -2
             - name: CircuitBreaker
               args:
                 name: korisnik-servis-circuit-breaker
@@ -31,6 +33,8 @@ spring:
           predicates:
             - Path=/user-service/**
           filters:
+            - name: SpecialClass
+              order: -2
             - name: CircuitBreaker
               args:
                 name: korisnik-servis-circuit-breaker
@@ -52,6 +56,8 @@ spring:
           predicates:
             - Path=/auth-service/**
           filters:
+            - name: SpecialClass
+              order: -2
             - name: CircuitBreaker
               args:
                 name: korisnik-servis-circuit-breaker

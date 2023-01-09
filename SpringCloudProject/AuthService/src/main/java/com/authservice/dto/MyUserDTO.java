@@ -21,6 +21,7 @@ public class MyUserDTO {
     private String email;
     private String phoneNumber;
     private String sagaStatus;
+    private Boolean isRegistered;
 
     public MyUserDTO(String username, String password) {
         this.username = username;

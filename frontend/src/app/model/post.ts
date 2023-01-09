@@ -15,7 +15,7 @@ export class Post {
 
   imageUrl: String = '';
 
-  imageBase64: String = '';
+  imageBase64: string | ArrayBuffer = '';
 
   numberOfLikes: number = 0;
 }

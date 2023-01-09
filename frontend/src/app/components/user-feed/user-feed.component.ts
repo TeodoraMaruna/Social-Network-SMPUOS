@@ -22,7 +22,7 @@ import { CreateConnection } from 'src/app/model/create-connection';
 })
 export class UserFeedComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private postService: PostService, private authService: AuthService, 
+  constructor(public dialog: MatDialog, private postService: PostService, private authService: AuthService,
     private userService: UserService, private connectionService: ConnectionService, private router: Router) {
   }
 
@@ -36,8 +36,8 @@ export class UserFeedComponent implements OnInit {
   followersActive: boolean = false;
   blockedActive: boolean = false;
 
-  visibleUserAcccountSettings: boolean = false; 
-  visible: boolean = false;                     
+  visibleUserAcccountSettings: boolean = false;
+  visible: boolean = false;
   loaded: Boolean = false;
   loadedFeed: Boolean = false;
 
@@ -109,9 +109,9 @@ export class UserFeedComponent implements OnInit {
   }
 
   loadFeed(){
-    this.feedActive = false;    
+    this.feedActive = false;
     this.profileActive = false;
-    this.followersActive = false;    
+    this.followersActive = false;
     this.followerRequestsActive = false;
     this.blockedActive = false;
 
@@ -120,7 +120,7 @@ export class UserFeedComponent implements OnInit {
         (data: any[]) => {
           this.feed = []
           this.feed = data
-          this.feedActive = true;    
+          this.feedActive = true;
           this.loadedFeed = true;
         })
     }
@@ -129,7 +129,7 @@ export class UserFeedComponent implements OnInit {
   loadMyPosts(){
     this.feedActive = false;
     this.profileActive = true;
-    this.followersActive = false;    
+    this.followersActive = false;
     this.followerRequestsActive = false;
     this.blockedActive = false;
 
@@ -145,7 +145,7 @@ export class UserFeedComponent implements OnInit {
   loadFollowers(){
     this.feedActive = false;
     this.profileActive = false;
-    this.followersActive = true;    
+    this.followersActive = true;
     this.followerRequestsActive = false;
     this.blockedActive = false;
 
@@ -160,7 +160,7 @@ export class UserFeedComponent implements OnInit {
   loadBlocked(){
     this.feedActive = false;
     this.profileActive = false;
-    this.followersActive = false;    
+    this.followersActive = false;
     this.followerRequestsActive = false;
     this.blockedActive = true;
 
@@ -232,7 +232,7 @@ export class UserFeedComponent implements OnInit {
   loadFollowRequests(){
     this.feedActive = false;
     this.profileActive = false;
-    this.followersActive = false;    
+    this.followersActive = false;
     this.followerRequestsActive = true;
     this.blockedActive = false;
 
@@ -241,11 +241,11 @@ export class UserFeedComponent implements OnInit {
         this.followRequests=data
       })
 
-       
+
     this.connectionService.findSentFollowRequestsForUsername(this.user.username).subscribe(
       (data: any) => {
         this.sentFollowRequests=data
-      }) 
+      })
   }
 
   makeVisibleUserAcccountSettings() {
@@ -265,7 +265,7 @@ export class UserFeedComponent implements OnInit {
     let like = new Like();
     like.username = this.user.username
     this.postService.likePost(post.id, like).subscribe()
-    
+
     window.location.reload()
   }
 
@@ -312,4 +312,14 @@ export class UserFeedComponent implements OnInit {
     });
   }
 
+  deleteById(post: Post) {
+    this.postService.deletePostById(post.id).subscribe(
+      (result:Boolean) =>{
+        console.log("uslo")
+        if(result === true){
+          this.loadMyPosts()
+        }
+      }
+    )
+  }
 }

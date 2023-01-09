@@ -2,6 +2,7 @@ package com.userservice.service;
 
 import com.userservice.dto.MyUserDTO;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 public interface IMyUserService {
@@ -11,5 +12,7 @@ public interface IMyUserService {
     List<MyUserDTO> findAll();
 
     boolean addMyUser(MyUserDTO dto);
+
+    void activateUser(String username) throws UserPrincipalNotFoundException;
 
 }

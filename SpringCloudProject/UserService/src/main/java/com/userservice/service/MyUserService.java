@@ -3,9 +3,13 @@ package com.userservice.service;
 import com.userservice.dto.MyUserDTO;
 import com.userservice.model.MyUser;
 import com.userservice.repository.MyUserRepository;
+import javassist.NotFoundException;
+import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +53,16 @@ public class MyUserService implements IMyUserService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void activateUser(String username) throws UserPrincipalNotFoundException {
+        MyUser myUser = this.myUserRepository.findMyUserByUsername(username);
+        if(myUser == null){
+            throw new UserPrincipalNotFoundException("user not found");
+        }
+        myUser.setIsRegistered(true);
+        this.myUserRepository.save(myUser);
     }
 
     public boolean editMyUser(MyUserDTO dto){
@@ -103,6 +117,7 @@ public class MyUserService implements IMyUserService{
     private MyUser dtoToModel(MyUserDTO dto){
         MyUser user = new MyUser();
         user.setUsername(dto.getUsername());
+        user.setIsRegistered(dto.getIsRegistered());
 //        user.setPassword(dto.getPassword());
         user.setRole(dto.getRole());
         user.setIsPublic(dto.getIsPublic());

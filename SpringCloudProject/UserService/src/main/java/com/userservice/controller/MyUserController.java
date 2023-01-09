@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 @RestController
@@ -59,6 +60,19 @@ public class MyUserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @PutMapping(value = "/editRegisterStatus/{username}", produces = "application/json; charset=utf-8")
+    public ResponseEntity<?> editUserRegisterStatus(@PathVariable String username) throws UserPrincipalNotFoundException {
+
+        try{
+             this.myUserService.activateUser(username);
+             return new ResponseEntity<>(HttpStatus.OK);
+         }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 
 }
