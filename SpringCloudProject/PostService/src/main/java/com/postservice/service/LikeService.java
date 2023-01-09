@@ -17,7 +17,7 @@ public class LikeService implements ILikeService{
     @Override
     public void addLike(LikeDto likeDto, String postId) {
         ModelMapper modelMapper = new ModelMapper();
-        Post post = this.postRepository.findById(postId);
+        Post post = this.postRepository.findById(postId).get();
         Like like = modelMapper.map(likeDto, Like.class);
         post.addLike(like);
         this.postRepository.save(post);

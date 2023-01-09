@@ -68,5 +68,13 @@ public class PostController {
                 .body(new InputStreamResource(in));
     }
 
+    @DeleteMapping(
+            value = "/delete-post/{id}"
+    )
+    public ResponseEntity<Boolean> deletePostById (@PathVariable("id") String id) {
+        this.postService.deleteById(id);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 }
 

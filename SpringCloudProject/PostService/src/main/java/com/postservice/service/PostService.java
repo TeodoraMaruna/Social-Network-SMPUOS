@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PostService implements IPostService{
@@ -59,7 +56,7 @@ public class PostService implements IPostService{
 
     @Override
     public PostDto findById(String id) {
-        Post post = this.postRepository.findById(id);
+        Post post = this.postRepository.findById(id).get();
         if (post != null) {
             return modelToDto(post);
         }
@@ -68,8 +65,13 @@ public class PostService implements IPostService{
 
     @Override
     public String findImageLocationByImageId(String id) {
-        Post post = this.postRepository.findById(id);
-        return post.getImage().getImageLocation();
+        Optional<Post> post = this.postRepository.findById(id);
+        return post.get().getImage().getImageLocation();
+    }
+
+    @Override
+    public void deleteById(String postId) {
+        this.postRepository.deleteById(postId);
     }
 
     private Post dtoToModel(PostDto postDto){

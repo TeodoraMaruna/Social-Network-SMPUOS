@@ -41,4 +41,7 @@ export class PostService {
     return this._http.post<any>(environment.apiUrl + `${this.userPath}/add-post`, post)
   }
 
+  public deletePostById(id: String): Observable<Boolean> {
+    return this._http.delete<Boolean>(environment.apiUrl + `${this.userPath}/delete-post/` + id)
+  }
 }
