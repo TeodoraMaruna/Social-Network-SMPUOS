@@ -11,6 +11,8 @@ public interface IMyUserService {
 
     List<MyUserDTO> findAll();
 
+    List<MyUserDTO> findAllRegistrated();
+
     boolean addMyUser(MyUserDTO dto);
 
     void activateUser(String username) throws UserPrincipalNotFoundException;

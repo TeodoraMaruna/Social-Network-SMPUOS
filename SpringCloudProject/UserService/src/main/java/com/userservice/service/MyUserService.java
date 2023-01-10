@@ -34,6 +34,17 @@ public class MyUserService implements IMyUserService{
     }
 
     @Override
+    public List<MyUserDTO> findAllRegistrated() {
+        List<MyUserDTO> dtos = new ArrayList<>();
+        for(MyUser user: this.myUserRepository.findAll()){
+            if (user.getIsRegistered()) {
+                dtos.add(modelToDto(user));
+            }
+        }
+        return dtos;
+    }
+
+    @Override
     public List<MyUserDTO> findAll() {
         List<MyUserDTO> dtos = new ArrayList<>();
         for(MyUser user: this.myUserRepository.findAll()){
@@ -140,6 +151,7 @@ public class MyUserService implements IMyUserService{
         dto.setGender(user.getGender());
         dto.setEmail(user.getEmail());
         dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setIsRegistered(user.getIsRegistered());
         return dto;
     }
 }

@@ -31,7 +31,6 @@ export class RegistrationPageComponent implements OnInit {
     this.genderControl = new FormControl('Female');
   }
 
-
   selectGender(e: any){
     console.log(e.target.value)
     var gender = e.target.value
@@ -40,26 +39,30 @@ export class RegistrationPageComponent implements OnInit {
     }else if(gender === 'Female'){
       this.user.gender = "Female"
     }
-
   }
-  signup() {
-    console.log(this.user)
-    this._snackBar.open("Wait a minute", "In progress");
-    this._authService.register(this.user).subscribe(
-      (user:User) =>{
-          console.log("uspjeh")
-         console.log(user)
-          if(user.sagaStatus === 'FAILED' || user.sagaStatus === null){
-            this._snackBar.open("Somenthing went wrong", "Error!");
-            return;
-          }
-        this._snackBar.open("You are registred", "Success");
-        this._router.navigate(['login']);
-      },
-      (error) =>{
-        this._snackBar.open("Somenthing went wrong", "Error!");
-      })
 
+  signup() {
+    if (this.password != this.user.password){
+      this._snackBar.open("Password does not match", "Error");
+    }
+    else {
+      console.log(this.user)
+      this._snackBar.open("Wait a minute", "In progress");
+      this._authService.register(this.user).subscribe(
+        (user:User) =>{
+            console.log("uspjeh")
+          console.log(user)
+            if(user.sagaStatus === 'FAILED' || user.sagaStatus === null){
+              this._snackBar.open("Somenthing went wrong", "Error!");
+              return;
+            }
+          this._snackBar.open("You are registred", "Success");
+          this._router.navigate(['login']);
+        },
+        (error) =>{
+          this._snackBar.open("Somenthing went wrong", "Error!");
+        })
+    }
   }
 
   selectVisibility(e: any) {
@@ -71,4 +74,5 @@ export class RegistrationPageComponent implements OnInit {
       this.user.isPublic = true
     }
   }
+
 }

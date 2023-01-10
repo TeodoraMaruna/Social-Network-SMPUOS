@@ -2,7 +2,6 @@ package com.connectionservice.controller;
 
 import com.connectionservice.dto.*;
 import com.connectionservice.service.ConnectionService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
@@ -208,7 +207,7 @@ public class ConnectionController {
                                     + dto.getUsername(), MyUserDTO.class);
             MyUserDTO user = response.getBody();
 
-            if (user != null) {
+            if (user != null && user.getIsRegistered()) {
                 myUserDTOS.add(user);
             }
         }

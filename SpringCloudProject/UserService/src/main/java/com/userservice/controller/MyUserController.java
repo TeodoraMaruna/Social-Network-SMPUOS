@@ -33,6 +33,12 @@ public class MyUserController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/findAllRegistrated", produces = "application/json; charset=utf-8")
+    public ResponseEntity<List<MyUserDTO>> findAllRegistrated() {
+
+        return new ResponseEntity<>(this.myUserService.findAllRegistrated(), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/findAll", produces = "application/json; charset=utf-8")
     public ResponseEntity<List<MyUserDTO>> findAll() {
 

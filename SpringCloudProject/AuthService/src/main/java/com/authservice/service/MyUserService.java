@@ -97,8 +97,6 @@ public class MyUserService implements IMyUserService {
 		myUserDTO.setPassword(BCrypt.hashpw(myUserDTO.getPassword(), BCrypt.gensalt()));
 		myUserDTO.setRole("ROLE_USER");
 
-
-
 		Boolean isUnique = restTemplate.postForObject("http://localhost:9000/user-service/check", myUserDTO, Boolean.class);
 
 		if(!isUnique){
@@ -107,11 +105,10 @@ public class MyUserService implements IMyUserService {
 
 		try {
 			myUser = this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole(),false));
-			this.sendVerificationEmail(myUser, myUserDTO.getEmail());
+			//this.sendVerificationEmail(myUser, myUserDTO.getEmail());
 		}catch (Exception e){
 			return new MyUserDTO();
 		}
-
 
 		this.sagaOrchestrator("AUTH_SERVICE_CREATED", myUserDTO);
 
@@ -178,7 +175,7 @@ public class MyUserService implements IMyUserService {
 				String token = UUID.randomUUID().toString();
 				// kreiranje verifikacionog tokena
 				verificationTokenService.save(myUser, token);
-				//this.emailService.sendHTMLMail(myUser, email);
+				this.emailService.sendHTMLMail(myUser, email);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;

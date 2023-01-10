@@ -19,5 +19,6 @@ public class MyUserDTO {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private Boolean isRegistered;
 }
 
