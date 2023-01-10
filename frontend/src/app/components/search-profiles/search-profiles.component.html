@@ -62,8 +62,8 @@
         </mat-grid-tile>
 
         <mat-grid-tile [colspan]="4" >
-          <div style="width: 100%; display: flex">
-            <input type="text" style="width: 90%" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by username, first name, last name...">
+          <div style="width: 100%; display: flex; margin-top: 2vw;">
+            <input type="text" style="width: 90%;" [(ngModel)]="searchCriteria" name="searchCriteria" placeholder="Search by username, first name, last name, email...">
 
             <button  (click)="search()" style="width: 5%">
               <mat-icon >search</mat-icon>
@@ -77,13 +77,19 @@
           <div class="col">
             <div class="user-widget-2">
               <ul class="list-unstyled" *ngFor="let u of searchedUsers; let i=index">
-                <li class="media" style="background: white; border-radius: 10px">
-                  <img class="rounded-circle d-flex align-self-center" src="assets/cv__29__generated.jpg" >
-                  <div class="media-body">
+                <li class="media" style="background: white; border-radius: 10px; display: flex; justify-content: center; margin: auto; width: 73%;">
+                  <img class="rounded-circle d-flex align-self-center" src="assets/cv__29__generated.jpg" style="margin-left: 3vw;">
+                  <div class="media-body" style="margin: 1.5vw;">
                     <h5>{{u.firstName}} {{u.lastName}}</h5>
                     <p>{{u.username}}</p>
                     <p>{{u.email}}</p>
-                  </div><button (click)="seeProfile(u.username)" class="d-flex align-self-center"> View</button></li>
+                  </div><button (click)="seeProfile(u.username)" class=" align-self-center"
+                  style="margin-right: 3vw; background-color: #e44d3a; color:white; font-size: large; border: none; width: 5vw; height: 3vw;"> View</button></li>
+                  <br>
+                  <!-- <div class="sign_link" style="background-color: #e44d3a;">
+                    <button style="color:white; font-size: large"(click)="seeProfile(u.username)" class="d-flex align-self-center"
+                    style="margin-right: 3vw;"> View</button>
+                  </div> -->
               </ul>
             </div>
           </div>

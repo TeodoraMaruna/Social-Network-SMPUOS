@@ -10,6 +10,8 @@ import com.authservice.dto.MyUserDTO;
 import com.authservice.model.MyUser;
 import com.authservice.repository.MyUserRepository;
 import org.springframework.web.client.RestTemplate;
+
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
@@ -157,7 +159,7 @@ public class MyUserService implements IMyUserService {
 	}
 
 
-	public void sendVerificationEmail(MyUser myUser, String email) {    // preko mejla saljemo verifikacioni token
+	public void sendVerificationEmail(MyUser myUser, String email) throws MessagingException {    // preko mejla saljemo verifikacioni token
 
 		if (myUser != null){
 			try {
@@ -165,7 +167,7 @@ public class MyUserService implements IMyUserService {
 				String token = UUID.randomUUID().toString();
 				// kreiranje verifikacionog tokena
 				verificationTokenService.save(myUser, token);
-				//this.emailService.sendHTMLMail(myUser, email);
+				this.emailService.sendHTMLMail(myUser, email);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;
