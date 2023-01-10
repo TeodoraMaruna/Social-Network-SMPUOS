@@ -73,4 +73,15 @@ public class MyUserController {
         }
     }
 
+    @PostMapping(value = "/check", produces = "application/json; charset=utf-8")
+    public ResponseEntity<Boolean> checkEmailAndNumber(@RequestBody MyUserDTO dto) {
+
+        Boolean emailUnique = this.myUserService.checkIfEmailUnique(dto);
+        Boolean numberUnique = this.myUserService.checkIfPhoneNumberUnique(dto);
+        if (emailUnique && numberUnique) {
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
 }

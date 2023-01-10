@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../service/auth.service";
 import {UrlParams} from "../../model/url-params";
 
@@ -12,7 +12,7 @@ export class EmailVerificationComponent implements OnInit {
   emailConfirmed: Boolean = false;
   urlParams: UrlParams = new UrlParams()
 
-  constructor(private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     // @ts-ignore
@@ -33,5 +33,9 @@ export class EmailVerificationComponent implements OnInit {
         this.emailConfirmed = false;
       }
     )
+  }
+
+  goToLogin() {
+    this.router.navigate(['login'])
   }
 }

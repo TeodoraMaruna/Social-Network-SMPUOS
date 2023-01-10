@@ -4,6 +4,7 @@ import com.authservice.dto.AuthRequest;
 import com.authservice.dto.AuthResponse;
 import com.authservice.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import com.authservice.dto.MyUserDTO;
@@ -96,6 +97,14 @@ public class MyUserService implements IMyUserService {
 		myUserDTO.setPassword(BCrypt.hashpw(myUserDTO.getPassword(), BCrypt.gensalt()));
 		myUserDTO.setRole("ROLE_USER");
 
+
+
+		Boolean isUnique = restTemplate.postForObject("http://localhost:9000/user-service/check", myUserDTO, Boolean.class);
+
+		if(!isUnique){
+			return new MyUserDTO();
+		}
+
 		try {
 			myUser = this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole(),false));
 			this.sendVerificationEmail(myUser, myUserDTO.getEmail());
@@ -103,9 +112,11 @@ public class MyUserService implements IMyUserService {
 			return new MyUserDTO();
 		}
 
+
 		this.sagaOrchestrator("AUTH_SERVICE_CREATED", myUserDTO);
 
 		myUserDTO.setSagaStatus(this.transactionStatus);
+		this.transactionStatus = "";
 
 		return myUserDTO;
 	}
@@ -167,7 +178,7 @@ public class MyUserService implements IMyUserService {
 				String token = UUID.randomUUID().toString();
 				// kreiranje verifikacionog tokena
 				verificationTokenService.save(myUser, token);
-				this.emailService.sendHTMLMail(myUser, email);
+				//this.emailService.sendHTMLMail(myUser, email);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;
