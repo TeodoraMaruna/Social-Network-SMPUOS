@@ -40,7 +40,7 @@ public class ConnectionService implements IConnectionService {
     public UserConnectionDTO registerUserConnection(UserConnectionDTO dto){
         // TODO: check if username unique
         try {
-            this.connectionRepository.save(new UserConnection(dto.getUsername(), dto.isPublic()));
+            this.connectionRepository.save(new UserConnection(dto.getUsername(), dto.getIsPublicStatus()));
 
         }catch (Exception e){
             dto.setSagaStatus("AUTH_SERVICE_ROLLBACK");

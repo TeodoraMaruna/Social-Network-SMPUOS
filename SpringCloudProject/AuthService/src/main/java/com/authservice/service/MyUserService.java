@@ -95,6 +95,7 @@ public class MyUserService implements IMyUserService {
 			return new MyUserDTO();
 		}
 
+		myUserDTO.setIsPublicStatus(myUserDTO.getIsPublic());
 		myUserDTO.setPassword(BCrypt.hashpw(myUserDTO.getPassword(), BCrypt.gensalt()));
 		myUserDTO.setRole("ROLE_USER");
 		Boolean isUnique = restTemplate.postForObject("http://localhost:9000/user-service/check", myUserDTO, Boolean.class);
@@ -105,8 +106,9 @@ public class MyUserService implements IMyUserService {
 
 		try {
 			myUser = this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole(),false));
-			this.sendVerificationEmail(myUser, myUserDTO.getEmail());
+			//this.sendVerificationEmail(myUser, myUserDTO.getEmail());
 		}catch (Exception e){
+			e.printStackTrace();
 			this.verificationTokenRepository.deleteByUser_Username(myUserDTO.getUsername());
 			this.myUserRepository.deleteByUsername(myUserDTO.getUsername());
 			return new MyUserDTO();

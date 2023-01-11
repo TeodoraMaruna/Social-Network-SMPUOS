@@ -15,6 +15,7 @@ public class MyUserDTO {
     private String password;
     private String role;
     private Boolean isPublic;
+    private Boolean isPublicStatus;
     private String firstName;
     private String gender;
     private String lastName;
