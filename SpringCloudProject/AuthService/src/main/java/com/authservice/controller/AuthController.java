@@ -61,9 +61,11 @@ public class AuthController {
         VerificationToken verificationToken = this.verificationTokenService.findByToken(activationDTO.getToken());
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        if(verificationToken.getExpiryDate().after(timestamp)){
-            this.myUserService.activateUser(user.getUsername());
-            return new ResponseEntity<>(HttpStatus.OK);
+        if(verificationToken != null) {
+            if (verificationToken.getExpiryDate().after(timestamp)) {
+                this.myUserService.activateUser(user.getUsername());
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
         }
 
 
