@@ -1,0 +1,8 @@
+username,email,first_name,gender,is_public,is_registered,last_name,phone_number,role
+jelena,jelena@gmail.com,Jelena,Female,1,1,Maruna,2345,ROLE_USER
+luka,luka.maruna@gmail.com,Luka,Male,0,1,Maruna,999,ROLE_USER
+mina,mina@gmail.com,Mina,Female,1,1,Ninic,99955533,ROLE_USER
+nikola,nikola@gmail.com,Nikola,Male,1,1,Nikolic,777,ROLE_USER
+pavle,pavle@gmail.com,Pavle,Male,1,1,Maruna,333321,ROLE_USER
+teodora,teodora@gmail.com,Teodora,Female,0,1,Maruna,1234,ROLE_USER
+vladimir,vladimir@gmail.com,Vladimir,Male,1,1,Jovanovic,55542,ROLE_USER

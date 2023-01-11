@@ -1,0 +1,86 @@
+﻿[
+  {
+    "n": {
+"identity": 0,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": false,
+"username": "teodora"
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 1,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": true,
+"username": "jelena"
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 2,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": true,
+"username": "nikola"
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 3,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": false,
+"username": "luka"
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 4,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": true,
+"username": "vladimir"
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 5,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": true,
+"username": "pavle"
+      }
+    }
+  },
+  {
+    "n": {
+"identity": 6,
+"labels": [
+        "UserConnection"
+      ],
+"properties": {
+"isPublic": true,
+"username": "mina"
+      }
+    }
+  }
+]

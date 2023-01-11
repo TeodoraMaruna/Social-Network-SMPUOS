@@ -1,0 +1,169 @@
+[{
+  "_id": {
+    "$oid": "63be9d27c854d84f4152cef3"
+  },
+  "user": {
+    "username": "teodora"
+  },
+  "description": "Jos jedna slika iz Pariza",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63be9d27c854d84f4152cef3",
+    "imageLocation": "images//post63be9d27c854d84f4152cef3WedJan11122735CET2023.jpg"
+  },
+  "comments": [],
+  "likes": [],
+  "numberOfLikes": 0,
+  "_class": "com.postservice.model.Post"
+},{
+  "_id": {
+    "$oid": "63be9e2bc854d84f4152cef5"
+  },
+  "user": {
+    "username": "jelena"
+  },
+  "description": "New York",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63be9e2bc854d84f4152cef5",
+    "imageLocation": "images//post63be9e2bc854d84f4152cef5WedJan11123155CET2023.jpg"
+  },
+  "comments": [
+    {
+      "_id": 1,
+      "content": "super slika!",
+      "username": "teodora"
+    },
+    {
+      "_id": 2,
+      "content": "cao cao",
+      "username": "jelena"
+    }
+  ],
+  "likes": [
+    {
+      "username": "teodora"
+    },
+    {
+      "username": "nikola"
+    },
+    {
+      "username": "jelena"
+    }
+  ],
+  "numberOfLikes": 3,
+  "_class": "com.postservice.model.Post"
+},{
+  "_id": {
+    "$oid": "63be9f4cc854d84f4152cef6"
+  },
+  "user": {
+    "username": "nikola"
+  },
+  "description": "Ovo je batman!",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63be9f4cc854d84f4152cef6",
+    "imageLocation": "images//post63be9f4cc854d84f4152cef6WedJan11123644CET2023.jpg"
+  },
+  "comments": [],
+  "likes": [
+    {
+      "username": "jelena"
+    }
+  ],
+  "numberOfLikes": 1,
+  "_class": "com.postservice.model.Post"
+},{
+  "_id": {
+    "$oid": "63be9fb0c854d84f4152cef7"
+  },
+  "user": {
+    "username": "nikola"
+  },
+  "description": "Superman",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63be9fb0c854d84f4152cef7",
+    "imageLocation": "images//post63be9fb0c854d84f4152cef7WedJan11123824CET2023.jpg"
+  },
+  "comments": [
+    {
+      "_id": 1,
+      "content": "Bravo!",
+      "username": "jelena"
+    },
+    {
+      "_id": 2,
+      "content": "super",
+      "username": "teodora"
+    }
+  ],
+  "likes": [
+    {
+      "username": "jelena"
+    },
+    {
+      "username": "teodora"
+    }
+  ],
+  "numberOfLikes": 2,
+  "_class": "com.postservice.model.Post"
+},{
+  "_id": {
+    "$oid": "63bea8fdfedf8f723482649d"
+  },
+  "user": {
+    "username": "luka"
+  },
+  "description": "My first post!",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63bea8fdfedf8f723482649d",
+    "imageLocation": "images//post63bea8fdfedf8f723482649dWedJan11131805CET2023.jpg"
+  },
+  "comments": [],
+  "likes": [],
+  "numberOfLikes": 0,
+  "_class": "com.postservice.model.Post"
+},{
+  "_id": {
+    "$oid": "63bea945fedf8f723482649e"
+  },
+  "user": {
+    "username": "vladimir"
+  },
+  "description": "Moj prvi bitcoin!",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63bea945fedf8f723482649e",
+    "imageLocation": "images//post63bea945fedf8f723482649eWedJan11131917CET2023.jpg"
+  },
+  "comments": [
+    {
+      "_id": 1,
+      "content": "sam sebi komentarisem i lajkujem post",
+      "username": "vladimir"
+    }
+  ],
+  "likes": [
+    {
+      "username": "vladimir"
+    },
+    {
+      "username": "teodora"
+    }
+  ],
+  "numberOfLikes": 2,
+  "_class": "com.postservice.model.Post"
+},{
+  "_id": {
+    "$oid": "63bf16112c6b862660d89f9b"
+  },
+  "user": {
+    "username": "teodora"
+  },
+  "description": "Paris <3",
+  "image": {
+    "imageUrl": "http://localhost:9000/post-service/image/63bf16112c6b862660d89f9b",
+    "imageLocation": "images//post63bf16112c6b862660d89f9bWedJan11210329CET2023.jpg"
+  },
+  "comments": [],
+  "likes": [],
+  "numberOfLikes": 0,
+  "_class": "com.postservice.model.Post"
+}]

@@ -1,0 +1,44 @@
+[
+	{
+		"username" : "jelena",
+		"is_registered" : "1",
+		"password" : "$2a$10$4kPvL9HgOsPMfRsRWyz0buU4KsbOEvpaXjE2IhOCSSnfR6ekLlsSW",
+		"role" : "ROLE_USER"
+	},
+	{
+		"username" : "luka",
+		"is_registered" : "1",
+		"password" : "$2a$10$ii.UpZg0pMM6Uetou4vr4u8veIxZ9PP3tVCmWNRcwzERM7JXkkakm",
+		"role" : "ROLE_USER"
+	},
+	{
+		"username" : "mina",
+		"is_registered" : "1",
+		"password" : "$2a$10$stgR5hbeojAkOrACTRNjwO.HVVjMMjfh1r5tdv7ZG5ReW6LKYr7PS",
+		"role" : "ROLE_USER"
+	},
+	{
+		"username" : "nikola",
+		"is_registered" : "1",
+		"password" : "$2a$10$wM3dZ.UkgXI0p0GtYhvBtOaHvm0Bd.3kGz4F6K0zSMjr0FugEZsXe",
+		"role" : "ROLE_USER"
+	},
+	{
+		"username" : "pavle",
+		"is_registered" : "1",
+		"password" : "$2a$10$yvFtsTQ/kyysNff1s45AmuMGHcJ8zGRD8R44erILSMUfP4pfpCcIe",
+		"role" : "ROLE_USER"
+	},
+	{
+		"username" : "teodora",
+		"is_registered" : "1",
+		"password" : "$2a$10$UctWQUT8RmPC8pU4L9yyMOCif2yTmm7ZBWRNBLnFkUfuNVpszIn0K",
+		"role" : "ROLE_USER"
+	},
+	{
+		"username" : "vladimir",
+		"is_registered" : "1",
+		"password" : "$2a$10$9Tp86coCseZiKVT4sEzRAubZLtsdIjMD8SiuehMmKm4yB7d1oe0gC",
+		"role" : "ROLE_USER"
+	}
+]

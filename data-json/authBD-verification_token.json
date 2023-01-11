@@ -1,0 +1,20 @@
+[
+	{
+		"id" : 1,
+		"expiry_date" : "2023-01-12 12:22:17",
+		"token" : "00b99e4c-ecbc-475c-946e-ce9889574ea8",
+		"user_username" : "teodora"
+	},
+	{
+		"id" : 3,
+		"expiry_date" : "2023-01-12 12:30:02",
+		"token" : "930dbd5c-86d9-4af1-9345-1a9b149b4d62",
+		"user_username" : "jelena"
+	},
+	{
+		"id" : 4,
+		"expiry_date" : "2023-01-12 12:34:09",
+		"token" : "f5951352-c536-4f47-8e03-77dcf789a38b",
+		"user_username" : "nikola"
+	}
+]
