@@ -40,7 +40,7 @@ public class EmailService implements IEmailService {
             //Send verification email
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("socialnetworkSMPOUS@outlook.com");
+            helper.setFrom("socialnetworkSMPOUS1@outlook.com");
             helper.setTo(email);
             helper.setSubject("Email verification");
             helper.setText(body, true);

@@ -89,6 +89,7 @@ public class MyUserService implements IMyUserService {
 	@Transactional
 	public MyUserDTO register(MyUserDTO myUserDTO) {
 		//do validation if user already exists
+		this.transactionStatus = "";
 		MyUser myUser = this.myUserRepository.findByUsername(myUserDTO.getUsername());
 		if(myUser != null){
 			return new MyUserDTO();
@@ -96,7 +97,6 @@ public class MyUserService implements IMyUserService {
 
 		myUserDTO.setPassword(BCrypt.hashpw(myUserDTO.getPassword(), BCrypt.gensalt()));
 		myUserDTO.setRole("ROLE_USER");
-
 		Boolean isUnique = restTemplate.postForObject("http://localhost:9000/user-service/check", myUserDTO, Boolean.class);
 
 		if(!isUnique){
@@ -105,15 +105,15 @@ public class MyUserService implements IMyUserService {
 
 		try {
 			myUser = this.myUserRepository.save(new MyUser(myUserDTO.getUsername(), myUserDTO.getPassword(), myUserDTO.getRole(),false));
-			//this.sendVerificationEmail(myUser, myUserDTO.getEmail());
+			this.sendVerificationEmail(myUser, myUserDTO.getEmail());
 		}catch (Exception e){
+			this.verificationTokenRepository.deleteByUser_Username(myUserDTO.getUsername());
+			this.myUserRepository.deleteByUsername(myUserDTO.getUsername());
 			return new MyUserDTO();
 		}
 
 		this.sagaOrchestrator("AUTH_SERVICE_CREATED", myUserDTO);
-
 		myUserDTO.setSagaStatus(this.transactionStatus);
-		this.transactionStatus = "";
 
 		return myUserDTO;
 	}

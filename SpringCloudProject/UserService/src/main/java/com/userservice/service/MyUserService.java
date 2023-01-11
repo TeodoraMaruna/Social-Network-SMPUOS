@@ -55,6 +55,7 @@ public class MyUserService implements IMyUserService{
 
     @Override
     public boolean addMyUser(MyUserDTO dto){
+        dto.setIsRegistered(false);
         Boolean uniqueUsername = checkIfUsernameUnique(dto.getUsername());
         boolean uniqueEmail = checkIfEmailUnique(dto);
         boolean uniquePhoneNumber = checkIfPhoneNumberUnique(dto);
