@@ -16,8 +16,10 @@ public class SpecialClassGatewayFilterFactory
 
     @Autowired
     private RouterValidator routerValidator;
+
     @Autowired
     private JwtUtil jwtUtil;
+
     public static class Config {
 
     }
