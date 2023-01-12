@@ -32,7 +32,10 @@ public class JwtUtil {
     }
 
     public boolean isInvalid(String token) {
-        return this.isTokenExpired(token);
+        if (token.startsWith("Bearer ")){
+            return false; // isTokenExpired(token);
+        }
+        return true; //this.isTokenExpired(token); TODO: dodati isTokenExpired
     }
 
 }

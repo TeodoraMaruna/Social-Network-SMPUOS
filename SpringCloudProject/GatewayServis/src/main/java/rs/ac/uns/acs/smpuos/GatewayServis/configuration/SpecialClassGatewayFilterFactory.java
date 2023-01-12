@@ -1,5 +1,7 @@
 package rs.ac.uns.acs.smpuos.GatewayServis.configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -17,6 +19,8 @@ public class SpecialClassGatewayFilterFactory
     @Autowired
     private RouterValidator routerValidator;
 
+    private final WebClient.Builder webClientBuilder;
+
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -24,8 +28,9 @@ public class SpecialClassGatewayFilterFactory
 
     }
 
-    public SpecialClassGatewayFilterFactory() {
+    public SpecialClassGatewayFilterFactory(WebClient.Builder webClientBuilder) {
         super(Config.class);
+        this.webClientBuilder = webClientBuilder;
     }
 
 // dok mirkoservisi nisu podignuti, sve je okej, cim se mikroservisi podignu, gateway se zaobidje
@@ -36,17 +41,24 @@ public class SpecialClassGatewayFilterFactory
 
             System.out.println("halooo");
             if (routerValidator.isSecured.test(request)) {
+                System.out.println("zasticena putanja " + request.getPath());
+                System.out.println("zasticena putanja " + request.getURI());
                 if (this.isAuthMissing(request)) {
-                    System.out.println("zasticena putanja " + request.getPath());
-                    System.out.println("zasticena putanja " + request.getURI());
+                    System.out.println("zasticena putanja fali autorizacija");
                     return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
                 }
 
                 final String token = this.getAuthHeader(request);
 
-                if (jwtUtil.isInvalid(token))
+                if (jwtUtil.isInvalid(token)) {
+                    System.out.println("zasticena putanja jwt nije validan");
                     return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
-            } else {
+                }
+
+//                this.populateRequestWithHeaders(exchange, token);
+//                System.out.println("ovo je posle populate " + token);
+            }
+            else {
                 System.out.println("putanja nije zasticena " + request.getPath());
                 System.out.println("putanja nije zasticena " + request.getURI());
             }
@@ -54,6 +66,14 @@ public class SpecialClassGatewayFilterFactory
             return chain.filter(exchange);
         };
 
+    }
+
+    private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
+        Claims claims = jwtUtil.getAllClaimsFromToken(token);
+        exchange.getRequest().mutate()
+                .header("username", String.valueOf(claims.get("username")))
+                .header("role", String.valueOf(claims.get("role")))
+                .build();
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {

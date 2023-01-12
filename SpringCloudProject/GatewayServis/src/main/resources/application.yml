@@ -14,7 +14,7 @@ spring:
       discovery:
         locator:
           enabled: true
-          lower-case-service-id: true
+#          lower-case-service-id: true   # TODO: zakomentarosati
 
       routes:
         - id: post-service
@@ -28,17 +28,17 @@ spring:
               args:
                 name: korisnik-servis-circuit-breaker
                 fallbackUri: forward:/korisnik-servis-circuit-breaker
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/user-service/**
-          filters:
-            - name: SpecialClass
-              order: -2
-            - name: CircuitBreaker
-              args:
-                name: korisnik-servis-circuit-breaker
-                fallbackUri: forward:/korisnik-servis-circuit-breaker
+#        - id: user-service
+#          uri: lb://user-service
+#          predicates:
+#            - Path=/user-service/**
+#          filters:
+#            - name: SpecialClass
+#              order: -2
+#            - name: CircuitBreaker
+#              args:
+#                name: korisnik-servis-circuit-breaker
+#                fallbackUri: forward:/korisnik-servis-circuit-breaker
         - id: connection-service
           uri: lb://connection-service
           predicates:
@@ -50,7 +50,7 @@ spring:
               args:
                 name: korisnik-servis-circuit-breaker
                 fallbackUri: forward:/korisnik-servis-circuit-breaker
-              order: 2
+#              order: 2
         - id: auth-service
           uri: lb://auth-service
           predicates:

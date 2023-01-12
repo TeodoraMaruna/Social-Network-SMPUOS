@@ -12,7 +12,7 @@ eureka:
     fetch-registry: false
     register-with-eureka: false
   instance:
-    hostname: eureka
+    hostname: eureka #localhost
     prefer-ip-address: true
     
 logging:

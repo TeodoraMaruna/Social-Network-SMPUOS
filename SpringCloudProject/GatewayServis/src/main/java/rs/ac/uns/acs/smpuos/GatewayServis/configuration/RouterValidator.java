@@ -13,7 +13,6 @@ public class RouterValidator {
             "/auth-service/register",
             "/auth-service/login",
             "/user-service/findAll"
-
 //            "/connection-service/findAll"
     );
 
