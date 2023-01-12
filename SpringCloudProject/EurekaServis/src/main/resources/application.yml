@@ -21,7 +21,3 @@ logging:
       netflix:
         discovery: OFF
         eureka: OFF
-
-
-
-

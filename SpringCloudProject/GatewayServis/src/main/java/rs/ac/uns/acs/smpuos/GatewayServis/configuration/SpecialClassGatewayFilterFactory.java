@@ -28,6 +28,7 @@ public class SpecialClassGatewayFilterFactory
         super(Config.class);
     }
 
+// dok mirkoservisi nisu podignuti, sve je okej, cim se mikroservisi podignu, gateway se zaobidje
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
@@ -36,6 +37,8 @@ public class SpecialClassGatewayFilterFactory
             System.out.println("halooo");
             if (routerValidator.isSecured.test(request)) {
                 if (this.isAuthMissing(request)) {
+                    System.out.println("zasticena putanja " + request.getPath());
+                    System.out.println("zasticena putanja " + request.getURI());
                     return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
                 }
 
@@ -43,7 +46,11 @@ public class SpecialClassGatewayFilterFactory
 
                 if (jwtUtil.isInvalid(token))
                     return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
+            } else {
+                System.out.println("putanja nije zasticena " + request.getPath());
+                System.out.println("putanja nije zasticena " + request.getURI());
             }
+
             return chain.filter(exchange);
         };
 

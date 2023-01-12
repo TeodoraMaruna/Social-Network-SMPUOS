@@ -18,7 +18,7 @@ spring:
 
       routes:
         - id: post-service
-          uri: http://post-service
+          uri: lb://post-service
           predicates:
             - Path=/post-service/**
           filters:
@@ -29,7 +29,7 @@ spring:
                 name: korisnik-servis-circuit-breaker
                 fallbackUri: forward:/korisnik-servis-circuit-breaker
         - id: user-service
-          uri: http://user-service
+          uri: lb://user-service
           predicates:
             - Path=/user-service/**
           filters:
@@ -40,7 +40,7 @@ spring:
                 name: korisnik-servis-circuit-breaker
                 fallbackUri: forward:/korisnik-servis-circuit-breaker
         - id: connection-service
-          uri: http://connection-service
+          uri: lb://connection-service
           predicates:
               - Path=/connection-service/**
           filters:
@@ -52,7 +52,7 @@ spring:
                 fallbackUri: forward:/korisnik-servis-circuit-breaker
               order: 2
         - id: auth-service
-          uri: http://auth-service
+          uri: lb://auth-service
           predicates:
             - Path=/auth-service/**
           filters:
